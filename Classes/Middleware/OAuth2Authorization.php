@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace FGTCLB\OAuth2Server\Middleware;
 
+use FGTCLB\OAuth2Server\Configuration;
 use FGTCLB\OAuth2Server\Domain\Entity\User;
 use FGTCLB\OAuth2Server\Server\ServerFactory;
 use FGTCLB\OAuth2Server\Session\UserSession;
@@ -22,6 +23,19 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 final class OAuth2Authorization implements MiddlewareInterface
 {
+    /**
+     * @var Configuration
+     */
+    protected $configuration;
+
+    /**
+     * @param Configuration|null $configuration
+     */
+    public function __construct(Configuration $configuration = null)
+    {
+        $this->configuration = $configuration ?: GeneralUtility::makeInstance(Configuration::class);
+    }
+
     /**
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
@@ -58,7 +72,7 @@ final class OAuth2Authorization implements MiddlewareInterface
             /** @var ContentObjectRenderer */
             $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $redirectUri = $contentObjectRenderer->typoLink_URL([
-                'parameter' => sprintf('t3://page?uid=%d&redirect_url=%s', 1, $request->getUri()->getPath()),
+                'parameter' => sprintf('t3://page?uid=%d&redirect_url=%s', $this->configuration->getLoginPage(), $request->getUri()->getPath()),
             ]);
 
             return new RedirectResponse($redirectUri);

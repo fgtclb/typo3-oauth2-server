@@ -22,6 +22,11 @@ final class Configuration
     protected $publicKeyFile;
 
     /**
+     * @var UID of the login page
+     */
+    protected $loginPage;
+
+    /**
      * @param ExtensionConfiguration|null $extensionConfiguration
      * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
      */
@@ -37,8 +42,13 @@ final class Configuration
             throw new \InvalidArgumentException('Missing "publicKeyFile" in OAuth2 server extension configuration', 1539686197);
         }
 
+        if ((int)($configuration['loginPage'] ?? 0) < 1) {
+            throw new \InvalidArgumentException('Missing/invalid "loginPage" in OAuth2 server extension configuration', 1539693234);
+        }
+
         $this->privateKeyFile = $configuration['privateKeyFile'];
         $this->publicKeyFile = $configuration['publicKeyFile'];
+        $this->loginPage = (int)$configuration['loginPage'];
     }
 
     /**
@@ -59,5 +69,15 @@ final class Configuration
     public function getPublicKeyFile(): string
     {
         return $this->publicKeyFile;
+    }
+
+    /**
+     * Get the UID of the login page
+     *
+     * @return int
+     */
+    public function getLoginPage(): int
+    {
+        return $this->loginPage;
     }
 }

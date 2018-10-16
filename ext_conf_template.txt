@@ -2,3 +2,5 @@
 privateKeyFile =
 # cat=basic/crypto; type=string; label=Private key file: path to the RSA public key
 publicKeyFile =
+# cat=basic/flow; type=int+; label=Login page: UID of a page where users can log in
+loginPage =
