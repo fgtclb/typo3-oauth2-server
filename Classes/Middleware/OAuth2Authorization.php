@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace FGTCLB\OAuth2Server\Middleware;
 
+use FGTCLB\OAuth2Server\Domain\Entity\User;
 use FGTCLB\OAuth2Server\Server\ServerFactory;
 use FGTCLB\OAuth2Server\Session\UserSession;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -63,11 +64,7 @@ final class OAuth2Authorization implements MiddlewareInterface
             return new RedirectResponse($redirectUri);
         }
 
-        $user = new class implements \League\OAuth2\Server\Entities\UserEntityInterface {
-            use \League\OAuth2\Server\Entities\Traits\EntityTrait;
-        };
-        $user->setIdentifier('test');
-        $authorizationRequest->setUser($user);
+        $authorizationRequest->setUser(new User($context->getPropertyFromAspect('frontend.user', 'username', false)));
         $authorizationRequest->setAuthorizationApproved(true);
 
         $userSession->removeData('oauth2.authorizationRequest');
