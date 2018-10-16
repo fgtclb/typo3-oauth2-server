@@ -42,13 +42,12 @@ final class ServerFactory
         $clientRepository = new ClientRepository();
         $accessTokenRepository = new AccessTokenRepository();
         $scopeRepository = new ScopeRepository();
-        $encryptionKey = '1q9fIpNu0ljseePtMq03PkHOgJjSmL2rCsxLRDUE/ME=';
         $server = new AuthorizationServer(
             $clientRepository,
             $accessTokenRepository,
             $scopeRepository,
             $this->configuration->getPrivateKeyFile(),
-            $encryptionKey
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
         );
 
         $authorizationCodeRepository = new AuthorizationCodeRepository();
