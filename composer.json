@@ -18,6 +18,11 @@
             "FGTCLB\\OAuth2Server\\": "Classes"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "FGTCLB\\OAuth2Server\\Tests\\": "Tests"
+        }
+    },
     "config": {
         "sort-packages": true
     },
