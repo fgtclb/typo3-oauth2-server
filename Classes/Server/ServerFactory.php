@@ -12,24 +12,42 @@ use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\AuthorizationValidators\BearerTokenValidator;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\ResourceServer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Factory for OAuth2 authorization servers
  */
 final class ServerFactory
 {
+    /**
+     * @var ServerConfiguration
+     */
+    protected $configuration;
+
+    /**
+     * @param ServerConfiguration|null $configuration
+     */
+    public function __construct(ServerConfiguration $configuration = null)
+    {
+        $this->configuration = $configuration ?: GeneralUtility::makeInstance(ServerConfiguration::class);
+    }
+
+    /**
+     * Build an instance of an OAuth2 authorization server
+     *
+     * @return AuthorizationServer
+     */
     public function buildAuthorizationServer(): AuthorizationServer
     {
         $clientRepository = new ClientRepository();
         $accessTokenRepository = new AccessTokenRepository();
         $scopeRepository = new ScopeRepository();
-        $privateKey = __DIR__ . '/private.key';
         $encryptionKey = '1q9fIpNu0ljseePtMq03PkHOgJjSmL2rCsxLRDUE/ME=';
         $server = new AuthorizationServer(
             $clientRepository,
             $accessTokenRepository,
             $scopeRepository,
-            $privateKey,
+            $this->configuration->getPrivateKeyFile(),
             $encryptionKey
         );
 
@@ -50,16 +68,20 @@ final class ServerFactory
         return $server;
     }
 
+    /**
+     * Build an instance of an OAuth2 resource server
+     *
+     * @return ResourceServer
+     */
     public function buildResourceServer(): ResourceServer
     {
         $accessTokenRepository = new AccessTokenRepository();
-        $publicKey = __DIR__ . '/public.key';
         $validator = new BearerTokenValidator(
             $accessTokenRepository
         );
         $server = new ResourceServer(
             $accessTokenRepository,
-            $publicKey,
+            $this->configuration->getPublicKeyFile(),
             $validator
         );
 

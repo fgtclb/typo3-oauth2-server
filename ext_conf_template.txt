@@ -1,0 +1,4 @@
+# cat=basic/crypto; type=string; label=Private key file: path to the RSA private key
+privateKeyFile =
+# cat=basic/crypto; type=string; label=Private key file: path to the RSA public key
+publicKeyFile =
