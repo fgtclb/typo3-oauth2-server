@@ -57,7 +57,7 @@ final class OAuth2Authorization implements MiddlewareInterface
             /** @var ContentObjectRenderer */
             $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
             $redirectUri = $contentObjectRenderer->typoLink_URL([
-                'parameter' => sprintf('t3://page?uid=%d&redirect_url=%s', 1, '/oauth/authorize'),
+                'parameter' => sprintf('t3://page?uid=%d&redirect_url=%s', 1, $request->getUri()->getPath()),
             ]);
 
             return new RedirectResponse($redirectUri);
