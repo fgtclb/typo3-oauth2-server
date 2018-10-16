@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace FGTCLB\OAuth2Server\Server;
 
-use FGTCLB\OAuth2Server\Domain\Repository\AccessTokenRepository;
+use FGTCLB\OAuth2Server\Configuration;
 use FGTCLB\OAuth2Server\Domain\Repository\AuthorizationCodeRepository;
 use FGTCLB\OAuth2Server\Domain\Repository\ClientRepository;
 use FGTCLB\OAuth2Server\Domain\Repository\RefreshTokenRepository;
@@ -20,16 +20,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class ServerFactory
 {
     /**
-     * @var ServerConfiguration
+     * @var Configuration
      */
     protected $configuration;
 
     /**
-     * @param ServerConfiguration|null $configuration
+     * @param Configuration|null $configuration
      */
-    public function __construct(ServerConfiguration $configuration = null)
+    public function __construct(Configuration $configuration = null)
     {
-        $this->configuration = $configuration ?: GeneralUtility::makeInstance(ServerConfiguration::class);
+        $this->configuration = $configuration ?: GeneralUtility::makeInstance(Configuration::class);
     }
 
     /**
