@@ -27,10 +27,9 @@ final class Configuration
     protected $loginPage;
 
     /**
-     * @param ExtensionConfiguration|null $extensionConfiguration
      * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
      */
-    public function __construct(ExtensionConfiguration $extensionConfiguration = null)
+    public function __construct()
     {
         $configuration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('oauth2_server');
 
