@@ -39,7 +39,6 @@ final class OAuth2Identity implements MiddlewareInterface
         return new JsonResponse([
             'id' => $userName, // required
             'username' => $userName,
-            'name' => ucfirst($userName) . ' User',
         ]);
     }
 }
