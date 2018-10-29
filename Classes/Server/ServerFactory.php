@@ -55,7 +55,7 @@ final class ServerFactory
         $grant = new AuthCodeGrant(
             $authorizationCodeRepository,
             $refreshTokenRepository,
-            new \DateInterval('PT10M') // authorization codes will expire after 10 minutes
+            $this->configuration->getAuthorizationCodeLifetime()
         );
         $grant->setRefreshTokenTTL(new \DateInterval('P1M')); // refresh tokens will expire after 1 month
         // Enable the authentication code grant on the server

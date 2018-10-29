@@ -27,6 +27,11 @@ final class Configuration
     protected $loginPage;
 
     /**
+     * @var \DateInterval
+     */
+    protected $authorizationCodeLifetime;
+
+    /**
      * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
      */
     public function __construct()
@@ -48,6 +53,7 @@ final class Configuration
         $this->privateKeyFile = $configuration['privateKeyFile'];
         $this->publicKeyFile = $configuration['publicKeyFile'];
         $this->loginPage = (int)$configuration['loginPage'];
+        $this->authorizationCodeLifetime = \DateInterval::createFromDateString('10 minutes');
     }
 
     /**
@@ -78,5 +84,15 @@ final class Configuration
     public function getLoginPage(): int
     {
         return $this->loginPage;
+    }
+
+    /**
+     * Get the lifetime of authorization codes
+     *
+     * @return \DateInterval
+     */
+    public function getAuthorizationCodeLifetime(): \DateInterval
+    {
+        return $this->authorizationCodeLifetime;
     }
 }
