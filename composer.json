@@ -2,7 +2,7 @@
   "name": "fgtclb/typo3-oauth2-server",
   "type": "typo3-cms-extension",
   "description": "OAuth2 server implementation for TYPO3 frontend users",
-  "license": "proprietary",
+  "license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "FGTCLB",
