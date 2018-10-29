@@ -20,6 +20,13 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Handler for OAuth2 authorization requests
+ *
+ * If a user is logged in, an authorization request is completed automatically,
+ * otherwise the authorization request is stored in the frontend session and
+ * restored once a user has logged in. Login is enforced by a redirect to the
+ * login page with a request to redirect back to this middleware after login.
+ *
+ * @see https://oauth2.thephpleague.com/authorization-server/auth-code-grant/#part-one
  */
 final class OAuth2Authorization implements MiddlewareInterface
 {

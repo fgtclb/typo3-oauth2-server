@@ -12,6 +12,8 @@ use TYPO3\CMS\Core\Http\Response;
 
 /**
  * Handler for OAuth2 identity requests
+ *
+ * @see https://oauth2.thephpleague.com/resource-server/securing-your-api/
  */
 final class OAuth2Identity implements MiddlewareInterface
 {

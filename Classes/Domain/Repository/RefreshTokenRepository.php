@@ -31,7 +31,7 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      */
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
     {
-        // TODO
+        // TODO: Persist token to the datbase or similar for audit logging or revocation
     }
 
     /**
@@ -41,7 +41,7 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      */
     public function revokeRefreshToken($tokenId)
     {
-        // TODO
+        // TODO: Revoke persisted token
     }
 
     /**
@@ -53,7 +53,7 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      */
     public function isRefreshTokenRevoked($tokenId)
     {
-        // TODO
+        // TODO: Check if persisted token is revoked
         return false;
     }
 }

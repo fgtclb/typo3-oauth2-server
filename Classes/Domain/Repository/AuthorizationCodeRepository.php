@@ -31,7 +31,7 @@ final class AuthorizationCodeRepository implements AuthCodeRepositoryInterface
      */
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
-        // TODO
+        // TODO: Persist code to the datbase or similar for audit logging or revocation
     }
 
     /**
@@ -41,7 +41,7 @@ final class AuthorizationCodeRepository implements AuthCodeRepositoryInterface
      */
     public function revokeAuthCode($codeId)
     {
-        // TODO
+        // TODO: Revoke persisted code
     }
 
     /**
@@ -53,7 +53,7 @@ final class AuthorizationCodeRepository implements AuthCodeRepositoryInterface
      */
     public function isAuthCodeRevoked($codeId)
     {
-        // TODO
+        // TODO: Check if persisted code is revoked
         return false;
     }
 }

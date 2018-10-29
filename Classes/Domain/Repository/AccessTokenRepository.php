@@ -44,7 +44,7 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
-        // TODO
+        // TODO: Persist token to the datbase or similar for audit logging or revocation
     }
 
     /**
@@ -54,7 +54,7 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function revokeAccessToken($tokenId)
     {
-        // TODO
+        // TODO: Revoke persisted token
     }
 
     /**
@@ -66,7 +66,7 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function isAccessTokenRevoked($tokenId)
     {
-        // TODO
+        // TODO: Check if persisted token is revoked
         return false;
     }
 }

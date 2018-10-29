@@ -11,6 +11,8 @@ use TYPO3\CMS\Core\Http\Response;
 
 /**
  * Handler for OAuth2 access token requests
+ *
+ * @see https://oauth2.thephpleague.com/authorization-server/auth-code-grant/#part-two
  */
 final class OAuth2AccessToken implements MiddlewareInterface
 {
