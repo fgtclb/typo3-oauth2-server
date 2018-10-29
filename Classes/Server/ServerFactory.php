@@ -59,10 +59,7 @@ final class ServerFactory
         );
         $grant->setRefreshTokenTTL($this->configuration->getRefreshTokenLifetime());
         // Enable the authentication code grant on the server
-        $server->enableGrantType(
-            $grant,
-            new \DateInterval('PT1H') // access tokens will expire after 1 hour
-        );
+        $server->enableGrantType($grant, $this->configuration->getAccessTokenLifetime());
 
         return $server;
     }

@@ -29,6 +29,11 @@ final class Configuration
     /**
      * @var \DateInterval
      */
+    protected $accessTokenLifetime;
+
+    /**
+     * @var \DateInterval
+     */
     protected $refreshTokenLifetime;
 
     /**
@@ -58,6 +63,7 @@ final class Configuration
         $this->privateKeyFile = $configuration['privateKeyFile'];
         $this->publicKeyFile = $configuration['publicKeyFile'];
         $this->loginPage = (int)$configuration['loginPage'];
+        $this->accessTokenLifetime = \DateInterval::createFromDateString('1 hour');
         $this->refreshTokenLifetime = \DateInterval::createFromDateString('1 month');
         $this->authorizationCodeLifetime = \DateInterval::createFromDateString('10 minutes');
     }
@@ -90,6 +96,16 @@ final class Configuration
     public function getLoginPage(): int
     {
         return $this->loginPage;
+    }
+
+    /**
+     * Get the lifetime of access tokens
+     *
+     * @return \DateInterval
+     */
+    public function getAccessTokenLifetime(): \DateInterval
+    {
+        return $this->accessTokenLifetime;
     }
 
     /**
