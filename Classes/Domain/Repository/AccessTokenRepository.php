@@ -6,6 +6,7 @@ namespace FGTCLB\OAuth2Server\Domain\Repository;
 use FGTCLB\OAuth2Server\Domain\Entity\AccessToken;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
 /**

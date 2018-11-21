@@ -12,12 +12,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class ServerConfiguration
 {
     /**
-     * @var Path to a private RSA key
+     * @var string Path to a private RSA key
      */
     protected $privateKeyFile;
 
     /**
-     * @var Path to a public RSA key
+     * @var string Path to a public RSA key
      */
     protected $publicKeyFile;
 
@@ -27,7 +27,7 @@ final class ServerConfiguration
      */
     public function __construct(ExtensionConfiguration $extensionConfiguration = null)
     {
-        $configuration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('oauth2_server');
+        $configuration = ($extensionConfiguration ?: GeneralUtility::makeInstance(ExtensionConfiguration::class))->get('oauth2_server');
 
         if (empty($configuration['privateKeyFile'])) {
             throw new \InvalidArgumentException('Missing "privateKeyFile" in OAuth2 server extension configuration', 1539686145);

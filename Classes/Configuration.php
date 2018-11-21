@@ -12,17 +12,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 final class Configuration
 {
     /**
-     * @var Path to a private RSA key
+     * @var string Path to a private RSA key
      */
     protected $privateKeyFile;
 
     /**
-     * @var Path to a public RSA key
+     * @var string Path to a public RSA key
      */
     protected $publicKeyFile;
 
     /**
-     * @var UID of the login page
+     * @var string UID of the login page
      */
     protected $loginPage;
 

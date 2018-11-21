@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace FGTCLB\OAuth2Server\Tests;
+namespace FGTCLB\OAuth2Server\Tests\Unit;
 
 use FGTCLB\OAuth2Server\Configuration;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
