@@ -46,7 +46,6 @@ final class UserSession
      * Store data in the user session
      *
      * @param string $key
-     * @param mixed $data
      */
     public function removeData(string $key): void
     {

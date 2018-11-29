@@ -5,6 +5,7 @@ namespace FGTCLB\OAuth2Server\Domain\Repository;
 
 use FGTCLB\OAuth2Server\Domain\Entity\AuthorizationCode;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
+use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 
 /**
