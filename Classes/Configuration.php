@@ -22,7 +22,7 @@ final class Configuration
     protected $publicKeyFile;
 
     /**
-     * @var string UID of the login page
+     * @var int UID of the login page
      */
     protected $loginPage;
 
