@@ -7,8 +7,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handler for OAuth2 identity requests
@@ -36,11 +38,34 @@ final class OAuth2Identity implements MiddlewareInterface
             return $e->generateHttpResponse(new Response());
         }
 
-        $userName = $request->getAttribute('oauth_user_id');
+        $userId = $request->getAttribute('oauth_user_id');
+        $userData = $this->getUserData((int)$userId);
 
         return new JsonResponse([
-            'id' => $userName, // required
-            'username' => $userName,
+            'id' => (string)$userData['tx_users_fgtclbuserid'], // required
+            'username' => $userData['tx_profiles_nickname'],
         ]);
+    }
+
+    /**
+     * Get data for a given user ID
+     *
+     * @param int $userId
+     * @return array
+     */
+    protected function getUserData(int $userId): array
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('fe_users');
+        $userData = $connection->select(
+            [
+                'tx_users_fgtclbuserid',
+                'tx_profiles_nickname',
+            ],
+            'fe_users',
+            ['uid' => $userId]
+        )->fetch();
+
+        return $userData;
     }
 }

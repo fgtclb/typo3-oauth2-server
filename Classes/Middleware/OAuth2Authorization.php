@@ -85,7 +85,7 @@ final class OAuth2Authorization implements MiddlewareInterface
             return new RedirectResponse($redirectUri);
         }
 
-        $authorizationRequest->setUser(new User($context->getPropertyFromAspect('frontend.user', 'username', false)));
+        $authorizationRequest->setUser(new User($context->getPropertyFromAspect('frontend.user', 'id')));
         $authorizationRequest->setAuthorizationApproved(true);
 
         $userSession->removeData('oauth2.authorizationRequest');
