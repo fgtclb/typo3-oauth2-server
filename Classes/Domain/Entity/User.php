@@ -14,10 +14,10 @@ final class User implements UserEntityInterface
     use EntityTrait;
 
     /**
-     * @param int $uid User UID
+     * @param string $identifier
      */
-    public function __construct(int $uid)
+    public function __construct(string $identifier)
     {
-        $this->identifier = $uid;
+        $this->identifier = $identifier;
     }
 }
