@@ -67,7 +67,6 @@ final class OAuth2Authorization implements MiddlewareInterface
             }
         }
 
-        // Ensure FE user groups are loaded and URLs can be generated
         $this->bootFrontendController();
 
         /** @var Context */
@@ -108,7 +107,7 @@ final class OAuth2Authorization implements MiddlewareInterface
      * - TSFE->config
      * - TSFE->cObj
      *
-     * So a link to a page could be generated.
+     * This ensures FE user groups are loaded and URLs can be generated.
      */
     protected function bootFrontendController()
     {
