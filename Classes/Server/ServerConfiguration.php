@@ -30,11 +30,11 @@ final class ServerConfiguration
         $configuration = ($extensionConfiguration ?: GeneralUtility::makeInstance(ExtensionConfiguration::class))->get('oauth2_server');
 
         if (empty($configuration['privateKeyFile'])) {
-            throw new \InvalidArgumentException('Missing "privateKeyFile" in OAuth2 server extension configuration', 1539686145);
+            throw new \InvalidArgumentException('Missing "privateKeyFile" in OAuth2 server extension configuration', 1559054947);
         }
 
         if (empty($configuration['publicKeyFile'])) {
-            throw new \InvalidArgumentException('Missing "publicKeyFile" in OAuth2 server extension configuration', 1539686197);
+            throw new \InvalidArgumentException('Missing "publicKeyFile" in OAuth2 server extension configuration', 1559054961);
         }
 
         $this->privateKeyFile = $configuration['privateKeyFile'];
