@@ -12,6 +12,13 @@ use League\OAuth2\Server\Entities\Traits\EntityTrait;
  */
 final class Client implements ClientEntityInterface
 {
-    use ClientTrait;
     use EntityTrait;
+    use ClientTrait;
+
+    public function __construct($identifier, $name, $redirectUri)
+    {
+        $this->identifier = $identifier;
+        $this->name = $name;
+        $this->redirectUri = $redirectUri;
+    }
 }

@@ -39,7 +39,7 @@ final class ServerFactory
      */
     public function buildAuthorizationServer(): AuthorizationServer
     {
-        $clientRepository = new ClientRepository();
+        $clientRepository = GeneralUtility::makeInstance(ClientRepository::class);
         $accessTokenRepository = new AccessTokenRepository();
         $scopeRepository = new ScopeRepository();
         $server = new AuthorizationServer(

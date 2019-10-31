@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file original="" source-language="en" datatype="plaintext">
+		<body>
+			<trans-unit id="client.title">
+				<source>OAuth2 Client</source>
+			</trans-unit>
+			<trans-unit id="client.name.label">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="client.identifier.label">
+				<source>Client ID</source>
+			</trans-unit>
+			<trans-unit id="client.secret.label">
+				<source>Client Secret</source>
+			</trans-unit>
+			<trans-unit id="client.redirect_uris.label">
+				<source>Valid redirect URIs</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
