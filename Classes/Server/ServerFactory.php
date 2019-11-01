@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace FGTCLB\OAuth2Server\Server;
 
 use FGTCLB\OAuth2Server\Configuration;
+use FGTCLB\OAuth2Server\Domain\Repository\AccessTokenRepository;
 use FGTCLB\OAuth2Server\Domain\Repository\AuthorizationCodeRepository;
 use FGTCLB\OAuth2Server\Domain\Repository\ClientRepository;
 use FGTCLB\OAuth2Server\Domain\Repository\RefreshTokenRepository;
