@@ -58,7 +58,7 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
         // not all steps in OAuth2 supply a client secret, so we only validate it if it is supplied
         if ($mustValidateSecret && $clientSecret !== null) {
             if (!$this->validateClient($clientData, (string)$clientSecret)) {
-                $this->logger->debug(sprintf('Submitted secret "%s" is invalid for client %s', $clientIdentifier, (string)$clientSecret));
+                $this->logger->debug(sprintf('Submitted secret "%s" is invalid for client %s', (string)$clientSecret, $clientIdentifier));
 
                 return null;
             }
