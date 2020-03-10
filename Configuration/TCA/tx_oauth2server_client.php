@@ -23,6 +23,13 @@ return [
         'showRecordFieldList' => 'name,identifier,redirect_uris,description'
     ],
     'columns' => [
+        'uuid' => [
+            'exclude' => true,
+            'label' => 'UUID (v4)',
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
         'name' => [
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_client_tca.xlf:client.name.label',
             'config' => [
