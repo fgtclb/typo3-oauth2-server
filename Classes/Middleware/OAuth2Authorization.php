@@ -12,6 +12,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
@@ -28,8 +30,10 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  *
  * @see https://oauth2.thephpleague.com/authorization-server/auth-code-grant/#part-one
  */
-final class OAuth2Authorization implements MiddlewareInterface
+final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var Configuration
      */
@@ -59,15 +63,22 @@ final class OAuth2Authorization implements MiddlewareInterface
         $userSession = new UserSession();
         $authorizationRequest = $userSession->getData('oauth2.authorizationRequest');
 
+        $this->bootFrontendController();
+
         if (!$authorizationRequest) {
             try {
                 $authorizationRequest = $server->validateAuthorizationRequest($request);
             } catch (OAuthServerException $e) {
-                return $e->generateHttpResponse(new Response());
+
+                $redirectUri = $this->getContentObjectRenderer()->typoLink_URL([
+                    'parameter' => sprintf('t3://page?uid=%d', $this->configuration->getLoginPage()),
+                ]);
+
+                $this->logger->warning(sprintf('Validating authorization request failed: %s', $e->getMessage()));
+
+                return new RedirectResponse($redirectUri);
             }
         }
-
-        $this->bootFrontendController();
 
         /** @var Context */
         $context = GeneralUtility::makeInstance(Context::class);
@@ -75,9 +86,7 @@ final class OAuth2Authorization implements MiddlewareInterface
         if (!$context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false)) {
             $userSession->setData('oauth2.authorizationRequest', $authorizationRequest);
 
-            /** @var ContentObjectRenderer */
-            $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-            $redirectUri = $contentObjectRenderer->typoLink_URL([
+            $redirectUri = $this->getContentObjectRenderer()->typoLink_URL([
                 'parameter' => sprintf('t3://page?uid=%d&redirect_url=%s', $this->configuration->getLoginPage(), $request->getUri()->getPath()),
             ]);
 
@@ -96,6 +105,11 @@ final class OAuth2Authorization implements MiddlewareInterface
         }
 
         return (new Response())->withStatus(500);
+    }
+
+    protected function getContentObjectRenderer(): ContentObjectRenderer
+    {
+        return GeneralUtility::makeInstance(ContentObjectRenderer::class);
     }
 
     /**
