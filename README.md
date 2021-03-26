@@ -22,11 +22,11 @@ This keypair *must be stored safely* which means outside of the TYPO3 web direct
 ### Extension settings
 
 1. Set the paths to your private and public key files.
-2. Set the page id where your felogin form is located. The middleware will redirect users to this page.
+2. Set the page id where your login form is located. The middleware will redirect users to this page.
 
-### OAuth2 Client
+### OAuth2 Client access
 
-To provide a *clientId* and *clientSecret* for your application, you need to create a new record "OAuth2 Client" on the root page (id: 0).
+To register clients in the OAuth2 server you need to create *OAuth2 Client* records on the root page accordingly. Here you can set the identifier and secret as well as redirect URLs to be used in your client code.
 
 ## Endpoints
 
