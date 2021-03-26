@@ -17,6 +17,17 @@ For a fully working setup a [RSA keypair needs to be generated](fgtclb/typo3-oau
 
 This keypair *must be stored safely* which means outside of the TYPO3 web directory and should be readonly.
 
+## Configuration
+
+### Extension settings
+
+1. Set the paths to your private and public key files.
+2. Set the page id where your felogin form is located. The middleware will redirect users to this page.
+
+### OAuth2 Client
+
+To provide a *clientId* and *clientSecret* for your application, you need to create a new record "OAuth2 Client" on the root page (id: 0).
+
 ## Endpoints
 
 After installation the following endpoints are available and should be set in the 3rd party services:
