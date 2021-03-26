@@ -17,6 +17,17 @@ For a fully working setup a [RSA keypair needs to be generated](fgtclb/typo3-oau
 
 This keypair *must be stored safely* which means outside of the TYPO3 web directory and should be readonly.
 
+## Configuration
+
+### Extension settings
+
+1. Set the paths to your private and public key files.
+2. Set the page id where your login form is located. The middleware will redirect users to this page.
+
+### OAuth2 Client access
+
+To register clients in the OAuth2 server you need to create *OAuth2 Client* records on the root page accordingly. Here you can set the identifier and secret as well as redirect URLs to be used in your client code.
+
 ## Endpoints
 
 After installation the following endpoints are available and should be set in the 3rd party services:
