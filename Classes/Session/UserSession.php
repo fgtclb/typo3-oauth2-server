@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace FGTCLB\OAuth2Server\Session;
 
+use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
