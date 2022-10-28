@@ -24,7 +24,10 @@ return [
         'fgtclb/typo3-oauth-server/identity' => [
             'target' => \FGTCLB\OAuth2Server\Middleware\OAuth2Identity::class,
             'after' => [
-                'typo3/cms-frontend/tsfe',
+                'typo3/cms-frontend/authentication',
+            ],
+            'before' => [
+                'typo3/cms-frontend/static-route-resolver',
             ],
         ],
     ],
