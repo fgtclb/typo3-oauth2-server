@@ -13,7 +13,7 @@ final class Scope implements ScopeEntityInterface
 {
     use EntityTrait;
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->identifier;
     }
