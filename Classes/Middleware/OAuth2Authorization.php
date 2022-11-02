@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Middleware;
 
@@ -17,8 +17,7 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
  * Handler for OAuth2 authorization requests
@@ -34,17 +33,15 @@ final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInter
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
+    protected SiteFinder $siteFinder;
+    protected Context $context;
+    protected Configuration $configuration;
 
-    /**
-     * @param Configuration|null $configuration
-     */
-    public function __construct(Configuration $configuration = null)
+    public function __construct(Configuration $configuration, Context $context, SiteFinder $siteFinder)
     {
-        $this->configuration = $configuration ?: GeneralUtility::makeInstance(Configuration::class);
+        $this->configuration = $configuration;
+        $this->context = $context;
+        $this->siteFinder = $siteFinder;
     }
 
     /**
@@ -60,40 +57,34 @@ final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInter
         $factory = new ServerFactory();
         $server = $factory->buildAuthorizationServer();
 
-        $userSession = new UserSession();
+        $frontendUser = $request->getAttribute('frontend.user');
+
+        $userSession = new UserSession($frontendUser);
         $authorizationRequest = $userSession->getData('oauth2.authorizationRequest');
 
-        $this->bootFrontendController();
+        $router = $this->siteFinder->getSiteByPageId($this->configuration->getLoginPage())->getRouter($this->context);
 
         if (!$authorizationRequest) {
             try {
                 $authorizationRequest = $server->validateAuthorizationRequest($request);
             } catch (OAuthServerException $e) {
-
-                $redirectUri = $this->getContentObjectRenderer()->typoLink_URL([
-                    'parameter' => sprintf('t3://page?uid=%d', $this->configuration->getLoginPage()),
-                ]);
-
                 $this->logger->warning(sprintf('Validating authorization request failed: %s', $e->getMessage()));
+
+                $redirectUri = $router->generateUri($this->configuration->getLoginPage());
 
                 return new RedirectResponse($redirectUri);
             }
         }
 
-        /** @var Context */
-        $context = GeneralUtility::makeInstance(Context::class);
-
-        if (!$context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false)) {
+        if (!$this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false)) {
             $userSession->setData('oauth2.authorizationRequest', $authorizationRequest);
 
-            $redirectUri = $this->getContentObjectRenderer()->typoLink_URL([
-                'parameter' => sprintf('t3://page?uid=%d&redirect_url=%s', $this->configuration->getLoginPage(), $request->getUri()->getPath()),
-            ]);
+            $redirectUri = $router->generateUri($this->configuration->getLoginPage(), ['redirect_url' => $request->getUri()->getPath()]);
 
             return new RedirectResponse($redirectUri);
         }
 
-        $authorizationRequest->setUser(new User((string)$context->getPropertyFromAspect('frontend.user', 'id')));
+        $authorizationRequest->setUser(new User((string)$this->context->getPropertyFromAspect('frontend.user', 'id')));
         $authorizationRequest->setAuthorizationApproved(true);
 
         $userSession->removeData('oauth2.authorizationRequest');
@@ -103,34 +94,5 @@ final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInter
         } catch (OAuthServerException $e) {
             return $e->generateHttpResponse(new Response());
         }
-
-        return (new Response())->withStatus(500);
-    }
-
-    protected function getContentObjectRenderer(): ContentObjectRenderer
-    {
-        return GeneralUtility::makeInstance(ContentObjectRenderer::class);
-    }
-
-    /**
-     * Finishing booting up TSFE, after that the following properties are available:
-     *
-     * - TSFE->fe_user
-     * - TSFE->sys_page
-     * - TSFE->tmpl
-     * - TSFE->config
-     * - TSFE->cObj
-     *
-     * This ensures FE user groups are loaded and URLs can be generated.
-     */
-    protected function bootFrontendController()
-    {
-        // disable page errors
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['pageUnavailable_handling'] = false;
-        $GLOBALS['TSFE']->fetch_the_id();
-        $GLOBALS['TSFE']->getConfigArray();
-        $GLOBALS['TSFE']->settingLanguage();
-        $GLOBALS['TSFE']->settingLocale();
-        $GLOBALS['TSFE']->newCObj();
     }
 }
