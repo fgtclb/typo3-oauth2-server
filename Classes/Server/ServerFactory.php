@@ -20,10 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class ServerFactory
 {
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
+    protected Configuration $configuration;
 
     /**
      * @param Configuration|null $configuration
@@ -76,12 +73,10 @@ final class ServerFactory
         $validator = new BearerTokenValidator(
             $accessTokenRepository
         );
-        $server = new ResourceServer(
+        return new ResourceServer(
             $accessTokenRepository,
             $this->configuration->getPublicKeyFile(),
             $validator
         );
-
-        return $server;
     }
 }
