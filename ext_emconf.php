@@ -1,4 +1,5 @@
-<?php declare(strict_types = 1);
+<?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TYPO3 OAuth2 server',
     'description' => 'OAuth2 server implementation for TYPO3 frontend users',
