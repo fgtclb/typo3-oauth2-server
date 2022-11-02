@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace FGTCLB\OAuth2Server\Domain\Repository;
 
@@ -10,6 +10,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -20,21 +21,14 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
     use LoggerAwareTrait;
 
     private const TABLE_NAME = 'tx_oauth2server_client';
+    private PasswordHashFactory $hashFactory;
+    private QueryBuilder $queryBuilder;
+    private array $clientData;
 
-    /**
-     * @var PasswordHashFactory
-     */
-    private $hashFactory;
-
-    /**
-     * @var \TYPO3\CMS\Core\Database\Query\QueryBuilder
-     */
-    private $queryBuilder;
-
-    public function __construct()
+    public function __construct(PasswordHashFactory $hashFactory, ConnectionPool $connectionPool)
     {
-        $this->hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
-        $this->queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(static::TABLE_NAME);
+        $this->hashFactory = $hashFactory;
+        $this->queryBuilder = $connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
     }
 
     /**
@@ -50,45 +44,62 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
      */
     public function getClientEntity($clientIdentifier, $grantType = null, $clientSecret = null, $mustValidateSecret = true)
     {
-        $clientData = $this->findRawByIdentifier($clientIdentifier, ['*']);
-        if (!$clientData) {
+        // not all steps in OAuth2 supply a client secret, so we only validate it if it is supplied
+        if ($mustValidateSecret && $clientSecret !== null && !$this->validateClient($clientIdentifier, $clientSecret, $grantType)) {
+            $this->logger->debug(sprintf('Submitted secret "%s" is invalid for client %s', $clientSecret, $clientIdentifier));
+
             return null;
         }
 
-        // not all steps in OAuth2 supply a client secret, so we only validate it if it is supplied
-        if ($mustValidateSecret && $clientSecret !== null) {
-            if (!$this->validateClient($clientData, (string)$clientSecret)) {
-                $this->logger->debug(sprintf('Submitted secret "%s" is invalid for client %s', (string)$clientSecret, $clientIdentifier));
-
-                return null;
-            }
+        $clientData = $this->findRawByIdentifier($clientIdentifier);
+        if (!$clientData) {
+            return null;
         }
 
         return new Client(
             $clientIdentifier,
             $clientData['name'],
-            GeneralUtility::trimExplode("\n", $clientData['redirect_uris'])
+            GeneralUtility::trimExplode("\n", $clientData['redirect_uris']),
+            true // todo: make configurable: $clientData['confidential']
         );
     }
 
-    protected function findRawByIdentifier(string $clientIdentifier, $selects = ['*']): ?array
+    protected function findRawByIdentifier(string $clientIdentifier): ?array
     {
         return $this->queryBuilder
             ->resetQueryParts()
-            ->select(...$selects)
-            ->from(static::TABLE_NAME)
+            ->select('*')
+            ->from(self::TABLE_NAME)
             ->where($this->queryBuilder->expr()->eq(
                 'identifier',
                 $this->queryBuilder->createNamedParameter($clientIdentifier)
             ))
             ->setMaxResults(1)
             ->execute()
-            ->fetch() ?: null;
+            ->fetchAssociative() ?: null;
     }
 
-    private function validateClient(array $clientData, string $submittedSecret)
+    /**
+     * Validate a client's secret.
+     *
+     * @param string $clientIdentifier The client's identifier
+     * @param null|string $clientSecret The client's secret (if sent)
+     * @param null|string $grantType The type of grant the client is using (if sent)
+     *
+     * @return bool
+     */
+    public function validateClient($clientIdentifier, $clientSecret, $grantType)
     {
+        if ($clientSecret === null) {
+            return false;
+        }
+
+        $clientData = $this->findRawByIdentifier($clientIdentifier);
+        if (!$clientData) {
+            return false;
+        }
+
         $hash = $this->hashFactory->get($clientData['secret'], 'FE');
-        return $hash->checkPassword($submittedSecret, $clientData['secret']);
+        return $hash->checkPassword($clientSecret, $clientData['secret']);
     }
 }

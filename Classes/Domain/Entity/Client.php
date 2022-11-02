@@ -15,10 +15,11 @@ final class Client implements ClientEntityInterface
     use EntityTrait;
     use ClientTrait;
 
-    public function __construct($identifier, $name, $redirectUri)
+    public function __construct($identifier, $name, $redirectUri, $isConfidential)
     {
         $this->identifier = $identifier;
         $this->name = $name;
         $this->redirectUri = $redirectUri;
+        $this->isConfidential = $isConfidential;
     }
 }

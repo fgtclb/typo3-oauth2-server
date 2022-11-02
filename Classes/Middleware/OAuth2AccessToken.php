@@ -34,7 +34,5 @@ final class OAuth2AccessToken implements MiddlewareInterface
         } catch (OAuthServerException $exception) {
             return $exception->generateHttpResponse(new Response());
         }
-
-        return (new Response())->withStatus(500);
     }
 }
