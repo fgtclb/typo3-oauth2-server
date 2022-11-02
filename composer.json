@@ -11,7 +11,7 @@
   ],
   "require": {
     "php": "^7.4 || ^8.0",
-    "league/oauth2-server": "^7.2",
+    "league/oauth2-server": "^8.3",
     "psr/http-server-middleware": "^1.0",
     "typo3/cms-core": "^10.4 || ^11.5",
     "typo3/cms-frontend": "^10.4 || ^11.5"
@@ -31,7 +31,7 @@
   },
   "extra": {
     "typo3/cms": {
-    "extension-key": "oauth2_server"
+      "extension-key": "oauth2_server"
     }
   }
 }
