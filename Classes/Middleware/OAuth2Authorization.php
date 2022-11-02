@@ -8,6 +8,7 @@ use FGTCLB\OAuth2Server\Domain\Entity\User;
 use FGTCLB\OAuth2Server\Server\ServerFactory;
 use FGTCLB\OAuth2Server\Session\UserSession;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -77,9 +78,25 @@ final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInter
         }
 
         if (!$this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn', false)) {
-            $userSession->setData('oauth2.authorizationRequest', $authorizationRequest);
+            $userSession->setData('oauth2.authorizationRequest', serialize($authorizationRequest));
 
             $redirectUri = $router->generateUri($this->configuration->getLoginPage(), ['redirect_url' => $request->getUri()->getPath()]);
+
+            return new RedirectResponse($redirectUri);
+        }
+
+        // With TYPO3 11.5.17 it takes 3 loops to unserialize the AuthorizationRequest
+        $count = 0;
+        while (!$authorizationRequest instanceof AuthorizationRequest && $count < 10) {
+            $authorizationRequest = unserialize($authorizationRequest, ['allowed_classes' => ['League\OAuth2\Server\RequestTypes\AuthorizationRequest', 'FGTCLB\OAuth2Server\Domain\Entity\Client']]);
+            $count++;
+        }
+
+        // Handle error when $authorizationRequest is still a string
+        if (!$authorizationRequest instanceof AuthorizationRequest) {
+            $this->logger->error('Unserializing of AuthorizationRequest failed!');
+
+            $redirectUri = $router->generateUri($this->configuration->getLoginPage());
 
             return new RedirectResponse($redirectUri);
         }
