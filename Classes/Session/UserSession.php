@@ -15,9 +15,9 @@ final class UserSession
      */
     protected $frontendUser;
 
-    public function __construct(FrontendUserAuthentication $frontendUser = null)
+    public function __construct(FrontendUserAuthentication $frontendUser)
     {
-        $this->frontendUser = $frontendUser ?: $GLOBALS['TSFE']->fe_user;
+        $this->frontendUser = $frontendUser;
     }
 
     /**

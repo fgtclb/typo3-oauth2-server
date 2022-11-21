@@ -14,26 +14,26 @@ final class ServerConfiguration
     /**
      * @var string Path to a private RSA key
      */
-    protected $privateKeyFile;
+    protected string $privateKeyFile;
 
     /**
      * @var string Path to a public RSA key
      */
-    protected $publicKeyFile;
+    protected string $publicKeyFile;
 
     /**
-     * @param ExtensionConfiguration|null $extensionConfiguration
+     * @param ExtensionConfiguration $extensionConfiguration
      * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
      */
-    public function __construct(ExtensionConfiguration $extensionConfiguration = null)
+    public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
-        $configuration = ($extensionConfiguration ?: GeneralUtility::makeInstance(ExtensionConfiguration::class))->get('oauth2_server');
+        $configuration = $extensionConfiguration->get('oauth2_server');
 
-        if (empty($configuration['privateKeyFile'])) {
+        if (empty($configuration['privateKeyFile']) || !is_string($configuration['privateKeyFile'])) {
             throw new \InvalidArgumentException('Missing "privateKeyFile" in OAuth2 server extension configuration', 1559054947);
         }
 
-        if (empty($configuration['publicKeyFile'])) {
+        if (empty($configuration['publicKeyFile']) || !is_string($configuration['publicKeyFile'])) {
             throw new \InvalidArgumentException('Missing "publicKeyFile" in OAuth2 server extension configuration', 1559054961);
         }
 

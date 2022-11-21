@@ -6,11 +6,11 @@ $EM_CONF[$_EXTKEY] = [
     'state' => 'alpha',
     'author' => 'FGTCLB',
     'author_email' => 'info@fgtclb.com',
-    'version' => '0.0.0',
+    'version' => '1.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '9.5.0-9.5.99',
-            'frontend' => '9.5.0',
+            'typo3' => '10.4.0-11.5.99',
+            'frontend' => '10.4.0-11.5.99',
         ],
     ],
 ];
