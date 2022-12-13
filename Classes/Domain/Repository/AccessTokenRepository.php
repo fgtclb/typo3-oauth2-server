@@ -38,7 +38,7 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
      *
      * @throws UniqueTokenIdentifierConstraintViolationException
      */
-    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
+    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): void
     {
         // TODO: Persist token to the datbase or similar for audit logging or revocation
     }
@@ -48,7 +48,7 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
      *
      * @param string $tokenId
      */
-    public function revokeAccessToken($tokenId)
+    public function revokeAccessToken($tokenId): void
     {
         // TODO: Revoke persisted token
     }
