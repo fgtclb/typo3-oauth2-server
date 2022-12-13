@@ -24,7 +24,7 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     /**
      * @inheritDoc
      */
-    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
+    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity): void
     {
         // TODO: Persist token to the datbase or similar for audit logging or revocation
     }
@@ -34,7 +34,7 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      *
      * @param string $tokenId
      */
-    public function revokeRefreshToken($tokenId)
+    public function revokeRefreshToken($tokenId): void
     {
         // TODO: Revoke persisted token
     }
