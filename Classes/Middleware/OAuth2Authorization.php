@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * Handler for OAuth2 authorization requests
@@ -59,6 +60,11 @@ final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInter
         $server = $factory->buildAuthorizationServer();
 
         $frontendUser = $request->getAttribute('frontend.user');
+
+        if (!$frontendUser instanceof FrontendUserAuthentication) {
+            $this->logger->warning('No frontend user logged in. Cannot continue with OAuth2 Authorization request.');
+            return $handler->handle($request);
+        }
 
         $userSession = new UserSession($frontendUser);
         $authorizationRequest = $userSession->getData('oauth2.authorizationRequest');
