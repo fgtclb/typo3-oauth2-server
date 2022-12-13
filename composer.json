@@ -17,9 +17,12 @@
     "typo3/cms-frontend": "^10.4 || ^11.5"
   },
   "require-dev": {
+    "jangregor/phpstan-prophecy": "^1.0",
     "nimut/testing-framework": "^6.0",
     "phpspec/prophecy": "^1.16",
-    "phpunit/phpunit": "^9.5"
+    "phpstan/phpstan": "^1.9",
+    "phpunit/phpunit": "^9.5",
+    "saschaegerer/phpstan-typo3": "^1.8"
   },
   "autoload": {
     "psr-4": {
