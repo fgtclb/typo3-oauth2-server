@@ -16,7 +16,7 @@ class ConfigurationTest extends UnitTestCase
     /**
      * Tear down this testcase
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
     }
@@ -24,7 +24,7 @@ class ConfigurationTest extends UnitTestCase
     /**
      * @test
      */
-    public function acceptsValidConfiguration()
+    public function acceptsValidConfiguration(): void
     {
         /** @var ExtensionConfiguration|\Prophecy\Prophecy\ObjectProphecy */
         $extensionConfiguration = $this->prophesize(ExtensionConfiguration::class);
@@ -45,8 +45,9 @@ class ConfigurationTest extends UnitTestCase
     /**
      * @test
      * @dataProvider invalidExtensionConfiguration
+     * @param array{privateKeyFile?: string, publicKeyFile?: string, loginPage?: string|int} $invalidExtensionConfiguration
      */
-    public function rejectsInvalidConfiguration(array $invalidExtensionConfiguration)
+    public function rejectsInvalidConfiguration(array $invalidExtensionConfiguration): void
     {
         /** @var ExtensionConfiguration|\Prophecy\Prophecy\ObjectProphecy */
         $extensionConfiguration = $this->prophesize(ExtensionConfiguration::class);
@@ -58,6 +59,9 @@ class ConfigurationTest extends UnitTestCase
         $configuration = new Configuration();
     }
 
+    /**
+     * @return \Generator<string, array{0: array{privateKeyFile?: string, publicKeyFile?: string, loginPage?: string|int}}>
+     */
     public function invalidExtensionConfiguration(): \Generator
     {
         yield 'missing private key' => [
