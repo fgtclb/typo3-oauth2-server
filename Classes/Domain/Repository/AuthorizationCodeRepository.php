@@ -14,9 +14,7 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 final class AuthorizationCodeRepository implements AuthCodeRepositoryInterface
 {
     /**
-     * Creates a new AuthCode
-     *
-     * @return AuthCodeEntityInterface
+     * @inheritDoc
      */
     public function getNewAuthCode()
     {
@@ -24,11 +22,7 @@ final class AuthorizationCodeRepository implements AuthCodeRepositoryInterface
     }
 
     /**
-     * Persists a new auth code to permanent storage.
-     *
-     * @param AuthCodeEntityInterface $authCodeEntity
-     *
-     * @throws UniqueTokenIdentifierConstraintViolationException
+     * @inheritDoc
      */
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
@@ -36,9 +30,7 @@ final class AuthorizationCodeRepository implements AuthCodeRepositoryInterface
     }
 
     /**
-     * Revoke an auth code.
-     *
-     * @param string $codeId
+     * @inheritDoc
      */
     public function revokeAuthCode($codeId)
     {
@@ -46,11 +38,7 @@ final class AuthorizationCodeRepository implements AuthCodeRepositoryInterface
     }
 
     /**
-     * Check if the auth code has been revoked.
-     *
-     * @param string $codeId
-     *
-     * @return bool Return true if this code has been revoked
+     * @inheritDoc
      */
     public function isAuthCodeRevoked($codeId)
     {
