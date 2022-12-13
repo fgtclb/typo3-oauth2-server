@@ -16,13 +16,7 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 final class AccessTokenRepository implements AccessTokenRepositoryInterface
 {
     /**
-     * Create a new access token
-     *
-     * @param ClientEntityInterface  $clientEntity
-     * @param ScopeEntityInterface[] $scopes
-     * @param mixed                  $userIdentifier
-     *
-     * @return AccessTokenEntityInterface
+     * @inheritDoc
      */
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
