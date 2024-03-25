@@ -56,8 +56,7 @@ class ConfigurationTest extends UnitTestCase
         array $invalidExtensionConfiguration,
         int $expectedExceptionCode,
         string $expectedExceptionMessage
-    ): void
-    {
+    ): void {
         /** @var TProphecy $extensionConfiguration */
         $extensionConfiguration = $this->prophesize(ExtensionConfiguration::class);
         $extensionConfiguration->get('oauth2_server')->willReturn($invalidExtensionConfiguration);
