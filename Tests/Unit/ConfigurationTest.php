@@ -4,9 +4,9 @@ declare(strict_types = 1);
 namespace FGTCLB\OAuth2Server\Tests\Unit;
 
 use FGTCLB\OAuth2Server\Configuration;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcase for FGTCLB\OAuth2Server\Configuration
