@@ -1,12 +1,12 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Domain\Repository;
 
 use FGTCLB\OAuth2Server\Domain\Entity\AccessToken;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
@@ -16,13 +16,7 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 final class AccessTokenRepository implements AccessTokenRepositoryInterface
 {
     /**
-     * Create a new access token
-     *
-     * @param ClientEntityInterface  $clientEntity
-     * @param ScopeEntityInterface[] $scopes
-     * @param mixed                  $userIdentifier
-     *
-     * @return AccessTokenEntityInterface
+     * @inheritDoc
      */
     public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
     {
@@ -44,7 +38,7 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
      *
      * @throws UniqueTokenIdentifierConstraintViolationException
      */
-    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
+    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): void
     {
         // TODO: Persist token to the datbase or similar for audit logging or revocation
     }
@@ -54,7 +48,7 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
      *
      * @param string $tokenId
      */
-    public function revokeAccessToken($tokenId)
+    public function revokeAccessToken($tokenId): void
     {
         // TODO: Revoke persisted token
     }

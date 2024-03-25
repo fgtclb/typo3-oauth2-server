@@ -1,11 +1,11 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Domain\Repository;
 
 use FGTCLB\OAuth2Server\Domain\Entity\AuthorizationCode;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
-use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 
 /**
@@ -14,9 +14,7 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 final class AuthorizationCodeRepository implements AuthCodeRepositoryInterface
 {
     /**
-     * Creates a new AuthCode
-     *
-     * @return AuthCodeEntityInterface
+     * @inheritDoc
      */
     public function getNewAuthCode()
     {
@@ -24,33 +22,23 @@ final class AuthorizationCodeRepository implements AuthCodeRepositoryInterface
     }
 
     /**
-     * Persists a new auth code to permanent storage.
-     *
-     * @param AuthCodeEntityInterface $authCodeEntity
-     *
-     * @throws UniqueTokenIdentifierConstraintViolationException
+     * @inheritDoc
      */
-    public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
+    public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity): void
     {
         // TODO: Persist code to the datbase or similar for audit logging or revocation
     }
 
     /**
-     * Revoke an auth code.
-     *
-     * @param string $codeId
+     * @inheritDoc
      */
-    public function revokeAuthCode($codeId)
+    public function revokeAuthCode($codeId): void
     {
         // TODO: Revoke persisted code
     }
 
     /**
-     * Check if the auth code has been revoked.
-     *
-     * @param string $codeId
-     *
-     * @return bool Return true if this code has been revoked
+     * @inheritDoc
      */
     public function isAuthCodeRevoked($codeId)
     {

@@ -1,0 +1,20 @@
+{
+  "name": "fgtclb/test-oauth2-client",
+  "type": "typo3-cms-extension",
+  "description": "OAuth Test client for oauth2_server extension",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "league/oauth2-client": "^2.7",
+    "typo3/cms-core": "^11.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "FGTCLB\\TestOauth2Client": "Classes/"
+    }
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "test_oauth2_client"
+    }
+  }
+}

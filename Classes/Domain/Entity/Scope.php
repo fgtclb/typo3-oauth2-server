@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Domain\Entity;
 
@@ -13,7 +14,7 @@ final class Scope implements ScopeEntityInterface
 {
     use EntityTrait;
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->identifier;
     }

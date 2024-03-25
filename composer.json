@@ -10,11 +10,23 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "league/oauth2-server": "^7.2",
+    "php": "^7.4 || ^8.0 || ^8.1 || ^8.2 || ^8.3",
+    "league/oauth2-server": "^8.4",
     "psr/http-server-middleware": "^1.0",
-    "typo3/cms-core": "^9.5",
-    "typo3/cms-frontend": "^9.5"
+    "typo3/cms-core": "^11.5",
+    "typo3/cms-frontend": "^11.5"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^v3.52",
+    "jangregor/phpstan-prophecy": "^1.0",
+    "league/oauth2-client": "^2.7",
+    "phpspec/prophecy": "^1.19",
+    "phpspec/prophecy-phpunit": "^v2.2",
+    "phpstan/phpstan": "^1.10",
+    "phpstan/phpstan-phpunit": "^1.3",
+    "phpunit/phpunit": "^9.6",
+    "saschaegerer/phpstan-typo3": "^1.10",
+    "typo3/testing-framework": "^7.0"
   },
   "autoload": {
     "psr-4": {
@@ -23,15 +35,25 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "FGTCLB\\OAuth2Server\\Tests\\": "Tests"
+      "FGTCLB\\OAuth2Server\\Tests\\": "Tests",
+      "FGTCLB\\TestOauth2Client\\": "Tests/Functional/Extensions/test_oauth2_client/Classes",
+      "FGTCLB\\Testsuite\\": "Tests/Functional/Extensions/testsuite/Classes"
     }
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "typo3/class-alias-loader": true,
+      "typo3/cms-composer-installers": true
+    },
+    "bin-dir": ".Build/bin",
+    "vendor-dir": ".Build/vendor"
   },
   "extra": {
     "typo3/cms": {
-    "extension-key": "oauth2_server"
+      "app-dir": ".Build",
+      "web-dir": ".Build/Web",
+      "extension-key": "oauth2_server"
     }
   }
 }

@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Session;
 
@@ -10,14 +11,11 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 final class UserSession
 {
-    /**
-     * @var FrontendUserAuthentication
-     */
-    protected $frontendUser;
+    protected FrontendUserAuthentication $frontendUser;
 
-    public function __construct(FrontendUserAuthentication $frontendUser = null)
+    public function __construct(FrontendUserAuthentication $frontendUser)
     {
-        $this->frontendUser = $frontendUser ?: $GLOBALS['TSFE']->fe_user;
+        $this->frontendUser = $frontendUser;
     }
 
     /**

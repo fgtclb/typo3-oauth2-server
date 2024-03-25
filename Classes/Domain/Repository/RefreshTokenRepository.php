@@ -1,11 +1,11 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Domain\Repository;
 
 use FGTCLB\OAuth2Server\Domain\Entity\RefreshToken;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
-use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 
 /**
@@ -14,9 +14,7 @@ use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 {
     /**
-     * Creates a new refresh token
-     *
-     * @return RefreshTokenEntityInterface
+     * @inheritDoc
      */
     public function getNewRefreshToken()
     {
@@ -24,13 +22,9 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     }
 
     /**
-     * Create a new refresh token_name.
-     *
-     * @param RefreshTokenEntityInterface $refreshTokenEntity
-     *
-     * @throws UniqueTokenIdentifierConstraintViolationException
+     * @inheritDoc
      */
-    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
+    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity): void
     {
         // TODO: Persist token to the datbase or similar for audit logging or revocation
     }
@@ -40,17 +34,13 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      *
      * @param string $tokenId
      */
-    public function revokeRefreshToken($tokenId)
+    public function revokeRefreshToken($tokenId): void
     {
         // TODO: Revoke persisted token
     }
 
     /**
-     * Check if the refresh token has been revoked.
-     *
-     * @param string $tokenId
-     *
-     * @return bool Return true if this token has been revoked
+     * @inheritDoc
      */
     public function isRefreshTokenRevoked($tokenId)
     {

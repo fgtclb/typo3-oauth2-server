@@ -1,0 +1,17 @@
+{
+  "name": "fgtclb/testsuite",
+  "type": "typo3-cms-extension",
+  "autoload": {
+    "psr-4": {
+      "FGTCLB\\Testsuite": "Classes/"
+    }
+  },
+  "require-dev": {
+    "typo3/testing-framework": "^7.0"
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "testsuite"
+    }
+  }
+}

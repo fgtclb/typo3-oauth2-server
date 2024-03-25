@@ -1,0 +1,3 @@
+tx_oauth2server_client,,,,,,
+,uid,pid,name,identifier,secret,description
+,1,0,"Test Case",testcase,,"This is a test cae implementation"
