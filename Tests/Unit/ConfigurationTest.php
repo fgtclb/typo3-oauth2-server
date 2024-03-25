@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Tests\Unit;
 
@@ -37,9 +38,9 @@ class ConfigurationTest extends UnitTestCase
 
         $configuration = new Configuration();
 
-        $this->assertEquals('private.key', $configuration->getPrivateKeyFile());
-        $this->assertEquals('public.key', $configuration->getPublicKeyFile());
-        $this->assertEquals(10, $configuration->getLoginPage());
+        self::assertEquals('private.key', $configuration->getPrivateKeyFile());
+        self::assertEquals('public.key', $configuration->getPublicKeyFile());
+        self::assertEquals(10, $configuration->getLoginPage());
     }
 
     /**
