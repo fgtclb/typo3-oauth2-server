@@ -6,7 +6,7 @@ services:
 
   FGTCLB\OAuth2Server\:
     resource: '../Classes/*'
-    exclude: '../Classes/Domain/Model/*'
+    exclude: '../Classes/Domain/Entity/*'
 
   FGTCLB\OAuth2Server\Domain\Repository\ClientRepository:
     public: true
