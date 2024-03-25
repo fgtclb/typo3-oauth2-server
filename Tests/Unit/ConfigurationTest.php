@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FGTCLB\OAuth2Server\Tests\Unit;
 
 use FGTCLB\OAuth2Server\Configuration;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -14,6 +15,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ConfigurationTest extends UnitTestCase
 {
+    use ProphecyTrait;
     /**
      * Tear down this testcase
      */
@@ -27,7 +29,7 @@ class ConfigurationTest extends UnitTestCase
      */
     public function acceptsValidConfiguration(): void
     {
-        /** @var ExtensionConfiguration|\Prophecy\Prophecy\ObjectProphecy */
+        /** @var ExtensionConfiguration|\Prophecy\Prophecy\ObjectProphecy $extensionConfiguration */
         $extensionConfiguration = $this->prophesize(ExtensionConfiguration::class);
         $extensionConfiguration->get('oauth2_server')->willReturn([
             'privateKeyFile' => 'private.key',
