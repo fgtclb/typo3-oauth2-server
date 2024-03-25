@@ -16,19 +16,19 @@
   },
   "homepage": "https://www.fgtclb.com/",
   "require": {
-    "php": "^7.4 || ^8.0",
+    "php": "^7.4 || ^8.0 || ^8.1 || ^8.2 || ^8.3",
     "league/oauth2-server": "^8.3",
     "psr/http-server-middleware": "^1.0",
-    "typo3/cms-core": "^10.4 || ^11.5",
-    "typo3/cms-frontend": "^10.4 || ^11.5"
+    "typo3/cms-core": "^11.5",
+    "typo3/cms-frontend": "^11.5"
   },
   "require-dev": {
     "jangregor/phpstan-prophecy": "^1.0",
-    "nimut/testing-framework": "^6.0",
     "phpspec/prophecy": "^1.16",
     "phpstan/phpstan": "^1.9",
     "phpunit/phpunit": "^9.5",
-    "saschaegerer/phpstan-typo3": "^1.8"
+    "saschaegerer/phpstan-typo3": "^1.8",
+    "typo3/testing-framework": "^7.0"
   },
   "autoload": {
     "psr-4": {
@@ -46,7 +46,9 @@
     "allow-plugins": {
       "typo3/class-alias-loader": true,
       "typo3/cms-composer-installers": true
-    }
+    },
+    "bin-dir": ".Build/bin",
+    "vendor-dir": ".Build/vendor"
   },
   "extra": {
     "typo3/cms": {
