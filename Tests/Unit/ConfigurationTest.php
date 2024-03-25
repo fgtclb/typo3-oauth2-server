@@ -6,12 +6,14 @@ namespace FGTCLB\OAuth2Server\Tests\Unit;
 
 use FGTCLB\OAuth2Server\Configuration;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Testcase for FGTCLB\OAuth2Server\Configuration
+ * @covers \FGTCLB\OAuth2Server\Configuration
+ * @template TProphecy of ExtensionConfiguration|ObjectProphecy
  */
 class ConfigurationTest extends UnitTestCase
 {
@@ -29,7 +31,7 @@ class ConfigurationTest extends UnitTestCase
      */
     public function acceptsValidConfiguration(): void
     {
-        /** @var ExtensionConfiguration|\Prophecy\Prophecy\ObjectProphecy $extensionConfiguration */
+        /** @var TProphecy $extensionConfiguration */
         $extensionConfiguration = $this->prophesize(ExtensionConfiguration::class);
         $extensionConfiguration->get('oauth2_server')->willReturn([
             'privateKeyFile' => 'private.key',
@@ -56,7 +58,7 @@ class ConfigurationTest extends UnitTestCase
         string $expectedExceptionMessage
     ): void
     {
-        /** @var ExtensionConfiguration|\Prophecy\Prophecy\ObjectProphecy $extensionConfiguration */
+        /** @var TProphecy $extensionConfiguration */
         $extensionConfiguration = $this->prophesize(ExtensionConfiguration::class);
         $extensionConfiguration->get('oauth2_server')->willReturn($invalidExtensionConfiguration);
         GeneralUtility::addInstance(ExtensionConfiguration::class, $extensionConfiguration->reveal());
@@ -69,7 +71,15 @@ class ConfigurationTest extends UnitTestCase
     }
 
     /**
-     * @return \Generator<string, array{0: array{privateKeyFile?: string, publicKeyFile?: string, loginPage?: string|int}}>
+     * @return \Generator<string, array{
+     *     invalidExtensionConfiguration: array{
+     *         privateKeyFile?: string,
+     *         publicKeyFile?: string,
+     *         loginPage?: string|int
+     *     },
+     *     expectedExceptionCode: int,
+     *     expectedExceptionMessage: string
+     *     }>
      */
     public function invalidExtensionConfiguration(): \Generator
     {
@@ -83,7 +93,7 @@ class ConfigurationTest extends UnitTestCase
         ];
 
         yield 'Missing public key leads to Exception' => [
-            'invalidExceptionConfiguration' => [
+            'invalidExtensionConfiguration' => [
                 'privateKeyFile' => 'private.key',
                 'loginPage' => '10',
             ],
@@ -92,7 +102,7 @@ class ConfigurationTest extends UnitTestCase
         ];
 
         yield 'Missing login page leads to Exception' => [
-            'invalidExceptionConfiguration' => [
+            'invalidExtensionConfiguration' => [
                 'privateKeyFile' => 'private.key',
                 'publicKeyFile' => 'public.key',
             ],
@@ -101,7 +111,7 @@ class ConfigurationTest extends UnitTestCase
         ];
 
         yield 'invalid login page' => [
-            'invalidExceptionConfiguration' => [
+            'invalidExtensionConfiguration' => [
                 'privateKeyFile' => 'private.key',
                 'publicKeyFile' => 'public.key',
                 'loginPage' => 0,
