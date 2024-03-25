@@ -50,14 +50,20 @@ class ConfigurationTest extends UnitTestCase
      * @dataProvider invalidExtensionConfiguration
      * @param array{privateKeyFile?: string, publicKeyFile?: string, loginPage?: string|int} $invalidExtensionConfiguration
      */
-    public function rejectsInvalidConfiguration(array $invalidExtensionConfiguration): void
+    public function rejectsInvalidConfiguration(
+        array $invalidExtensionConfiguration,
+        int $expectedExceptionCode,
+        string $expectedExceptionMessage
+    ): void
     {
-        /** @var ExtensionConfiguration|\Prophecy\Prophecy\ObjectProphecy */
+        /** @var ExtensionConfiguration|\Prophecy\Prophecy\ObjectProphecy $extensionConfiguration */
         $extensionConfiguration = $this->prophesize(ExtensionConfiguration::class);
         $extensionConfiguration->get('oauth2_server')->willReturn($invalidExtensionConfiguration);
         GeneralUtility::addInstance(ExtensionConfiguration::class, $extensionConfiguration->reveal());
 
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode($expectedExceptionCode);
+        $this->expectExceptionMessage($expectedExceptionMessage);
 
         $configuration = new Configuration();
     }
@@ -67,33 +73,41 @@ class ConfigurationTest extends UnitTestCase
      */
     public function invalidExtensionConfiguration(): \Generator
     {
-        yield 'missing private key' => [
-            [
+        yield 'Missing private key leads to Exception' => [
+            'invalidExtensionConfiguration' => [
                 'publicKeyFile' => 'public.key',
                 'loginPage' => '10',
             ],
+            'expectedExceptionCode' => 1539686145,
+            'expectedExceptionMessage' => 'Missing "privateKeyFile" in OAuth2 server extension configuration',
         ];
 
-        yield 'missing public key' => [
-            [
+        yield 'Missing public key leads to Exception' => [
+            'invalidExceptionConfiguration' => [
                 'privateKeyFile' => 'private.key',
                 'loginPage' => '10',
             ],
+            'expectedExceptionCode' => 1539686197,
+            'expectedExceptionMessage' => 'Missing "publicKeyFile" in OAuth2 server extension configuration',
         ];
 
-        yield 'missing login page' => [
-            [
+        yield 'Missing login page leads to Exception' => [
+            'invalidExceptionConfiguration' => [
                 'privateKeyFile' => 'private.key',
                 'publicKeyFile' => 'public.key',
             ],
+            'expectedExceptionCode' => 1539693234,
+            'expectedExceptionMessage' => 'Missing/invalid "loginPage" in OAuth2 server extension configuration',
         ];
 
         yield 'invalid login page' => [
-            [
+            'invalidExceptionConfiguration' => [
                 'privateKeyFile' => 'private.key',
                 'publicKeyFile' => 'public.key',
                 'loginPage' => 0,
             ],
+            'expectedExceptionCode' => 1539693234,
+            'expectedExceptionMessage' => 'Missing/invalid "loginPage" in OAuth2 server extension configuration',
         ];
     }
 }
