@@ -25,6 +25,7 @@
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^v3.52",
     "jangregor/phpstan-prophecy": "^1.0",
+    "league/oauth2-client": "^2.7",
     "phpspec/prophecy": "^1.19",
     "phpspec/prophecy-phpunit": "^v2.2",
     "phpstan/phpstan": "^1.10",
@@ -40,7 +41,9 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "FGTCLB\\OAuth2Server\\Tests\\": "Tests"
+      "FGTCLB\\OAuth2Server\\Tests\\": "Tests",
+      "FGTCLB\\TestOauth2Client\\": "Tests/Functional/Extensions/test_oauth2_client/Classes",
+      "FGTCLB\\Testsuite\\": "Tests/Functional/Extensions/testsuite/Classes"
     }
   },
   "config": {
