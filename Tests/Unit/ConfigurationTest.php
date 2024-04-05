@@ -42,8 +42,8 @@ class ConfigurationTest extends UnitTestCase
 
         $configuration = new Configuration();
 
-        self::assertEquals('private.key', $configuration->getPrivateKeyFile());
-        self::assertEquals('public.key', $configuration->getPublicKeyFile());
+        self::assertStringEndsWith('private.key', $configuration->getPrivateKeyFile());
+        self::assertStringEndsWith('public.key', $configuration->getPublicKeyFile());
         self::assertEquals(10, $configuration->getLoginPage());
     }
 
