@@ -15,6 +15,7 @@ class OAuthServerTest extends AbstractSiteCest
     private const FE_USER_ID = 1;
 
     private const PRIVATE_KEY_FILE_PATH = 'typ3temp/var/transient/ssh/test_key';
+
     private const PUBLIC_KEY_FILE_PATH = 'typ3temp/var/transient/ssh/test_key.pub';
 
     protected array $coreExtensionsToLoad = [
@@ -45,51 +46,81 @@ class OAuthServerTest extends AbstractSiteCest
     {
         parent::setUp();
 
+        // we need to change file permission s here as League/OAuth2 will check for right permissions
         chmod(GeneralUtility::getFileAbsFileName(self::PUBLIC_KEY_FILE_PATH), 0600);
         chmod(GeneralUtility::getFileAbsFileName(self::PRIVATE_KEY_FILE_PATH), 0600);
         $this->importCSVDataSet(__DIR__ . '/Fixtures/oauth.csv');
     }
 
     /**
-     * @test
+     * @return \Generator<string, array{
+     *     path: string,
+     *     query: string,
+     *     feUserId: int,
+     *     expectedReasonPhrase: string,
+     *     expectedStatusCode: int,
+     *     expectedHeaderArrayKey: string,
+     *     expectedRedirectStringStart: string
+     * }>
      */
-    public function oauthServerGrantsAccessWithFrontendUserLoggedIn(): void
+    public function oauthServerDataProvider(): \Generator
     {
-        $uri = (string)(new Uri(self::BASE_URL))
-            ->withPath('/oauth/authorize')
-            ->withQuery('?response_type=code&client_id=acme_client');
-
-        $internalRequestContext = (new InternalRequestContext())
-            ->withFrontendUserId(self::FE_USER_ID);
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($uri)),
-            $internalRequestContext
-        );
-        self::assertSame('Found', $response->getReasonPhrase());
-        self::assertSame(302, $response->getStatusCode());
-        self::assertIsArray($response->getHeader('Location'));
-        self::assertStringStartsWith('https://localhost/authenticated/?code=', $response->getHeader('Location')[0]);
+        yield 'Access granted with frontend user logged in' => [
+            'path' => '/oauth/authorize',
+            'query' => '?response_type=code&client_id=acme_client',
+            'feUserId' => self::FE_USER_ID,
+            'expectedReasonPhrase' => 'Found',
+            'expectedStatusCode' => 302,
+            'expectedHeaderArrayKey' => 'Location',
+            'expectedRedirectStringStart' => 'https://localhost/authenticated/?code=',
+        ];
+        yield 'Login Redirect with frontend user not logged in' => [
+            'path' => '/oauth/authorize',
+            'query' => '?response_type=code&client_id=acme_client',
+            'feUserId' => 0,
+            'expectedReasonPhrase' => 'Found',
+            'expectedStatusCode' => 302,
+            'expectedHeaderArrayKey' => 'Location',
+            'expectedRedirectStringStart' => 'https://localhost/login?',
+        ];
+        yield 'Wrong client redirects to login page' => [
+            'path' => '/oauth/authorize',
+            'query' => '?response_type=code&client_id=wrong',
+            'feUserId' => self::FE_USER_ID,
+            'expectedReasonPhrase' => 'Found',
+            'expectedStatusCode' => 302,
+            'expectedHeaderArrayKey' => 'Location',
+            'expectedRedirectStringStart' => 'https://localhost/login',
+        ];
     }
 
     /**
      * @test
+     * @dataProvider oauthServerDataProvider
      */
-    public function oauthServerRedirectsToLoginWithNotLoggedInFrontendUser(): void
-    {
+    public function oauthServerAccessScenarios(
+        string $path,
+        string $query,
+        int $feUserId,
+        string $expectedReasonPhrase,
+        int $expectedStatusCode,
+        string $expectedHeaderArrayKey,
+        string $expectedRedirectStringStart
+    ): void {
         $uri = (string)(new Uri(self::BASE_URL))
-            ->withPath('/oauth/authorize')
-            ->withQuery('?response_type=code&client_id=acme_client');
+            ->withPath($path)
+            ->withQuery($query);
 
-        $internalRequestContext = (new InternalRequestContext());
+        $internalRequestContext = (new InternalRequestContext())
+            ->withFrontendUserId($feUserId);
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest($uri)),
             $internalRequestContext
         );
-        self::assertSame('Found', $response->getReasonPhrase());
-        self::assertSame(302, $response->getStatusCode());
-        self::assertIsArray($response->getHeader('Location'));
-        self::assertStringStartsWith('https://localhost/login', $response->getHeader('Location')[0]);
+        self::assertSame($expectedReasonPhrase, $response->getReasonPhrase());
+        self::assertSame($expectedStatusCode, $response->getStatusCode());
+        self::assertIsArray($response->getHeader($expectedHeaderArrayKey));
+        self::assertStringStartsWith($expectedRedirectStringStart, $response->getHeader($expectedHeaderArrayKey)[0]);
     }
 }
