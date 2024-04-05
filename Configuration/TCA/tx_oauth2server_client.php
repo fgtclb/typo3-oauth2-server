@@ -20,7 +20,6 @@ return [
         'searchFields' => 'name',
     ],
     'interface' => [
-        'showRecordFieldList' => 'name,identifier,redirect_uris,description',
     ],
     'columns' => [
         'uuid' => [
@@ -80,7 +79,7 @@ return [
         '0' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                 --palette--;;name, --palette--;;credentials, redirect_uris
-            
+
         '],
     ],
     'palettes' => [
