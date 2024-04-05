@@ -76,7 +76,7 @@ final class Configuration
      */
     public function getPrivateKeyFile(): string
     {
-        return $this->privateKeyFile;
+        return GeneralUtility::getFileAbsFileName($this->privateKeyFile);
     }
 
     /**
@@ -86,7 +86,7 @@ final class Configuration
      */
     public function getPublicKeyFile(): string
     {
-        return $this->publicKeyFile;
+        return GeneralUtility::getFileAbsFileName($this->publicKeyFile);
     }
 
     /**
