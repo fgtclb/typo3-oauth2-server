@@ -56,6 +56,12 @@
     "bin-dir": ".Build/bin",
     "vendor-dir": ".Build/vendor"
   },
+  "repositories": {
+    "test-ext": {
+      "type": "path",
+      "url": "./Tests/Functional/Extensions/*"
+    }
+  },
   "extra": {
     "typo3/cms": {
       "app-dir": ".Build",
