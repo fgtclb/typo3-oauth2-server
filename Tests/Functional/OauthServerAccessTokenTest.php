@@ -123,7 +123,7 @@ class OauthServerAccessTokenTest extends AbstractOauth2ServerTest
         $response->getBody()->rewind();
         $responseBody = $response->getBody()->getContents();
 
-        $responseData = json_decode($responseBody, true, JSON_THROW_ON_ERROR);
+        $responseData = json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR);
 
         self::assertSame($expectedStatusCode, $response->getStatusCode());
         self::assertSame($expectedReasonPhrase, $response->getReasonPhrase());

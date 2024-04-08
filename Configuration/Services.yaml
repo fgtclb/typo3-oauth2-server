@@ -10,3 +10,8 @@ services:
 
   FGTCLB\OAuth2Server\Domain\Repository\ClientRepository:
     public: true
+
+  FGTCLB\OAuth2Server\Service\DefaultResourceHandler:
+    tags:
+      - name: oauth.resource_handler
+        clientId: ''
