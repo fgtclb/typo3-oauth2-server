@@ -8,7 +8,7 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
-class OauthServerAccessTokenTest extends AbstractOauth2ServerTest
+class OauthServerAccessTokenTest extends AbstractOauth2ServerTestCase
 {
     public static function accessTokenDataProvider(): \Generator
     {

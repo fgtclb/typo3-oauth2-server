@@ -8,7 +8,7 @@ use FGTCLB\Testsuite\Traits\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class AbstractSiteCest extends FunctionalTestCase
+class AbstractSiteTestCase extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
