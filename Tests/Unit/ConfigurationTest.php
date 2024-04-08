@@ -26,25 +26,67 @@ class ConfigurationTest extends UnitTestCase
         GeneralUtility::purgeInstances();
     }
 
+    public function validConfigurationDataProvider(): \Generator
+    {
+        yield 'Basic configuration' => [
+            'configurationArrayToTest' => [
+                'privateKeyFile' => 'private.key',
+                'publicKeyFile' => 'public.key',
+                'loginPage' => '10',
+                'authEndpoint' => '/oauth/authorize',
+                'tokenEndpoint' => '/oauth/token',
+                'resourceEndpoint' => '/oauth/identity',
+                'accessTokenLifetime' => '1 hour',
+                'refreshTokenLifetime' => '1 month',
+                'authorizationCodeLifetime' => '10 minutes',
+            ],
+            'expectedPrivateKeyString' => 'private.key',
+            'expectedPublicKeyString' => 'public.key',
+            'expectedLoginPage' => 10,
+            'expectedAuthEndpoint' => '/oauth/authorize',
+            'expectedTokenEndpoint' => '/oauth/token',
+            'expectedResourceEndpoint' => '/oauth/identity',
+            'expectedAccessTokenLifetimeType' => \DateInterval::class,
+            'expectedRefreshTokenLifetimeType' => \DateInterval::class,
+            'expectedAuthorizationCodeLifetimeType' => \DateInterval::class,
+        ];
+    }
     /**
      * @test
+     * @param array<string, string> $configurationArrayToTest
+     * @param class-string $expectedAccessTokenLifetimeType
+     * @param class-string $expectedRefreshTokenLifetimeType
+     * @param class-string $expectedAuthorizationCodeLifetimeType
+     * @dataProvider validConfigurationDataProvider
      */
-    public function acceptsValidConfiguration(): void
-    {
+    public function acceptsValidConfiguration(
+        array $configurationArrayToTest,
+        string $expectedPrivateKeyString,
+        string $expectedPublicKeyString,
+        int $expectedLoginPage,
+        string $expectedAuthEndpoint,
+        string $expectedTokenEndpoint,
+        string $expectedResourceEndpoint,
+        string $expectedAccessTokenLifetimeType,
+        string $expectedRefreshTokenLifetimeType,
+        string $expectedAuthorizationCodeLifetimeType
+    ): void {
         /** @var TProphecy $extensionConfiguration */
         $extensionConfiguration = $this->prophesize(ExtensionConfiguration::class);
-        $extensionConfiguration->get('oauth2_server')->willReturn([
-            'privateKeyFile' => 'private.key',
-            'publicKeyFile' => 'public.key',
-            'loginPage' => '10',
-        ]);
+        $extensionConfiguration->get('oauth2_server')->willReturn($configurationArrayToTest);
         GeneralUtility::addInstance(ExtensionConfiguration::class, $extensionConfiguration->reveal());
 
         $configuration = new Configuration();
 
-        self::assertStringEndsWith('private.key', $configuration->getPrivateKeyFile());
-        self::assertStringEndsWith('public.key', $configuration->getPublicKeyFile());
-        self::assertEquals(10, $configuration->getLoginPage());
+        self::assertStringEndsWith($expectedPrivateKeyString, $configuration->getPrivateKeyFile());
+        self::assertStringEndsWith($expectedPublicKeyString, $configuration->getPublicKeyFile());
+        self::assertEquals($expectedLoginPage, $configuration->getLoginPage());
+        self::assertEquals($expectedAuthEndpoint, $configuration->getAuthEndpoint());
+        self::assertEquals($expectedTokenEndpoint, $configuration->getTokenEndpoint());
+        self::assertEquals($expectedResourceEndpoint, $configuration->getResourceEndpoint());
+        self::assertInstanceOf($expectedAccessTokenLifetimeType, $configuration->getAccessTokenLifetime());
+        self::assertInstanceOf($expectedRefreshTokenLifetimeType, $configuration->getRefreshTokenLifetime());
+        self::assertInstanceOf($expectedAuthorizationCodeLifetimeType, $configuration->getAuthorizationCodeLifetime());
     }
 
     /**

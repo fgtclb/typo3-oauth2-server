@@ -14,7 +14,7 @@ authEndpoint = /oauth/authorize
 # cat=OauthServer/Endpoints/tokenEndpoint; type=string; label=Token Endpoint
 tokenEndpoint = /oauth/token
 # cat=OauthServer/Endpoints/resourceEndpoint; type=string; label=Resource Server Endpoint
-resourceEndpoint = /oauth/indentity
+resourceEndpoint = /oauth/identity
 # cat=OauthServer/Lifetime/accessToken; type=string; label=Access Token Lifetime
 accessTokenLifetime = 1 hour
 # cat=OauthServer/Lifetime/refreshToken; type=string; label=Refresh Token Lifetime
