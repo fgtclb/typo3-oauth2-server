@@ -54,12 +54,44 @@ final class Configuration
         $this->privateKeyFile = $configuration['privateKeyFile'];
         $this->publicKeyFile = $configuration['publicKeyFile'];
         $this->loginPage = (int)$configuration['loginPage'];
-        $this->authEndpoint = $configuration['authEndpoint'] ?: $this->authEndpoint;
-        $this->tokenEndpoint = $configuration['tokenEndpoint'] ?: $this->tokenEndpoint;
-        $this->resourceEndpoint = $configuration['resourceEndpoint'] ?: $this->resourceEndpoint;
-        $this->accessTokenLifetime = DateInterval::createFromDateString($configuration['accessTokenLifetime']) ?: DateInterval::createFromDateString('1 hour');
-        $this->refreshTokenLifetime = DateInterval::createFromDateString($configuration['refreshTokenLifetime']) ?: DateInterval::createFromDateString('1 month');
-        $this->authorizationCodeLifetime = DateInterval::createFromDateString($configuration['authorizationCodeLifetime']) ?: DateInterval::createFromDateString('10 minutes');
+        $this->authEndpoint = $configuration['authEndpoint'] ?? $this->authEndpoint;
+        $this->tokenEndpoint = $configuration['tokenEndpoint'] ?? $this->tokenEndpoint;
+        $this->resourceEndpoint = $configuration['resourceEndpoint'] ?? $this->resourceEndpoint;
+
+        $accessInterval = false;
+        if (isset($configuration['accessTokenLifetime'])) {
+            $accessInterval = DateInterval::createFromDateString($configuration['accessTokenLifetime']);
+            if ($accessInterval === false) {
+                throw new \InvalidArgumentException(
+                    'Invalid Access Token lifetime. See https://www.php.net/manual/de/datetime.formats.php#datetime.formats.relative for valid formats',
+                    1712606345346
+                );
+            }
+        }
+        $this->accessTokenLifetime = $accessInterval ?: DateInterval::createFromDateString('1 hour');
+        $refreshInterval = false;
+        if (isset($configuration['refreshTokenLifetime'])) {
+            $refreshInterval = DateInterval::createFromDateString($configuration['refreshTokenLifetime']);
+            if ($refreshInterval === false) {
+                throw new \InvalidArgumentException(
+                    'Invalid Refresh Token lifetime. See https://www.php.net/manual/de/datetime.formats.php#datetime.formats.relative for valid formats',
+                    1712606543156
+                );
+            }
+        }
+        $this->refreshTokenLifetime = $refreshInterval ?: DateInterval::createFromDateString('1 month');
+
+        $authorizationCodeInterval = false;
+        if (isset($configuration['authorizationCodeLifetime'])) {
+            $authorizationCodeInterval = DateInterval::createFromDateString($configuration['authorizationCodeLifetime']);
+            if ($authorizationCodeInterval === false) {
+                throw new \InvalidArgumentException(
+                    'Invalid Authorization Code lifetime. See https://www.php.net/manual/de/datetime.formats.php#datetime.formats.relative for valid formats',
+                    1712606546362
+                );
+            }
+        }
+        $this->authorizationCodeLifetime = $authorizationCodeInterval ?: DateInterval::createFromDateString('10 minutes');
     }
 
     /**
