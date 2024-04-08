@@ -3,6 +3,7 @@
 declare(strict_types=1);
 namespace FGTCLB\OAuth2Server\Middleware;
 
+use FGTCLB\OAuth2Server\Configuration;
 use FGTCLB\OAuth2Server\Server\ServerFactory;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ResponseInterface;
@@ -18,13 +19,20 @@ use TYPO3\CMS\Core\Http\Response;
  */
 final class OAuth2AccessToken implements MiddlewareInterface
 {
+    protected Configuration $configuration;
+
+    public function __construct(
+        Configuration $configuration
+    ) {
+        $this->configuration = $configuration;
+    }
     /**
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($request->getUri()->getPath() !== '/oauth/token') {
+        if ($request->getUri()->getPath() !== $this->configuration->getTokenEndpoint()) {
             return $handler->handle($request);
         }
 

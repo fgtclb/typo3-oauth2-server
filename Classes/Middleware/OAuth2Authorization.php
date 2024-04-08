@@ -53,7 +53,7 @@ final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInter
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($request->getUri()->getPath() !== '/oauth/authorize') {
+        if ($request->getUri()->getPath() !== $this->configuration->getAuthEndpoint()) {
             return $handler->handle($request);
         }
 

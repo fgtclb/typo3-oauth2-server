@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server;
 
+use DateInterval;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -12,41 +13,43 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class Configuration
 {
-    /**
-     * @var string Path to a private RSA key
-     */
-    protected $privateKeyFile;
+    protected string $privateKeyFile;
+
+    protected string $publicKeyFile;
 
     /**
-     * @var string Path to a public RSA key
+     * UID of the login page
      */
-    protected $publicKeyFile;
+    protected int $loginPage;
 
-    /**
-     * @var int UID of the login page
-     */
-    protected $loginPage;
+    protected string $authEndpoint = '/oauth/authorize';
+    protected string $tokenEndpoint = '/oauth/token';
+    protected string $resourceEndpoint = '/oauth/identity';
 
-    /**
-     * @var \DateInterval
-     */
-    protected $accessTokenLifetime;
+    protected DateInterval $accessTokenLifetime;
 
-    /**
-     * @var \DateInterval
-     */
-    protected $refreshTokenLifetime;
+    protected DateInterval $refreshTokenLifetime;
 
-    /**
-     * @var \DateInterval
-     */
-    protected $authorizationCodeLifetime;
+    protected DateInterval $authorizationCodeLifetime;
 
     /**
      * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
      */
     public function __construct()
     {
+        /**
+         * @var array{
+         *     privateKeyFile: string,
+         *     publicKeyFile: string,
+         *     loginPage: string,
+         *     authEndpoint?: string,
+         *     tokenEndpoint?: string,
+         *     resourceEndpoint?: string,
+         *     accessTokenLifetime?: string,
+         *     refreshTokenLifetime?: string,
+         *     authorizationCodeLifetime?: string
+         * } $configuration
+         */
         $configuration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('oauth2_server');
 
         if (empty($configuration['privateKeyFile'])) {
@@ -64,9 +67,12 @@ final class Configuration
         $this->privateKeyFile = $configuration['privateKeyFile'];
         $this->publicKeyFile = $configuration['publicKeyFile'];
         $this->loginPage = (int)$configuration['loginPage'];
-        $this->accessTokenLifetime = \DateInterval::createFromDateString('1 hour');
-        $this->refreshTokenLifetime = \DateInterval::createFromDateString('1 month');
-        $this->authorizationCodeLifetime = \DateInterval::createFromDateString('10 minutes');
+        $this->authEndpoint = $configuration['authEndpoint'] ?: $this->authEndpoint;
+        $this->tokenEndpoint = $configuration['tokenEndpoint'] ?: $this->tokenEndpoint;
+        $this->resourceEndpoint = $configuration['resourceEndpoint'] ?: $this->resourceEndpoint;
+        $this->accessTokenLifetime = DateInterval::createFromDateString($configuration['accessTokenLifetime'] ?: '1 hour');
+        $this->refreshTokenLifetime = DateInterval::createFromDateString($configuration['refreshTokenLifetime'] ?: '1 month');
+        $this->authorizationCodeLifetime = DateInterval::createFromDateString($configuration['authorizationCodeLifetime'] ?: '10 minutes');
     }
 
     /**
@@ -102,9 +108,9 @@ final class Configuration
     /**
      * Get the lifetime of access tokens
      *
-     * @return \DateInterval
+     * @return DateInterval
      */
-    public function getAccessTokenLifetime(): \DateInterval
+    public function getAccessTokenLifetime(): DateInterval
     {
         return $this->accessTokenLifetime;
     }
@@ -112,9 +118,9 @@ final class Configuration
     /**
      * Get the lifetime of refresh tokens
      *
-     * @return \DateInterval
+     * @return DateInterval
      */
-    public function getRefreshTokenLifetime(): \DateInterval
+    public function getRefreshTokenLifetime(): DateInterval
     {
         return $this->refreshTokenLifetime;
     }
@@ -122,10 +128,40 @@ final class Configuration
     /**
      * Get the lifetime of authorization codes
      *
-     * @return \DateInterval
+     * @return DateInterval
      */
-    public function getAuthorizationCodeLifetime(): \DateInterval
+    public function getAuthorizationCodeLifetime(): DateInterval
     {
         return $this->authorizationCodeLifetime;
+    }
+
+    /**
+     * Get the authorization endpoint
+     *
+     * @return string
+     */
+    public function getAuthEndpoint(): string
+    {
+        return $this->authEndpoint;
+    }
+
+    /**
+     * Get the token endpoint
+     *
+     * @return string
+     */
+    public function getTokenEndpoint(): string
+    {
+        return $this->tokenEndpoint;
+    }
+
+    /**
+     * Get the resource endpoint
+     *
+     * @return string
+     */
+    public function getResourceEndpoint(): string
+    {
+        return $this->resourceEndpoint;
     }
 }
