@@ -1,6 +1,23 @@
-# cat=basic/crypto; type=string; label=Private key file: path to the RSA private key
+# customcategory=OauthServer=LLL:EXT:oauth2_server/Resources/Private/Language/locallang.xlf:constants.oauth_server
+# customsubcategory=Basics=LLL:EXT:site/Resources/Private/Language/locallang.xlf:constants.basics
+# customsubcategory=Endpoints=LLL:EXT:site/Resources/Private/Language/locallang.xlf:constants.endpoints
+# customsubcategory=Lifetime=LLL:EXT:site/Resources/Private/Language/locallang.xlf:constants.lifetime
+
+# cat=OauthServer/Basics/crypto; type=string; label=Private key file: path to the RSA private key
 privateKeyFile =
-# cat=basic/crypto; type=string; label=Private key file: path to the RSA public key
+# cat=OauthServer/Basics/crypto; type=string; label=Private key file: path to the RSA public key
 publicKeyFile =
-# cat=basic/flow; type=int+; label=Login page: UID of a page where users can log in
+# cat=OauthServer/Basics/flow; type=int+; label=Login page: UID of a page where users can log in
 loginPage =
+# cat=OauthServer/Endpoints/authorizationEndpoint; type=string; label=Auth Endpoint
+authEndpoint = /oauth/authorize
+# cat=OauthServer/Endpoints/tokenEndpoint; type=string; label=Token Endpoint
+tokenEndpoint = /oauth/token
+# cat=OauthServer/Endpoints/resourceEndpoint; type=string; label=Resource Server Endpoint
+resourceEndpoint = /oauth/indentity
+# cat=OauthServer/Lifetime/accessToken; type=string; label=Access Token Lifetime
+accessTokenLifetime = 1 hour
+# cat=OauthServer/Lifetime/refreshToken; type=string; label=Refresh Token Lifetime
+refreshTokenLifetime = 1 month
+# cat=OauthServer/Lifetime/authorizationCode; type=string; label=Authorization Code Lifetime
+authorizationCodeLifetime = 10 minutes
