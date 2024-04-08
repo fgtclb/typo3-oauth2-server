@@ -51,9 +51,12 @@ class ConfigurationTest extends UnitTestCase
             'expectedAuthorizationCodeLifetimeType' => \DateInterval::class,
         ];
     }
+
     /**
      * @test
      * @param array<string, string> $configurationArrayToTest
+     * @param non-empty-string $expectedPrivateKeyString
+     * @param non-empty-string $expectedPublicKeyString
      * @param class-string $expectedAccessTokenLifetimeType
      * @param class-string $expectedRefreshTokenLifetimeType
      * @param class-string $expectedAuthorizationCodeLifetimeType
