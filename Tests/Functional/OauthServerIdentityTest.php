@@ -46,12 +46,11 @@ class OauthServerIdentityTest extends AbstractOauth2ServerTest
             $internalRequestContext
         );
 
-
         $redirectUri = $loginResponse->getHeader('Location')[0];
         parse_str(parse_url($redirectUri, PHP_URL_QUERY) ?: '', $query);
         $authorizationBody['code'] = $query['code'] ?? '';
 
-        $authorizationUri = (new Uri(self::BASE_URL))
+        $authorizationUri = (string)(new Uri(self::BASE_URL))
             ->withPath('/oauth/token');
         $authorizationResponse = $this->executeFrontendSubRequest(
             (new InternalRequest($authorizationUri))->withParsedBody($authorizationBody)

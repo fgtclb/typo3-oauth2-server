@@ -9,6 +9,9 @@ use FGTCLB\OAuth2Server\Configuration;
 abstract class AbstractResourceHandler implements ResourceHandlerInterface
 {
     protected string $clientId = '';
+    /**
+     * @var string[]
+     */
     protected array $scopes = [];
     protected Configuration $configuration;
 
