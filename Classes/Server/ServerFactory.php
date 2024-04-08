@@ -13,6 +13,7 @@ use FGTCLB\OAuth2Server\Domain\Repository\ScopeRepository;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\AuthorizationValidators\BearerTokenValidator;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
+use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\ResourceServer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -51,14 +52,19 @@ final class ServerFactory
 
         $authorizationCodeRepository = new AuthorizationCodeRepository();
         $refreshTokenRepository = new RefreshTokenRepository();
-        $grant = new AuthCodeGrant(
+        $authCodeGrant = new AuthCodeGrant(
             $authorizationCodeRepository,
             $refreshTokenRepository,
             $this->configuration->getAuthorizationCodeLifetime()
         );
-        $grant->setRefreshTokenTTL($this->configuration->getRefreshTokenLifetime());
+        $authCodeGrant->setRefreshTokenTTL($this->configuration->getRefreshTokenLifetime());
         // Enable the authentication code grant on the server
-        $server->enableGrantType($grant, $this->configuration->getAccessTokenLifetime());
+        $server->enableGrantType($authCodeGrant, $this->configuration->getAccessTokenLifetime());
+
+        $refreshTokenGrant = new RefreshTokenGrant($refreshTokenRepository);
+        $refreshTokenGrant->setRefreshTokenTTL($this->configuration->getRefreshTokenLifetime());
+        // Enable the refresh token grant on the server
+        $server->enableGrantType($refreshTokenGrant, $this->configuration->getAccessTokenLifetime());
 
         return $server;
     }
