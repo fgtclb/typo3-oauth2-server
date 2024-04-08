@@ -30,6 +30,59 @@ class OauthServerAccessTokenTest extends AbstractOauth2ServerTest
                 'expires_in',
             ],
         ];
+
+        yield 'Logged-in user with missing client_secret gets Unauthorized' => [
+            'path' => '/oauth/token',
+            'body' => [
+                'grant_type' => 'authorization_code',
+                'client_id' => 'acme_client',
+            ],
+            'feUserId' => self::FE_USER_ID,
+            'expectedStatusCode' => 401,
+            'expectedReasonPhrase' => 'Unauthorized',
+            'expectedTokenType' => '',
+            'expectedResponseKeys' => [
+                'error',
+                'error_description',
+                'message',
+            ],
+        ];
+
+        yield 'Logged-in user with wrong client_secret gets Unauthorized' => [
+            'path' => '/oauth/token',
+            'body' => [
+                'grant_type' => 'authorization_code',
+                'client_id' => 'acme_client',
+                'client_secret' => 'wrong_secret',
+            ],
+            'feUserId' => self::FE_USER_ID,
+            'expectedStatusCode' => 401,
+            'expectedReasonPhrase' => 'Unauthorized',
+            'expectedTokenType' => '',
+            'expectedResponseKeys' => [
+                'error',
+                'error_description',
+                'message',
+            ],
+        ];
+
+        yield 'Logged-in user with wrong client_id gets Unauthorized' => [
+            'path' => '/oauth/token',
+            'body' => [
+                'grant_type' => 'authorization_code',
+                'client_id' => 'wrong_client',
+                'client_secret' => 'wrong_secret',
+            ],
+            'feUserId' => self::FE_USER_ID,
+            'expectedStatusCode' => 401,
+            'expectedReasonPhrase' => 'Unauthorized',
+            'expectedTokenType' => '',
+            'expectedResponseKeys' => [
+                'error',
+                'error_description',
+                'message',
+            ],
+        ];
     }
     /**
      * @test
@@ -78,6 +131,8 @@ class OauthServerAccessTokenTest extends AbstractOauth2ServerTest
         foreach ($expectedResponseKeys as $expectedKey) {
             self::assertArrayHasKey($expectedKey, $responseData);
         }
-        self::assertSame($expectedTokenType, $responseData['token_type']);
+        if (!empty($expectedTokenType)) {
+            self::assertSame($expectedTokenType, $responseData['token_type']);
+        }
     }
 }
