@@ -54,6 +54,7 @@ class OAuthServerAuthorizationTest extends AbstractOauth2ServerTest
 
     /**
      * @test
+     * @param non-empty-string $expectedRedirectStringStart
      * @dataProvider oauthServerAuthorizationDataProvider
      */
     public function oauthServerAuthorizationScenarios(
