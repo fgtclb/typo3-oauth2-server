@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Tests\Functional;
 
-use FGTCLB\Testsuite\TestCase\AbstractSiteCest;
+use FGTCLB\Testsuite\TestCase\AbstractSiteTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-abstract class AbstractOauth2ServerTest extends AbstractSiteCest
+abstract class AbstractOauth2ServerTestCase extends AbstractSiteTestCase
 {
     protected const FE_USER_ID = 1;
 
