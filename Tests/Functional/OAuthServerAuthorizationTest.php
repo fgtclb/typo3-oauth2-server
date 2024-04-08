@@ -21,7 +21,7 @@ class OAuthServerAuthorizationTest extends AbstractOauth2ServerTest
      *     expectedRedirectStringStart: string
      * }>
      */
-    public function oauthServerAuthorizationDataProvider(): \Generator
+    public static function oauthServerAuthorizationDataProvider(): \Generator
     {
         yield 'Access granted with frontend user logged in' => [
             'path' => '/oauth/authorize',

@@ -26,7 +26,7 @@ class ConfigurationTest extends UnitTestCase
         GeneralUtility::purgeInstances();
     }
 
-    public function validConfigurationDataProvider(): \Generator
+    public static function validConfigurationDataProvider(): \Generator
     {
         yield 'Basic configuration' => [
             'configurationArrayToTest' => [
@@ -122,7 +122,7 @@ class ConfigurationTest extends UnitTestCase
      *     expectedExceptionMessage: string
      *     }>
      */
-    public function invalidExtensionConfiguration(): \Generator
+    public static function invalidExtensionConfiguration(): \Generator
     {
         yield 'Missing private key leads to Exception' => [
             'invalidExtensionConfiguration' => [
