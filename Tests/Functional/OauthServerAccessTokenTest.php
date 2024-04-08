@@ -10,7 +10,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 
 class OauthServerAccessTokenTest extends AbstractOauth2ServerTest
 {
-    public function accessTokenDataProvider(): \Generator
+    public static function accessTokenDataProvider(): \Generator
     {
         yield 'Logged-in user gets access token' => [
             'path' => '/oauth/token',

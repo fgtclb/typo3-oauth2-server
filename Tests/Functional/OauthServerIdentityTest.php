@@ -10,7 +10,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 
 class OauthServerIdentityTest extends AbstractOauth2ServerTest
 {
-    public function identityDataProvider(): \Generator
+    public static function identityDataProvider(): \Generator
     {
         yield 'Logged-In user returns logged in content' => [
             'path' => '/oauth/identity',
