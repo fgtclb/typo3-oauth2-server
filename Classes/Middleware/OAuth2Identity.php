@@ -47,7 +47,7 @@ final class OAuth2Identity implements MiddlewareInterface
         try {
             // OAuth Auth Server validates the request
             $request = $server->validateAuthenticatedRequest($request);
-            $clientId = $request->getAttribute('oauth_client_id');
+            $clientId = $request->getAttribute('oauth_client_id') ?? '';
 
             // Internal resource handler accepts the request
             // and generates a response

@@ -11,11 +11,10 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class ResourceHandlerPass implements CompilerPassInterface
 {
-
     /**
      * @inheritDoc
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has(ResourceHandlingFactory::class)) {
             return;

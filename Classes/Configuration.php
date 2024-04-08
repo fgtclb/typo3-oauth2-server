@@ -37,19 +37,6 @@ final class Configuration
      */
     public function __construct()
     {
-        /**
-         * @var array{
-         *     privateKeyFile: string,
-         *     publicKeyFile: string,
-         *     loginPage: string,
-         *     authEndpoint?: string,
-         *     tokenEndpoint?: string,
-         *     resourceEndpoint?: string,
-         *     accessTokenLifetime?: string,
-         *     refreshTokenLifetime?: string,
-         *     authorizationCodeLifetime?: string
-         * } $configuration
-         */
         $configuration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('oauth2_server');
 
         if (empty($configuration['privateKeyFile'])) {
@@ -70,9 +57,9 @@ final class Configuration
         $this->authEndpoint = $configuration['authEndpoint'] ?: $this->authEndpoint;
         $this->tokenEndpoint = $configuration['tokenEndpoint'] ?: $this->tokenEndpoint;
         $this->resourceEndpoint = $configuration['resourceEndpoint'] ?: $this->resourceEndpoint;
-        $this->accessTokenLifetime = DateInterval::createFromDateString($configuration['accessTokenLifetime'] ?: '1 hour');
-        $this->refreshTokenLifetime = DateInterval::createFromDateString($configuration['refreshTokenLifetime'] ?: '1 month');
-        $this->authorizationCodeLifetime = DateInterval::createFromDateString($configuration['authorizationCodeLifetime'] ?: '10 minutes');
+        $this->accessTokenLifetime = DateInterval::createFromDateString($configuration['accessTokenLifetime']) ?: DateInterval::createFromDateString('1 hour');
+        $this->refreshTokenLifetime = DateInterval::createFromDateString($configuration['refreshTokenLifetime']) ?: DateInterval::createFromDateString('1 month');
+        $this->authorizationCodeLifetime = DateInterval::createFromDateString($configuration['authorizationCodeLifetime']) ?: DateInterval::createFromDateString('10 minutes');
     }
 
     /**

@@ -7,6 +7,9 @@ includes:
 
 parameters:
   level: 8
+  typo3:
+    requestGetAttributeMapping:
+      oauth_client_id: string
 
   # Use local cache dir instead of /tmp
   tmpDir: ../../.Build/.cache/phpstan
