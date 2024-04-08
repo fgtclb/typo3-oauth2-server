@@ -23,11 +23,18 @@ class OauthServerAccessTokenTest extends AbstractOauth2ServerTest
             'expectedStatusCode' => 200,
             'expectedReasonPhrase' => 'OK',
             'expectedTokenType' => 'Bearer',
+            'expectedResponseKeys' => [
+                'access_token',
+                'refresh_token',
+                'token_type',
+                'expires_in',
+            ],
         ];
     }
     /**
      * @test
      * @param array{grant_type: string, client_id: string, client_secret?: string} $body
+     * @param string[] $expectedResponseKeys
      * @dataProvider accessTokenDataProvider
      */
     public function oauthServerAccessTokenScenarios(
@@ -36,7 +43,8 @@ class OauthServerAccessTokenTest extends AbstractOauth2ServerTest
         int $feUserId,
         int $expectedStatusCode,
         string $expectedReasonPhrase,
-        string $expectedTokenType
+        string $expectedTokenType,
+        array $expectedResponseKeys
     ): void {
         $uri = (string)(new Uri(self::BASE_URL))
             ->withPath($path);
@@ -67,10 +75,9 @@ class OauthServerAccessTokenTest extends AbstractOauth2ServerTest
         self::assertSame($expectedStatusCode, $response->getStatusCode());
         self::assertSame($expectedReasonPhrase, $response->getReasonPhrase());
         self::assertJson($responseBody);
-        self::assertArrayHasKey('access_token', $responseData);
-        self::assertArrayHasKey('refresh_token', $responseData);
-        self::assertArrayHasKey('expires_in', $responseData);
-        self::assertArrayHasKey('token_type', $responseData);
+        foreach ($expectedResponseKeys as $expectedKey) {
+            self::assertArrayHasKey($expectedKey, $responseData);
+        }
         self::assertSame($expectedTokenType, $responseData['token_type']);
     }
 }
