@@ -7,7 +7,7 @@ services:
   FGTCLB\Testsuite\:
     resource: '../Classes/'
 
-  FGTCLB\Testsuite\Service\AcmeClientResourceHandler:
+  FGTCLB\Testsuite\Service\AcmeClientIdentityHandler:
     tags:
-      - name: oauth.resource_handler
+      - name: oauth.identity_handler
         clientId: 'acme_client'

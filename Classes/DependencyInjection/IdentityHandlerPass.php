@@ -2,32 +2,32 @@
 
 declare(strict_types=1);
 
-namespace FGTCLB\OAuth2Server\Compiler;
+namespace FGTCLB\OAuth2Server\DependencyInjection;
 
-use FGTCLB\OAuth2Server\Service\ResourceHandlingFactory;
+use FGTCLB\OAuth2Server\Service\IdentityHandlingFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class ResourceHandlerPass implements CompilerPassInterface
+class IdentityHandlerPass implements CompilerPassInterface
 {
     /**
      * @inheritDoc
      */
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has(ResourceHandlingFactory::class)) {
+        if (!$container->has(IdentityHandlingFactory::class)) {
             return;
         }
 
-        $definition = $container->findDefinition(ResourceHandlingFactory::class);
+        $definition = $container->findDefinition(IdentityHandlingFactory::class);
 
-        $taqgedServices = $container->findTaggedServiceIds('oauth.resource_handler');
+        $taqgedServices = $container->findTaggedServiceIds('oauth.identity_handler');
 
         foreach ($taqgedServices as $id => $tags) {
             foreach ($tags as $attributes) {
                 $definition->addMethodCall(
-                    'addResourceHandler',
+                    'addIdentityHandler',
                     [
                         new Reference($id),
                         $attributes['clientId'],
