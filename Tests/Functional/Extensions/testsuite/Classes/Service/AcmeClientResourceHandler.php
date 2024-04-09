@@ -23,7 +23,7 @@ class AcmeClientResourceHandler extends AbstractResourceHandler
 
         return new JsonResponse(
             [
-                'user_id' => $loggedInUser['uid'],
+                'user_id' => (int)$loggedInUser['uid'],
                 'username' => $loggedInUser['username'],
             ]
         );
