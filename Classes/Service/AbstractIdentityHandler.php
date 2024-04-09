@@ -6,7 +6,7 @@ namespace FGTCLB\OAuth2Server\Service;
 
 use FGTCLB\OAuth2Server\Configuration;
 
-abstract class AbstractResourceHandler implements ResourceHandlerInterface
+abstract class AbstractIdentityHandler implements IdentityHandlerInterface
 {
     protected string $clientId = '';
     /**

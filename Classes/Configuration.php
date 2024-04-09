@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server;
 
-use DateInterval;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -26,11 +25,11 @@ final class Configuration
     protected string $tokenEndpoint = '/oauth/token';
     protected string $resourceEndpoint = '/oauth/identity';
 
-    protected DateInterval $accessTokenLifetime;
+    protected \DateInterval $accessTokenLifetime;
 
-    protected DateInterval $refreshTokenLifetime;
+    protected \DateInterval $refreshTokenLifetime;
 
-    protected DateInterval $authorizationCodeLifetime;
+    protected \DateInterval $authorizationCodeLifetime;
 
     /**
      * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
@@ -60,7 +59,7 @@ final class Configuration
 
         $accessInterval = false;
         if (isset($configuration['accessTokenLifetime'])) {
-            $accessInterval = DateInterval::createFromDateString($configuration['accessTokenLifetime']);
+            $accessInterval = \DateInterval::createFromDateString($configuration['accessTokenLifetime']);
             if ($accessInterval === false) {
                 throw new \InvalidArgumentException(
                     'Invalid Access Token lifetime. See https://www.php.net/manual/de/datetime.formats.php#datetime.formats.relative for valid formats',
@@ -68,10 +67,10 @@ final class Configuration
                 );
             }
         }
-        $this->accessTokenLifetime = $accessInterval ?: DateInterval::createFromDateString('1 hour');
+        $this->accessTokenLifetime = $accessInterval ?: \DateInterval::createFromDateString('1 hour');
         $refreshInterval = false;
         if (isset($configuration['refreshTokenLifetime'])) {
-            $refreshInterval = DateInterval::createFromDateString($configuration['refreshTokenLifetime']);
+            $refreshInterval = \DateInterval::createFromDateString($configuration['refreshTokenLifetime']);
             if ($refreshInterval === false) {
                 throw new \InvalidArgumentException(
                     'Invalid Refresh Token lifetime. See https://www.php.net/manual/de/datetime.formats.php#datetime.formats.relative for valid formats',
@@ -79,11 +78,11 @@ final class Configuration
                 );
             }
         }
-        $this->refreshTokenLifetime = $refreshInterval ?: DateInterval::createFromDateString('1 month');
+        $this->refreshTokenLifetime = $refreshInterval ?: \DateInterval::createFromDateString('1 month');
 
         $authorizationCodeInterval = false;
         if (isset($configuration['authorizationCodeLifetime'])) {
-            $authorizationCodeInterval = DateInterval::createFromDateString($configuration['authorizationCodeLifetime']);
+            $authorizationCodeInterval = \DateInterval::createFromDateString($configuration['authorizationCodeLifetime']);
             if ($authorizationCodeInterval === false) {
                 throw new \InvalidArgumentException(
                     'Invalid Authorization Code lifetime. See https://www.php.net/manual/de/datetime.formats.php#datetime.formats.relative for valid formats',
@@ -91,7 +90,7 @@ final class Configuration
                 );
             }
         }
-        $this->authorizationCodeLifetime = $authorizationCodeInterval ?: DateInterval::createFromDateString('10 minutes');
+        $this->authorizationCodeLifetime = $authorizationCodeInterval ?: \DateInterval::createFromDateString('10 minutes');
     }
 
     /**
@@ -127,9 +126,9 @@ final class Configuration
     /**
      * Get the lifetime of access tokens
      *
-     * @return DateInterval
+     * @return \DateInterval
      */
-    public function getAccessTokenLifetime(): DateInterval
+    public function getAccessTokenLifetime(): \DateInterval
     {
         return $this->accessTokenLifetime;
     }
@@ -137,9 +136,9 @@ final class Configuration
     /**
      * Get the lifetime of refresh tokens
      *
-     * @return DateInterval
+     * @return \DateInterval
      */
-    public function getRefreshTokenLifetime(): DateInterval
+    public function getRefreshTokenLifetime(): \DateInterval
     {
         return $this->refreshTokenLifetime;
     }
@@ -147,9 +146,9 @@ final class Configuration
     /**
      * Get the lifetime of authorization codes
      *
-     * @return DateInterval
+     * @return \DateInterval
      */
-    public function getAuthorizationCodeLifetime(): DateInterval
+    public function getAuthorizationCodeLifetime(): \DateInterval
     {
         return $this->authorizationCodeLifetime;
     }

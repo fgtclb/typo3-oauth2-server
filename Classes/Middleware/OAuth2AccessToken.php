@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace FGTCLB\OAuth2Server\Middleware;
 
 use FGTCLB\OAuth2Server\Configuration;
