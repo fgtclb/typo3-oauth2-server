@@ -10,6 +10,7 @@ parameters:
   typo3:
     requestGetAttributeMapping:
       oauth_client_id: string
+      oauth_user_id: int
 
   # Use local cache dir instead of /tmp
   tmpDir: ../../.Build/.cache/phpstan

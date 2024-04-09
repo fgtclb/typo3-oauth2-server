@@ -20,6 +20,9 @@ class OauthServerIdentityTest extends AbstractOauth2ServerTestCase
                 'client_id' => 'acme_client',
                 'client_secret' => 'password',
             ],
+            'expectedReasonPhrase' => 'OK',
+            'expectedStatusCode' => 200,
+            'expectedJsonString' => '{"user_id":1,"username":"ACME Frontend User"}',
         ];
     }
     /**
@@ -30,7 +33,10 @@ class OauthServerIdentityTest extends AbstractOauth2ServerTestCase
     public function oauthIdentityScenarios(
         string $path,
         int $feUserId,
-        array $authorizationBody
+        array $authorizationBody,
+        string $expectedReasonPhrase,
+        int $expectedStatusCode,
+        string $expectedJsonString
     ): void {
         $uri = (string)(new Uri(self::BASE_URL))
             ->withPath($path);
@@ -65,5 +71,10 @@ class OauthServerIdentityTest extends AbstractOauth2ServerTestCase
 
         $response->getBody()->rewind();
         $responseBody = $response->getBody()->getContents();
+
+        self::assertEquals($expectedStatusCode, $response->getStatusCode());
+        self::assertEquals($expectedReasonPhrase, $response->getReasonPhrase());
+        self::assertJson($responseBody);
+        self::assertEquals($expectedJsonString, $responseBody);
     }
 }
