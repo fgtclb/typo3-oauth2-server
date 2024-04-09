@@ -40,10 +40,10 @@ class OauthServerIdentityTest extends AbstractOauth2ServerTestCase
         $uri = (string)(new Uri(self::BASE_URL))
             ->withPath($path);
 
-        $authorizationBody = $this->getGeneratedTokens();
+        $authTokens = $this->getGeneratedTokens();
 
         $response = $this->executeFrontendSubRequest(
-            (new InternalRequest($uri))->withAddedHeader('Authorization', 'Bearer ' . $authorizationBody['access_token'])
+            (new InternalRequest($uri))->withAddedHeader('Authorization', 'Bearer ' . $authTokens['access_token'])
         );
 
         $response->getBody()->rewind();
