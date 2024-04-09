@@ -1,11 +1,12 @@
 <?php
 
 declare(strict_types=1);
+
 namespace FGTCLB\OAuth2Server\Middleware;
 
 use FGTCLB\OAuth2Server\Configuration;
 use FGTCLB\OAuth2Server\Server\ServerFactory;
-use FGTCLB\OAuth2Server\Service\ResourceHandlingFactory;
+use FGTCLB\OAuth2Server\Service\IdentityHandlingFactory;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,15 +23,15 @@ final class OAuth2Identity implements MiddlewareInterface
 {
     private Configuration $configuration;
     private ServerFactory $authServerFactory;
-    private ResourceHandlingFactory $resourceServerFactory;
+    private IdentityHandlingFactory $identityHandlingFactory;
 
     public function __construct(
         Configuration $configuration,
-        ResourceHandlingFactory $resourceServerFactory,
+        IdentityHandlingFactory $identityHandlingFactory,
         ServerFactory $authServerFactory
     ) {
         $this->configuration = $configuration;
-        $this->resourceServerFactory = $resourceServerFactory;
+        $this->identityHandlingFactory = $identityHandlingFactory;
         $this->authServerFactory = $authServerFactory;
     }
     /**
@@ -52,10 +53,10 @@ final class OAuth2Identity implements MiddlewareInterface
             // Internal resource handler accepts the request
             // and generates a response
             //
-            // we return the resourceHandler response here, as we don't want to have the path
+            // we return the identityHandler response here, as we don't want to have the path
             // moved to TYPO3 handling. In most cases, the route won't be able inside the TYPO3,
             // so the handler has to decide whether to redirect or return a response.
-            $resourceHandler = $this->resourceServerFactory->getResourceHandler($clientId);
+            $resourceHandler = $this->identityHandlingFactory->getIdentityHandler($clientId);
             return $resourceHandler->handleAuthenticatedRequest($request);
         } catch (OAuthServerException $e) {
             return $e->generateHttpResponse(new Response());

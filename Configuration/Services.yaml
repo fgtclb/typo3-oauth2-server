@@ -11,7 +11,7 @@ services:
   FGTCLB\OAuth2Server\Domain\Repository\ClientRepository:
     public: true
 
-  FGTCLB\OAuth2Server\Service\DefaultResourceHandler:
+  FGTCLB\OAuth2Server\Service\DefaultIdentityHandler:
     tags:
-      - name: oauth.resource_handler
+      - name: oauth.identity_handler
         clientId: ''

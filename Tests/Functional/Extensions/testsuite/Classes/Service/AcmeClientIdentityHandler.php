@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace FGTCLB\Testsuite\Service;
 
-use FGTCLB\OAuth2Server\Service\AbstractResourceHandler;
+use FGTCLB\OAuth2Server\Service\AbstractIdentityHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
 
-class AcmeClientResourceHandler extends AbstractResourceHandler
+class AcmeClientIdentityHandler extends AbstractIdentityHandler
 {
     public function handleAuthenticatedRequest(ServerRequestInterface $request): ResponseInterface
     {
