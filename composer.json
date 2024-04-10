@@ -36,7 +36,6 @@
   "autoload-dev": {
     "psr-4": {
       "FGTCLB\\OAuth2Server\\Tests\\": "Tests",
-      "FGTCLB\\TestOauth2Client\\": "Tests/Functional/Extensions/test_oauth2_client/Classes",
       "FGTCLB\\Testsuite\\": "Tests/Functional/Extensions/testsuite/Classes"
     }
   },
