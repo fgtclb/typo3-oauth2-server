@@ -25,7 +25,8 @@ This package can be installed via Composer:
 composer require 'fgtclb/typo3-oauth2-server'
 ```
 
-For a fully working setup a [RSA keypair needs to be generated](fgtclb/typo3-oauth2-server) and set in the extension configuration:
+For a fully working setup a [RSA keypair needs to be generated](fgtclb/typo3-oauth2-server) and set
+in the extension configuration:
 
 ```shell
 # Generate random private key
