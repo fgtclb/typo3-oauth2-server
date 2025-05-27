@@ -1,19 +1,37 @@
-# OAuth2 Server for TYPO3
+# TYPO3 Extension `OAuth2 Server`
 
-This package implements [OAuth2](https://oauth.net/2/) for TYPO3 to enable 3rd party services to authenticate users using frontend users in TYPO3.
+|                 | URL                                                                                            |
+|-----------------|------------------------------------------------------------------------------------------------|
+| **Repository:** | [https://github.com/fgtclb/typo3-oauth2-server](https://github.com/fgtclb/typo3-oauth2-server) |
+| **TER:**        | -                                                                                              |
+
+## Description
+
+This package implements [OAuth2](https://oauth.net/2/) for TYPO3 to enable 3rd party services to authenticate users
+using frontend users in TYPO3.
+
+## Compatibility
+
+| Branch                                                  | Version   | TYPO3 | PHP                                |
+|---------------------------------------------------------|-----------|-------|------------------------------------|
+| [master](https://github.com/fgtclb/typo3-oauth2-server) | 1.0.x-dev | ~v9   | 7.2, 7.3, 7.4 (depending on TYPO3) |
 
 ## Installation
 
 This package can be installed via Composer:
 
-    composer require fgtclb/typo3-oauth2-server
+```shell
+composer require 'fgtclb/typo3-oauth2-server'
+```
 
 For a fully working setup a [RSA keypair needs to be generated](fgtclb/typo3-oauth2-server) and set in the extension configuration:
 
-    # Generate random private key
-    openssl genrsa -out private.key 2048
-    # Extract public key from private key
-    openssl rsa -in private.key -pubout -out public.key
+```shell
+# Generate random private key
+openssl genrsa -out private.key 2048
+# Extract public key from private key
+openssl rsa -in private.key -pubout -out public.key
+```
 
 This keypair *must be stored safely* which means outside of the TYPO3 web directory and should be readonly.
 
@@ -26,7 +44,8 @@ This keypair *must be stored safely* which means outside of the TYPO3 web direct
 
 ### OAuth2 Client access
 
-To register clients in the OAuth2 server you need to create *OAuth2 Client* records on the root page accordingly. Here you can set the identifier and secret as well as redirect URLs to be used in your client code.
+To register clients in the OAuth2 server you need to create *OAuth2 Client* records on the root page accordingly.
+Here you can set the identifier and secret as well as redirect URLs to be used in your client code.
 
 ## Endpoints
 
@@ -37,3 +56,9 @@ After installation the following endpoints are available and should be set in th
 3. `/oauth/identity`: endpoint for retrieving a username using an access token
 
 Currently only the [authorization code grant](https://oauth2.thephpleague.com/authorization-server/auth-code-grant/) is available.
+
+## Credits
+
+This extension was created by [FGTCLB GmbH](https://www.fgtclb.com/).
+
+[Find more TYPO3 extensions we have developed](https://github.com/fgtclb/).
