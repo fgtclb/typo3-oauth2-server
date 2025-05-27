@@ -9,7 +9,7 @@ on:
 jobs:
   testsuite:
     name: all tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       # This prevents cancellation of matrix job runs, if one or more already failed
       # and let the remaining matrix jobs be executed anyway.
@@ -18,7 +18,7 @@ jobs:
         php: [ '8.1', '8.2', '8.3' ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: Build/Scripts/runTests.sh -t 12 -p ${{ matrix.php }} -s composerUpdate
