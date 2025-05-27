@@ -12,9 +12,10 @@ using frontend users in TYPO3.
 
 ## Compatibility
 
-| Branch                                                  | Version   | TYPO3 | PHP                                |
-|---------------------------------------------------------|-----------|-------|------------------------------------|
-| [master](https://github.com/fgtclb/typo3-oauth2-server) | 1.0.x-dev | ~v9   | 7.2, 7.3, 7.4 (depending on TYPO3) |
+| Branch                                                    | Version   | TYPO3      | PHP                                               |
+|-----------------------------------------------------------|-----------|------------|---------------------------------------------------|
+| [master](https://github.com/fgtclb/typo3-oauth2-server)   | 2.0.x-dev | ~v11, ~v12 | 7.4, 8.0, 8.1, 8.2, 8.3, 8.4 (depending on TYPO3) |
+| [1](https://github.com/fgtclb/typo3-oauth2-server/tree/1) | 1.0.x-dev | ~v9        | 7.2, 7.3, 7.4                                     |
 
 ## Installation
 
