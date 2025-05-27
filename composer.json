@@ -39,6 +39,9 @@
   "extra": {
     "typo3/cms": {
       "extension-key": "oauth2_server"
+    },
+    "branch-alias": {
+      "dev-main": "2.x-dev"
     }
   }
 }
