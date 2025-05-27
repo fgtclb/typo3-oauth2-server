@@ -20,6 +20,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: "Link docker compose"
+        run: |
+          echo "#!/usr/bin/env bash" > /usr/local/bin/docker-compose
+          echo "" >> /usr/local/bin/docker-compose
+          echo "docker compose \"\$@\"" >> /usr/local/bin/docker-compose
+          chmod a+x /usr/local/bin/docker-compose
+
       - name: Install dependencies
         run: Build/Scripts/runTests.sh -t 12 -p ${{ matrix.php }} -s composerUpdate
 
