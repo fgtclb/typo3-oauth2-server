@@ -95,7 +95,13 @@ final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInter
         // With TYPO3 11.5.17 it takes 3 loops to unserialize the AuthorizationRequest
         $count = 0;
         while (!$authorizationRequest instanceof AuthorizationRequest && $count < 10) {
-            $authorizationRequest = unserialize($authorizationRequest, ['allowed_classes' => ['League\OAuth2\Server\RequestTypes\AuthorizationRequest', 'FGTCLB\OAuth2Server\Domain\Entity\Client']]);
+            $authorizationRequest = unserialize($authorizationRequest, [
+                'allowed_classes' => [
+                    'League\OAuth2\Server\RequestTypes\AuthorizationRequest',
+                    'FGTCLB\OAuth2Server\Domain\Entity\Client',
+                    'FGTCLB\OAuth2Server\Domain\Entity\Scope',
+                ],
+            ]);
             $count++;
         }
 
