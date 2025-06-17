@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class IdentityHandlerPass implements CompilerPassInterface
+final class IdentityHandlerPass implements CompilerPassInterface
 {
     /**
      * @inheritDoc
@@ -19,11 +19,8 @@ class IdentityHandlerPass implements CompilerPassInterface
         if (!$container->has(IdentityHandlingFactory::class)) {
             return;
         }
-
         $definition = $container->findDefinition(IdentityHandlingFactory::class);
-
         $taqgedServices = $container->findTaggedServiceIds('oauth.identity_handler');
-
         foreach ($taqgedServices as $id => $tags) {
             foreach ($tags as $attributes) {
                 $definition->addMethodCall(
