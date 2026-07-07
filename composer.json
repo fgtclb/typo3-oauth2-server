@@ -54,7 +54,11 @@
       "typo3/cms-composer-installers": true
     },
     "bin-dir": ".Build/bin",
-    "vendor-dir": ".Build/vendor"
+    "vendor-dir": ".Build/vendor",
+    "audit": {
+      "block-insecure": false,
+      "block-abandoned": false
+    }
   },
   "repositories": {
     "test-ext": {
