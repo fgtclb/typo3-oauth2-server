@@ -1,6 +1,6 @@
 <?php
 
-return [
+$tca = [
     'ctrl' => [
         'label' => 'name',
         'descriptionColumn' => 'description',
@@ -87,3 +87,29 @@ return [
         'credentials' => ['showitem' => 'identifier, --linebreak--, secret'],
     ],
 ];
+
+// TYPO3 v12 applies these TCA migrations automatically at runtime and logs an
+// E_USER_DEPRECATED for each. Provide the already-migrated form for v12+ while
+// keeping the v11-compatible definition above untouched.
+if ((new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion() >= 12) {
+    // 'cruser_id' is no longer evaluated and has been dropped from the schema.
+    unset($tca['ctrl']['cruser_id']);
+
+    // "required" in "eval" is replaced by the dedicated 'required' => true.
+    $tca['columns']['name']['config']['eval'] = 'trim';
+    $tca['columns']['name']['config']['required'] = true;
+
+    $tca['columns']['identifier']['config']['eval'] = 'trim,unique';
+    $tca['columns']['identifier']['config']['required'] = true;
+
+    // "password"/"saltedPassword" in "eval" migrate the field to type 'password'
+    // (which also drops the obsolete "max"). "required" moves out of "eval" too.
+    $tca['columns']['secret']['config']['type'] = 'password';
+    $tca['columns']['secret']['config']['required'] = true;
+    unset(
+        $tca['columns']['secret']['config']['max'],
+        $tca['columns']['secret']['config']['eval'],
+    );
+}
+
+return $tca;
