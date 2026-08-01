@@ -1,3 +1,13 @@
+> [!CAUTION]
+> **This branch is end of life.**
+>
+> `1.x` is no longer maintained. It receives no bug fixes, no security fixes and
+> no further releases.
+>
+> Use a maintained branch instead: `main`.
+>
+> Marked end of life on 2026-08-01.
+
 # TYPO3 Extension `OAuth2 Server`
 
 |                 | URL                                                                                            |
