@@ -1,0 +1,52 @@
+# .github/workflows/sbom.yml — thin per-repository caller.
+#
+# Pinned to @v1, a moving tag on <org>/.github that tracks the latest compatible 1.x release. That
+# means a fix to the reusable workflow reaches every caller when the tag moves, without touching
+# each repository. Pin @v1.1.0 instead where a repository must not move on its own.
+#
+# Deliberately has NO `schedule:` trigger. GitHub auto-disables scheduled workflows in repositories
+# with no activity for 60 days — already true for 58 of our 99 repos — and notifies only whoever
+# last edited the cron line. Periodic coverage is the central orchestrator's job; this workflow
+# exists to capture release-time state, which is exactly what a schedule cannot do reliably.
+name: SBOM
+
+on:
+  push:
+    branches: [main, master]
+    tags: ['*']
+  schedule:
+    # weekly, Monday 04:00 UTC
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+    inputs:
+      target_ref:
+        description: "Regenerate for this ref (e.g. a release tag). Empty = current branch."
+        required: false
+        type: string
+        default: ""
+
+
+jobs:
+  sbom:
+    uses: fgtclb/.github/.github/workflows/sbom-reusable.yml@v1
+    with:
+      dry_run: false
+      target_ref: ${{ inputs.target_ref || '' }}
+    secrets:
+      DTRACK_API_KEY: ${{ secrets.DTRACK_API_KEY }}
+      DTRACK_API_URL: ${{ secrets.DTRACK_API_URL }}
+      # Composer credentials for PRIVATE dependencies. Deliberately commented out: which secret a
+      # repository holds differs, and a template that names one would silently remove the working
+      # wiring from a repository that uses the other. install-workflow.sh detects what the
+      # repository actually has and preserves whatever is already wired.
+      #
+      # Uncomment the line matching this repository's secret:
+      #
+      #   COMPOSER_AUTH holds a complete auth.json document - this is the established convention
+      #   here, and PRIVATE_PACKAGE_TOKEN is what holds it:
+      # COMPOSER_AUTH: ${{ secrets.PRIVATE_PACKAGE_TOKEN }}
+      #
+      #   COMPOSER_GITHUB_TOKEN holds a bare GitHub token, used both to rewrite SSH remotes and as
+      #   a github-oauth entry:
+      # COMPOSER_GITHUB_TOKEN: ${{ secrets.COMPOSER_GITHUB_TOKEN }}
+
