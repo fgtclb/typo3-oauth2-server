@@ -12,11 +12,11 @@ Security updates are provided for the following versions. Versions marked
 unsupported no longer receive security fixes; please upgrade before
 reporting an issue against them.
 
-| Version        | Supported           |
-| -------------- | ------------------- |
-| 2.x            | :x:                 |
-| 1.x            | :x:                 |
-| < 1.0          | :x:                 |
+| Version | Supported |
+| ------- | --------- |
+| 2.x     | :x:       |
+| 1.x     | :x:       |
+| < 1.0   | :x:       |
 
 > **Note:** the newest version of this product targets a TYPO3 version that has left
 > regular LTS maintenance, so no version is currently covered by security updates.
@@ -36,10 +36,10 @@ open a public GitHub/GitLab issue.
 
 ### What to expect
 
-| Step                         | Timeframe                         |
-| ----------------------------- | ---------------------------------- |
-| Acknowledgement of your report | within 1 business day (typically much faster) |
-| Status updates                | at least every 7 days until resolved |
+| Step                                | Timeframe                                                              |
+| ----------------------------------- | ---------------------------------------------------------------------- |
+| Acknowledgement of your report      | within 1 business day (typically much faster)                          |
+| Status updates                      | at least every 7 days until resolved                                   |
 | Fix / mitigation, based on severity | Critical/High: as fast as possible; Medium/Low: next scheduled release |
 
 We coordinate the disclosure timeline with the reporter and aim for a
