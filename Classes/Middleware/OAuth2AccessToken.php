@@ -21,7 +21,8 @@ use TYPO3\CMS\Core\Http\Response;
 final class OAuth2AccessToken implements MiddlewareInterface
 {
     public function __construct(
-        private readonly Configuration $configuration
+        private readonly Configuration $configuration,
+        private readonly ServerFactory $serverFactory
     ) {}
 
     /**
@@ -34,8 +35,7 @@ final class OAuth2AccessToken implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $factory = new ServerFactory();
-        $server = $factory->buildAuthorizationServer();
+        $server = $this->serverFactory->buildAuthorizationServer();
 
         try {
             return $server->respondToAccessTokenRequest($request, new Response());

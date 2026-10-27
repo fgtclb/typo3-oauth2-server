@@ -38,6 +38,7 @@ final class OAuth2Authorization implements MiddlewareInterface
         private readonly Configuration $configuration,
         private readonly Context $context,
         private readonly SiteFinder $siteFinder,
+        private readonly ServerFactory $serverFactory,
         private readonly LoggerInterface $logger
     ) {}
 
@@ -52,8 +53,7 @@ final class OAuth2Authorization implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $factory = new ServerFactory();
-        $server = $factory->buildAuthorizationServer();
+        $server = $this->serverFactory->buildAuthorizationServer();
 
         $frontendUser = $request->getAttribute('frontend.user');
 
