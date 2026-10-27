@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Domain\Repository;
 
-use Doctrine\DBAL\Result;
 use FGTCLB\OAuth2Server\Domain\Entity\Client;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -35,9 +34,6 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
         $this->databaseConnection = $connectionPool->getConnectionForTable(self::TABLE_NAME);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getClientEntity(string $clientIdentifier): ?Client
     {
         $clientData = $this->findRawByIdentifier($clientIdentifier);
@@ -55,7 +51,6 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
     {
         $queryBuilder = $this->databaseConnection
             ->createQueryBuilder();
-        /** @var Result $result select() always yields a Result instance and not an int */
         $result = $queryBuilder
             ->select('*')
             ->from(self::TABLE_NAME)
@@ -69,9 +64,6 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
         return $row ?: null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function validateClient(string $clientIdentifier, ?string $clientSecret, ?string $grantType): bool
     {
         // we currently only support confidential clients, which must always supply a secret (TODO check if this is actually true).

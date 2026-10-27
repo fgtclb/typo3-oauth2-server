@@ -18,9 +18,6 @@ final class RefreshTokenRepository implements RefreshTokenRepositoryInterface
         return new RefreshToken();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity): void
     {
         // TODO: Persist token to the datbase or similar for audit logging or revocation

@@ -95,8 +95,6 @@ final class Configuration
 
     /**
      * Get the path to the private RSA key
-     *
-     * @return string
      */
     public function getPrivateKeyFile(): string
     {
@@ -105,8 +103,6 @@ final class Configuration
 
     /**
      * Get the path to the public RSA key
-     *
-     * @return string
      */
     public function getPublicKeyFile(): string
     {
@@ -115,8 +111,6 @@ final class Configuration
 
     /**
      * Get the UID of the login page
-     *
-     * @return int
      */
     public function getLoginPage(): int
     {
@@ -125,8 +119,6 @@ final class Configuration
 
     /**
      * Get the lifetime of access tokens
-     *
-     * @return \DateInterval
      */
     public function getAccessTokenLifetime(): \DateInterval
     {
@@ -135,8 +127,6 @@ final class Configuration
 
     /**
      * Get the lifetime of refresh tokens
-     *
-     * @return \DateInterval
      */
     public function getRefreshTokenLifetime(): \DateInterval
     {
@@ -145,8 +135,6 @@ final class Configuration
 
     /**
      * Get the lifetime of authorization codes
-     *
-     * @return \DateInterval
      */
     public function getAuthorizationCodeLifetime(): \DateInterval
     {
@@ -155,8 +143,6 @@ final class Configuration
 
     /**
      * Get the authorization endpoint
-     *
-     * @return string
      */
     public function getAuthEndpoint(): string
     {
@@ -165,8 +151,6 @@ final class Configuration
 
     /**
      * Get the token endpoint
-     *
-     * @return string
      */
     public function getTokenEndpoint(): string
     {
@@ -175,8 +159,6 @@ final class Configuration
 
     /**
      * Get the resource endpoint
-     *
-     * @return string
      */
     public function getResourceEndpoint(): string
     {

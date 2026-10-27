@@ -20,30 +20,22 @@ final class UserSession
 
     /**
      * Retrieve data from the user session
-     *
-     * @param string $key
-     * @return mixed
      */
-    public function getData(string $key)
+    public function getData(string $key): mixed
     {
         return $this->frontendUser->getSessionData($key);
     }
 
     /**
      * Store data in the user session
-     *
-     * @param string $key
-     * @param mixed $data
      */
-    public function setData(string $key, $data): void
+    public function setData(string $key, mixed $data): void
     {
         $this->frontendUser->setAndSaveSessionData($key, $data);
     }
 
     /**
      * Store data in the user session
-     *
-     * @param string $key
      */
     public function removeData(string $key): void
     {
