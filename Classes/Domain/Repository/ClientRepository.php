@@ -25,12 +25,12 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
     use LoggerAwareTrait;
 
     private const TABLE_NAME = 'tx_oauth2server_client';
-    private PasswordHashFactory $hashFactory;
-    private Connection $databaseConnection;
+    private readonly Connection $databaseConnection;
 
-    public function __construct(PasswordHashFactory $hashFactory, ConnectionPool $connectionPool)
-    {
-        $this->hashFactory = $hashFactory;
+    public function __construct(
+        private readonly PasswordHashFactory $hashFactory,
+        ConnectionPool $connectionPool
+    ) {
         $this->databaseConnection = $connectionPool->getConnectionForTable(self::TABLE_NAME);
     }
 
@@ -47,7 +47,7 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
     /**
      * @return TClientRow|null
      */
-    protected function findRawByIdentifier(string $clientIdentifier): ?array
+    private function findRawByIdentifier(string $clientIdentifier): ?array
     {
         $queryBuilder = $this->databaseConnection
             ->createQueryBuilder();

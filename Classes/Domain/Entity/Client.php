@@ -22,17 +22,19 @@ final class Client implements ClientEntityInterface
     use EntityTrait;
     use ClientTrait;
 
-    private string $secret;
-
     /**
      * @param non-empty-string $identifier
      */
-    private function __construct(string $identifier, string $name, string $redirectUri, string $secret, bool $isConfidential)
-    {
+    private function __construct(
+        string $identifier,
+        string $name,
+        string $redirectUri,
+        private readonly string $secret,
+        bool $isConfidential
+    ) {
         $this->identifier = $identifier;
         $this->name = $name;
         $this->redirectUri = GeneralUtility::trimExplode("\n", $redirectUri);
-        $this->secret = $secret;
         $this->isConfidential = $isConfidential;
     }
 

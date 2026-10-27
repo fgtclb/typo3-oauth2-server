@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class ServerFactory
 {
-    private Configuration $configuration;
+    private readonly Configuration $configuration;
 
     public function __construct(?Configuration $configuration = null)
     {

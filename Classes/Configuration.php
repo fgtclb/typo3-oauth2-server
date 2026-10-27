@@ -12,24 +12,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class Configuration
 {
-    private string $privateKeyFile;
+    private readonly string $privateKeyFile;
 
-    private string $publicKeyFile;
+    private readonly string $publicKeyFile;
 
     /**
      * UID of the login page
      */
-    private int $loginPage;
+    private readonly int $loginPage;
 
-    private string $authEndpoint = '/oauth/authorize';
-    private string $tokenEndpoint = '/oauth/token';
-    private string $resourceEndpoint = '/oauth/identity';
+    private readonly string $authEndpoint;
+    private readonly string $tokenEndpoint;
+    private readonly string $resourceEndpoint;
 
-    private \DateInterval $accessTokenLifetime;
+    private readonly \DateInterval $accessTokenLifetime;
 
-    private \DateInterval $refreshTokenLifetime;
+    private readonly \DateInterval $refreshTokenLifetime;
 
-    private \DateInterval $authorizationCodeLifetime;
+    private readonly \DateInterval $authorizationCodeLifetime;
 
     /**
      * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
@@ -53,9 +53,9 @@ final class Configuration
         $this->privateKeyFile = $configuration['privateKeyFile'];
         $this->publicKeyFile = $configuration['publicKeyFile'];
         $this->loginPage = (int)$configuration['loginPage'];
-        $this->authEndpoint = $configuration['authEndpoint'] ?? $this->authEndpoint;
-        $this->tokenEndpoint = $configuration['tokenEndpoint'] ?? $this->tokenEndpoint;
-        $this->resourceEndpoint = $configuration['resourceEndpoint'] ?? $this->resourceEndpoint;
+        $this->authEndpoint = $configuration['authEndpoint'] ?? '/oauth/authorize';
+        $this->tokenEndpoint = $configuration['tokenEndpoint'] ?? '/oauth/token';
+        $this->resourceEndpoint = $configuration['resourceEndpoint'] ?? '/oauth/identity';
 
         $accessInterval = false;
         if (isset($configuration['accessTokenLifetime'])) {
