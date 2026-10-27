@@ -63,7 +63,7 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
                 $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($clientIdentifier))
             )
             ->setMaxResults(1)
-            ->execute();
+            ->executeQuery();
         /** @var TClientRow|false $row */
         $row = $result->fetchAssociative();
         return $row ?: null;
