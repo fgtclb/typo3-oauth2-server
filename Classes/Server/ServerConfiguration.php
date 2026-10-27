@@ -14,12 +14,12 @@ final class ServerConfiguration
     /**
      * @var string Path to a private RSA key
      */
-    protected string $privateKeyFile;
+    private string $privateKeyFile;
 
     /**
      * @var string Path to a public RSA key
      */
-    protected string $publicKeyFile;
+    private string $publicKeyFile;
 
     /**
      * @param ExtensionConfiguration $extensionConfiguration
