@@ -6,8 +6,7 @@ namespace FGTCLB\OAuth2Server\Domain\Repository;
 
 use FGTCLB\OAuth2Server\Domain\Entity\Client;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -20,16 +19,15 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
  *
  * @phpstan-type TClientRow array{uid: int, identifier: string, name: string, secret: string, redirect_uris: string, description: string}
  */
-final class ClientRepository implements ClientRepositoryInterface, LoggerAwareInterface
+final class ClientRepository implements ClientRepositoryInterface
 {
-    use LoggerAwareTrait;
-
     private const TABLE_NAME = 'tx_oauth2server_client';
     private readonly Connection $databaseConnection;
 
     public function __construct(
         private readonly PasswordHashFactory $hashFactory,
-        ConnectionPool $connectionPool
+        ConnectionPool $connectionPool,
+        private readonly LoggerInterface $logger
     ) {
         $this->databaseConnection = $connectionPool->getConnectionForTable(self::TABLE_NAME);
     }
