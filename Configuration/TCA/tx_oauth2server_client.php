@@ -1,13 +1,12 @@
 <?php
 
-$tca = [
+return [
     'ctrl' => [
         'label' => 'name',
         'descriptionColumn' => 'description',
         'tstamp' => 'tstamp',
         'title' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_client_tca.xlf:client.title',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'adminOnly' => true,
         'rootLevel' => 1,
@@ -18,8 +17,6 @@ $tca = [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'name',
-    ],
-    'interface' => [
     ],
     'columns' => [
         'uuid' => [
@@ -35,7 +32,8 @@ $tca = [
                 'type' => 'input',
                 'size' => 32,
                 'max' => 255,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
+                'required' => true,
             ],
         ],
         'identifier' => [
@@ -44,16 +42,16 @@ $tca = [
                 'type' => 'input',
                 'size' => 32,
                 'max' => 32,
-                'eval' => 'trim,unique,required',
+                'eval' => 'trim,unique',
+                'required' => true,
             ],
         ],
         'secret' => [
             'label' => 'LLL:EXT:oauth2_server/Resources/Private/Language/locallang_client_tca.xlf:client.secret.label',
             'config' => [
-                'type' => 'input',
+                'type' => 'password',
                 'size' => 32,
-                'max' => 100,
-                'eval' => 'trim,required,password,saltedPassword',
+                'required' => true,
                 'autocomplete' => false,
             ],
         ],
@@ -87,29 +85,3 @@ $tca = [
         'credentials' => ['showitem' => 'identifier, --linebreak--, secret'],
     ],
 ];
-
-// TYPO3 v12 applies these TCA migrations automatically at runtime and logs an
-// E_USER_DEPRECATED for each. Provide the already-migrated form for v12+ while
-// keeping the v11-compatible definition above untouched.
-if ((new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion() >= 12) {
-    // 'cruser_id' is no longer evaluated and has been dropped from the schema.
-    unset($tca['ctrl']['cruser_id']);
-
-    // "required" in "eval" is replaced by the dedicated 'required' => true.
-    $tca['columns']['name']['config']['eval'] = 'trim';
-    $tca['columns']['name']['config']['required'] = true;
-
-    $tca['columns']['identifier']['config']['eval'] = 'trim,unique';
-    $tca['columns']['identifier']['config']['required'] = true;
-
-    // "password"/"saltedPassword" in "eval" migrate the field to type 'password'
-    // (which also drops the obsolete "max"). "required" moves out of "eval" too.
-    $tca['columns']['secret']['config']['type'] = 'password';
-    $tca['columns']['secret']['config']['required'] = true;
-    unset(
-        $tca['columns']['secret']['config']['max'],
-        $tca['columns']['secret']['config']['eval'],
-    );
-}
-
-return $tca;
