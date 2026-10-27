@@ -7,11 +7,12 @@ namespace FGTCLB\OAuth2Server\Tests\Unit\Domain\Repository;
 use FGTCLB\OAuth2Server\Domain\Repository\AccessTokenRepository;
 use FGTCLB\OAuth2Server\Exception\IdentifierEmptyException;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \FGTCLB\OAuth2Server\Domain\Repository\AccessTokenRepository
- */
+#[CoversClass(AccessTokenRepository::class)]
 final class AccessTokenRepositoryTest extends UnitTestCase
 {
     public static function invalidUserIdentifierDataProvider(): \Generator
@@ -27,10 +28,8 @@ final class AccessTokenRepositoryTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidUserIdentifierDataProvider
-     */
+    #[Test]
+    #[DataProvider('invalidUserIdentifierDataProvider')]
     public function getNewTokenRejectsInvalidUserIdentifier(?string $userIdentifier): void
     {
         $this->expectException(IdentifierEmptyException::class);
@@ -56,10 +55,8 @@ final class AccessTokenRepositoryTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validUserIdentifierDataProvider
-     */
+    #[Test]
+    #[DataProvider('validUserIdentifierDataProvider')]
     public function getNewTokenAcceptsValidUserIdentifier(string $userIdentifier): void
     {
         $client = $this->createStub(ClientEntityInterface::class);

@@ -6,11 +6,12 @@ namespace FGTCLB\OAuth2Server\Tests\Unit\Domain\Entity;
 
 use FGTCLB\OAuth2Server\Domain\Entity\Client;
 use FGTCLB\OAuth2Server\Exception\IdentifierEmptyException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \FGTCLB\OAuth2Server\Domain\Entity\Client
- */
+#[CoversClass(Client::class)]
 final class ClientTest extends UnitTestCase
 {
     public static function invalidIdentifierDataProvider(): \Generator
@@ -23,10 +24,8 @@ final class ClientTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidIdentifierDataProvider
-     */
+    #[Test]
+    #[DataProvider('invalidIdentifierDataProvider')]
     public function fromDatabaseRowRejectsInvalidIdentifier(string $identifier): void
     {
         $this->expectException(IdentifierEmptyException::class);
@@ -55,10 +54,8 @@ final class ClientTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validIdentifierDataProvider
-     */
+    #[Test]
+    #[DataProvider('validIdentifierDataProvider')]
     public function fromDatabaseRowAcceptsValidIdentifier(string $identifier): void
     {
         $client = Client::fromDatabaseRow([
