@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FGTCLB\OAuth2Server\Domain\Entity;
 
 use FGTCLB\OAuth2Server\Domain\Repository\ClientRepository;
+use FGTCLB\OAuth2Server\Exception\IdentifierEmptyException;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\Traits\ClientTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
@@ -23,6 +24,9 @@ final class Client implements ClientEntityInterface
 
     private string $secret;
 
+    /**
+     * @param non-empty-string $identifier
+     */
     private function __construct(string $identifier, string $name, string $redirectUri, string $secret, bool $isConfidential)
     {
         $this->identifier = $identifier;
@@ -34,9 +38,16 @@ final class Client implements ClientEntityInterface
 
     /**
      * @param TClientRow $row
+     * @throws IdentifierEmptyException
      */
     public static function fromDatabaseRow(array $row): self
     {
+        if (empty($row['identifier'])) {
+            throw new IdentifierEmptyException(
+                'The identifier from database is empty',
+                1793110430
+            );
+        }
         return new self(
             $row['identifier'],
             $row['name'],

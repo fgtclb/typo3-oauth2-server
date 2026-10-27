@@ -29,6 +29,8 @@
     "phpstan/phpstan-phpunit": "^1.4.2",
     "phpunit/phpunit": "^10.5.66",
     "saschaegerer/phpstan-typo3": "^1.10",
+    "sbuerk/fixture-packages": "^1.1.4",
+    "sbuerk/typo3-site-based-test-trait": "^1.0.2",
     "typo3/testing-framework": "^8.3.3"
   },
   "autoload": {
@@ -38,9 +40,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "FGTCLB\\OAuth2Server\\Tests\\": "Tests",
-      "FGTCLB\\TestOauth2Client\\": "Tests/Functional/Extensions/test_oauth2_client/Classes",
-      "FGTCLB\\Testsuite\\": "Tests/Functional/Extensions/testsuite/Classes"
+      "FGTCLB\\OAuth2Server\\Tests\\": "Tests"
     }
   },
   "config": {
@@ -48,7 +48,8 @@
     "sort-packages": true,
     "allow-plugins": {
       "typo3/class-alias-loader": true,
-      "typo3/cms-composer-installers": true
+      "typo3/cms-composer-installers": true,
+      "sbuerk/fixture-packages": true
     },
     "bin-dir": ".Build/bin",
     "vendor-dir": ".Build/vendor",
@@ -72,6 +73,11 @@
     },
     "branch-alias": {
       "dev-main": "3.0.x-dev"
+    },
+    "sbuerk/fixture-packages": {
+      "paths": {
+        "Tests/Functional/Extensions/*": ["autoload"]
+      }
     }
   }
 }
