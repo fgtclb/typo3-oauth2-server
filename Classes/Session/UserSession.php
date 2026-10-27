@@ -35,7 +35,7 @@ final class UserSession
     }
 
     /**
-     * Store data in the user session
+     * Remove data from the user session
      */
     public function removeData(string $key): void
     {
