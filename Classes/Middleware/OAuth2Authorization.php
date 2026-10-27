@@ -15,8 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
@@ -33,14 +32,13 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  *
  * @see https://oauth2.thephpleague.com/authorization-server/auth-code-grant/#part-one
  */
-final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInterface
+final class OAuth2Authorization implements MiddlewareInterface
 {
-    use LoggerAwareTrait;
-
     public function __construct(
         private readonly Configuration $configuration,
         private readonly Context $context,
-        private readonly SiteFinder $siteFinder
+        private readonly SiteFinder $siteFinder,
+        private readonly LoggerInterface $logger
     ) {}
 
     /**
