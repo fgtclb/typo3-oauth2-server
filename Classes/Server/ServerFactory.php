@@ -27,7 +27,7 @@ final class ServerFactory
     /**
      * @param Configuration|null $configuration
      */
-    public function __construct(Configuration $configuration = null)
+    public function __construct(?Configuration $configuration = null)
     {
         $this->configuration = $configuration ?: GeneralUtility::makeInstance(Configuration::class);
     }
