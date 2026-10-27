@@ -21,19 +21,12 @@ use TYPO3\CMS\Core\Http\Response;
  */
 final class OAuth2Identity implements MiddlewareInterface
 {
-    private Configuration $configuration;
-    private ServerFactory $authServerFactory;
-    private IdentityHandlingFactory $identityHandlingFactory;
-
     public function __construct(
-        Configuration $configuration,
-        IdentityHandlingFactory $identityHandlingFactory,
-        ServerFactory $authServerFactory
-    ) {
-        $this->configuration = $configuration;
-        $this->identityHandlingFactory = $identityHandlingFactory;
-        $this->authServerFactory = $authServerFactory;
-    }
+        private readonly Configuration $configuration,
+        private readonly IdentityHandlingFactory $identityHandlingFactory,
+        private readonly ServerFactory $authServerFactory
+    ) {}
+
     /**
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.

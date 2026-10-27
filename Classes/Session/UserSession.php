@@ -11,12 +11,9 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 final class UserSession
 {
-    private FrontendUserAuthentication $frontendUser;
-
-    public function __construct(FrontendUserAuthentication $frontendUser)
-    {
-        $this->frontendUser = $frontendUser;
-    }
+    public function __construct(
+        private readonly FrontendUserAuthentication $frontendUser
+    ) {}
 
     /**
      * Retrieve data from the user session

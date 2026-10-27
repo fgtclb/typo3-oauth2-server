@@ -37,16 +37,11 @@ final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInter
 {
     use LoggerAwareTrait;
 
-    protected SiteFinder $siteFinder;
-    protected Context $context;
-    protected Configuration $configuration;
-
-    public function __construct(Configuration $configuration, Context $context, SiteFinder $siteFinder)
-    {
-        $this->configuration = $configuration;
-        $this->context = $context;
-        $this->siteFinder = $siteFinder;
-    }
+    public function __construct(
+        private readonly Configuration $configuration,
+        private readonly Context $context,
+        private readonly SiteFinder $siteFinder
+    ) {}
 
     /**
      * Process an incoming server request and return a response, optionally delegating

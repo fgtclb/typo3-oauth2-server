@@ -14,12 +14,12 @@ final class ServerConfiguration
     /**
      * Path to a private RSA key
      */
-    private string $privateKeyFile;
+    private readonly string $privateKeyFile;
 
     /**
      * Path to a public RSA key
      */
-    private string $publicKeyFile;
+    private readonly string $publicKeyFile;
 
     /**
      * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
