@@ -6,16 +6,14 @@ on:
 
 jobs:
   publish:
-    name: Ensure GitHub Release with extension TER artifact and publishing to TER
+    name: Ensure GitHub Release with extension artifact
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
-    env:
-      TYPO3_API_TOKEN: ${{ secrets.TYPO3_API_TOKEN }}
     permissions:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Verify tag
         run: |
@@ -28,50 +26,50 @@ jobs:
         id: get-version
         run: echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
 
-      - name: Get extension key
-        id: get-extension-key
-        run: |
-          echo "DETECTED_EXTENSION_KEY=$(cat composer.json | jq -r '.extra."typo3/cms"."extension-key"' )" >> "$GITHUB_ENV"
-
-      - name: Get comment
+      - name: Get release comment and extension key
         id: get-comment
         run: |
-          {
-            echo 'terReleaseNotes<<EOF'
-            echo "https://github.com/${{ github.repository }}/releases/tag/${{ env.version }}"
-            echo EOF
-          } >> "$GITHUB_ENV"
+          readonly local releaseCommentPrependBody="$( git tag -l ${{ env.version }} --format '%(contents)' )"
+          if (( $(grep -c . <<<"${releaseCommentPrependBody// }") > 1 )); then
+            {
+              echo 'releaseCommentPrependBody<<EOF'
+              echo "$releaseCommentPrependBody"
+              echo EOF
+            } >> "$GITHUB_ENV"
+          fi
+          echo "DETECTED_EXTENSION_KEY=$(cat composer.json | jq -r '.extra."typo3/cms"."extension-key"' )" >> "$GITHUB_ENV"
 
-      - name: Setup PHP
+      - name: Setup PHP 8.2
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
+          php-version: 8.2
           extensions: intl, mbstring, json, zip, curl
           tools: composer:v2
 
       - name: Install tailor
         run: composer global require typo3/tailor --prefer-dist --no-progress --no-suggest
 
-      # Note that step will fail when `env.version` does not match the `ext_emconf.php` version.
-      - name: Create local TER package upload artifact
+      - name: Set composer.json version and extra.typo3/cms.version
         run: |
-          php ~/.composer/vendor/bin/tailor create-artefact ${{ env.version }}
+          composer config "version" "${{ env.version }}" \
+          && composer config "extra"."typo3/cms"."version" "${{ env.version }}" \
+          && composer validate --strict --no-check-lock --no-check-version
+
+      # Note that step will fail when `env.version` does not match the `ext_emconf.php` version.
+      - name: Create local extension artifact
+        run: |
+          php ~/.composer/vendor/bin/tailor create-artefact ${{ env.version }} ${{ env.DETECTED_EXTENSION_KEY }}
 
       # Note that when release already exists for tag, only files will be uploaded and lets this acting as a
       # fallback to ensure that a real GitHub release is created for the tag along with extension artifacts.
       - name: Create release and upload artifacts in the same step
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         if: ${{startsWith(github.ref, 'refs/tags/') }}
         with:
           name: "[RELEASE] ${{ env.version }}"
+          body: "${{ env.releaseCommentPrependBody }}"
           generate_release_notes: true
           files: |
             tailor-version-artefact/${{ env.DETECTED_EXTENSION_KEY }}_${{ env.version }}.zip
             LICENSE
           fail_on_unmatched_files: true
-
-# @todo Uncomment TER publish when TER release is put on the table
-#      - name: Publish to TER
-#        run: |
-#          php ~/.composer/vendor/bin/tailor ter:publish --comment "${{ env.terReleaseNotes }}" ${{ env.version }} \
-#            --artefact=tailor-version-artefact/${{ env.DETECTED_EXTENSION_KEY }}_${{ env.version }}.zip
