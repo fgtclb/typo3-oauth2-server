@@ -81,15 +81,15 @@ class ConfigurationTest extends UnitTestCase
 
         $configuration = new Configuration();
 
-        self::assertStringEndsWith($expectedPrivateKeyString, $configuration->getPrivateKeyFile());
-        self::assertStringEndsWith($expectedPublicKeyString, $configuration->getPublicKeyFile());
-        self::assertEquals($expectedLoginPage, $configuration->getLoginPage());
-        self::assertEquals($expectedAuthEndpoint, $configuration->getAuthEndpoint());
-        self::assertEquals($expectedTokenEndpoint, $configuration->getTokenEndpoint());
-        self::assertEquals($expectedResourceEndpoint, $configuration->getResourceEndpoint());
-        self::assertInstanceOf($expectedAccessTokenLifetimeType, $configuration->getAccessTokenLifetime());
-        self::assertInstanceOf($expectedRefreshTokenLifetimeType, $configuration->getRefreshTokenLifetime());
-        self::assertInstanceOf($expectedAuthorizationCodeLifetimeType, $configuration->getAuthorizationCodeLifetime());
+        $this->assertStringEndsWith($expectedPrivateKeyString, $configuration->getPrivateKeyFile());
+        $this->assertStringEndsWith($expectedPublicKeyString, $configuration->getPublicKeyFile());
+        $this->assertEquals($expectedLoginPage, $configuration->getLoginPage());
+        $this->assertEquals($expectedAuthEndpoint, $configuration->getAuthEndpoint());
+        $this->assertEquals($expectedTokenEndpoint, $configuration->getTokenEndpoint());
+        $this->assertEquals($expectedResourceEndpoint, $configuration->getResourceEndpoint());
+        $this->assertInstanceOf($expectedAccessTokenLifetimeType, $configuration->getAccessTokenLifetime());
+        $this->assertInstanceOf($expectedRefreshTokenLifetimeType, $configuration->getRefreshTokenLifetime());
+        $this->assertInstanceOf($expectedAuthorizationCodeLifetimeType, $configuration->getAuthorizationCodeLifetime());
     }
 
     /**

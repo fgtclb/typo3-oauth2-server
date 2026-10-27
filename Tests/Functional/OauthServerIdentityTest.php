@@ -49,9 +49,9 @@ class OauthServerIdentityTest extends AbstractOauth2ServerTestCase
         $response->getBody()->rewind();
         $responseBody = $response->getBody()->getContents();
 
-        self::assertEquals($expectedStatusCode, $response->getStatusCode());
-        self::assertEquals($expectedReasonPhrase, $response->getReasonPhrase());
-        self::assertJson($responseBody);
-        self::assertEquals($expectedJsonString, $responseBody);
+        $this->assertEquals($expectedStatusCode, $response->getStatusCode());
+        $this->assertEquals($expectedReasonPhrase, $response->getReasonPhrase());
+        $this->assertJson($responseBody);
+        $this->assertEquals($expectedJsonString, $responseBody);
     }
 }

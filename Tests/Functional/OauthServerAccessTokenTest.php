@@ -125,14 +125,14 @@ class OauthServerAccessTokenTest extends AbstractOauth2ServerTestCase
 
         $responseData = json_decode($responseBody, true, 512, JSON_THROW_ON_ERROR);
 
-        self::assertSame($expectedStatusCode, $response->getStatusCode());
-        self::assertSame($expectedReasonPhrase, $response->getReasonPhrase());
-        self::assertJson($responseBody);
+        $this->assertSame($expectedStatusCode, $response->getStatusCode());
+        $this->assertSame($expectedReasonPhrase, $response->getReasonPhrase());
+        $this->assertJson($responseBody);
         foreach ($expectedResponseKeys as $expectedKey) {
-            self::assertArrayHasKey($expectedKey, $responseData);
+            $this->assertArrayHasKey($expectedKey, $responseData);
         }
         if (!empty($expectedTokenType)) {
-            self::assertSame($expectedTokenType, $responseData['token_type']);
+            $this->assertSame($expectedTokenType, $responseData['token_type']);
         }
     }
 }
