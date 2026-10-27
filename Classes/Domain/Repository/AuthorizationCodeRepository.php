@@ -16,7 +16,7 @@ final class AuthorizationCodeRepository implements AuthCodeRepositoryInterface
     /**
      * @inheritDoc
      */
-    public function getNewAuthCode()
+    public function getNewAuthCode(): AuthCodeEntityInterface
     {
         return new AuthorizationCode();
     }
@@ -29,18 +29,12 @@ final class AuthorizationCodeRepository implements AuthCodeRepositoryInterface
         // TODO: Persist code to the datbase or similar for audit logging or revocation
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function revokeAuthCode($codeId): void
+    public function revokeAuthCode(string $codeId): void
     {
         // TODO: Revoke persisted code
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function isAuthCodeRevoked($codeId)
+    public function isAuthCodeRevoked(string $codeId): bool
     {
         // TODO: Check if persisted code is revoked
         return false;

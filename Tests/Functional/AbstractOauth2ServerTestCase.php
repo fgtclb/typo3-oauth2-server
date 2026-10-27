@@ -24,8 +24,8 @@ abstract class AbstractOauth2ServerTestCase extends AbstractSiteTestCase
     ];
 
     protected array $testExtensionsToLoad = [
-        '../../Tests/Functional/Extensions/testsuite',
-        'fgtclb/oauth2-server',
+        'fgtclb/testsuite',
+        'fgtclb/typo3-oauth2-server',
     ];
 
     protected array $configurationToUseInTestInstance = [

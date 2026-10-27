@@ -15,7 +15,7 @@ final class User implements UserEntityInterface
     use EntityTrait;
 
     /**
-     * @param string $identifier
+     * @param non-empty-string $identifier
      */
     public function __construct(string $identifier)
     {
