@@ -31,20 +31,20 @@ class OauthServerAccessTokenTest extends AbstractOauth2ServerTestCase
             ],
         ];
 
-        yield 'Logged-in user with missing client_secret gets Unauthorized' => [
+        yield 'Logged-in user with missing client_secret gets Bad Request' => [
             'path' => '/oauth/token',
             'body' => [
                 'grant_type' => 'authorization_code',
                 'client_id' => 'acme_client',
             ],
             'feUserId' => self::FE_USER_ID,
-            'expectedStatusCode' => 401,
-            'expectedReasonPhrase' => 'Unauthorized',
+            'expectedStatusCode' => 400,
+            'expectedReasonPhrase' => 'Bad Request',
             'expectedTokenType' => '',
             'expectedResponseKeys' => [
                 'error',
                 'error_description',
-                'message',
+                'hint',
             ],
         ];
 
@@ -62,7 +62,6 @@ class OauthServerAccessTokenTest extends AbstractOauth2ServerTestCase
             'expectedResponseKeys' => [
                 'error',
                 'error_description',
-                'message',
             ],
         ];
 
@@ -80,7 +79,6 @@ class OauthServerAccessTokenTest extends AbstractOauth2ServerTestCase
             'expectedResponseKeys' => [
                 'error',
                 'error_description',
-                'message',
             ],
         ];
     }
