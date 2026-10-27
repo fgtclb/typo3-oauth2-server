@@ -11,9 +11,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class IdentityHandlerPass implements CompilerPassInterface
 {
-    /**
-     * @inheritDoc
-     */
     public function process(ContainerBuilder $container): void
     {
         if (!$container->has(IdentityHandlingFactory::class)) {

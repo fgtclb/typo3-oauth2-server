@@ -12,17 +12,16 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 final class ServerConfiguration
 {
     /**
-     * @var string Path to a private RSA key
+     * Path to a private RSA key
      */
     private string $privateKeyFile;
 
     /**
-     * @var string Path to a public RSA key
+     * Path to a public RSA key
      */
     private string $publicKeyFile;
 
     /**
-     * @param ExtensionConfiguration $extensionConfiguration
      * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
      */
     public function __construct(ExtensionConfiguration $extensionConfiguration)
@@ -43,8 +42,6 @@ final class ServerConfiguration
 
     /**
      * Get the path to the private RSA key
-     *
-     * @return string
      */
     public function getPrivateKeyFile(): string
     {
@@ -53,8 +50,6 @@ final class ServerConfiguration
 
     /**
      * Get the path to the public RSA key
-     *
-     * @return string
      */
     public function getPublicKeyFile(): string
     {

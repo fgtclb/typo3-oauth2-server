@@ -24,9 +24,6 @@ final class ServerFactory
 {
     private Configuration $configuration;
 
-    /**
-     * @param Configuration|null $configuration
-     */
     public function __construct(?Configuration $configuration = null)
     {
         $this->configuration = $configuration ?: GeneralUtility::makeInstance(Configuration::class);
@@ -34,8 +31,6 @@ final class ServerFactory
 
     /**
      * Build an instance of an OAuth2 authorization server
-     *
-     * @return AuthorizationServer
      */
     public function buildAuthorizationServer(): AuthorizationServer
     {
@@ -71,8 +66,6 @@ final class ServerFactory
 
     /**
      * Build an instance of an OAuth2 resource server
-     *
-     * @return ResourceServer
      */
     public function buildResourceServer(): ResourceServer
     {

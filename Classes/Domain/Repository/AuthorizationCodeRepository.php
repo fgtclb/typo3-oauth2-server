@@ -13,17 +13,11 @@ use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
  */
 final class AuthorizationCodeRepository implements AuthCodeRepositoryInterface
 {
-    /**
-     * @inheritDoc
-     */
     public function getNewAuthCode(): AuthCodeEntityInterface
     {
         return new AuthorizationCode();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity): void
     {
         // TODO: Persist code to the datbase or similar for audit logging or revocation

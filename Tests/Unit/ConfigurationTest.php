@@ -15,9 +15,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 #[CoversClass(Configuration::class)]
 class ConfigurationTest extends UnitTestCase
 {
-    /**
-     * Tear down this testcase
-     */
     protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
