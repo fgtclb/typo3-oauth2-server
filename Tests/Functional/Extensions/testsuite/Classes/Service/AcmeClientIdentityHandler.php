@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
 
-class AcmeClientIdentityHandler extends AbstractIdentityHandler
+final class AcmeClientIdentityHandler extends AbstractIdentityHandler
 {
     public function handleAuthenticatedRequest(ServerRequestInterface $request): ResponseInterface
     {

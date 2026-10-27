@@ -13,7 +13,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[CoversClass(Configuration::class)]
-class ConfigurationTest extends UnitTestCase
+final class ConfigurationTest extends UnitTestCase
 {
     protected function tearDown(): void
     {

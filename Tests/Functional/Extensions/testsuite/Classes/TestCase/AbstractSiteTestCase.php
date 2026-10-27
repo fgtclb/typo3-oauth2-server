@@ -8,7 +8,7 @@ use SBUERK\TYPO3\Testing\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class AbstractSiteTestCase extends FunctionalTestCase
+abstract class AbstractSiteTestCase extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 

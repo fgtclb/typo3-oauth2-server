@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class OauthServerRefreshTokenTest extends AbstractOauth2ServerTestCase
+final class OauthServerRefreshTokenTest extends AbstractOauth2ServerTestCase
 {
     public static function accessTokenDataProvider(): \Generator
     {

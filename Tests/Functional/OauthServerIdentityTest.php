@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class OauthServerIdentityTest extends AbstractOauth2ServerTestCase
+final class OauthServerIdentityTest extends AbstractOauth2ServerTestCase
 {
     public static function identityDataProvider(): \Generator
     {
