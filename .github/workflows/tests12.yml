@@ -34,6 +34,18 @@ jobs:
         if: ${{ matrix.php <= '8.1' }}
         run: Build/Scripts/runTests.sh -b docker -t 12 -n -p ${{ matrix.php }} -s cgl
 
+      - name: Check UTF-8 files for BOM
+        run: Build/Scripts/runTests.sh -b docker -t 12 -p ${{ matrix.php }} -s checkBom
+
+      - name: Check exception codes
+        run: Build/Scripts/runTests.sh -b docker -t 12 -p ${{ matrix.php }} -s checkExceptionCodes
+
+      - name: Check test method prefixes
+        run: Build/Scripts/runTests.sh -b docker -t 12 -p ${{ matrix.php }} -s checkTestMethodsPrefix
+
+      - name: Check RST files
+        run: Build/Scripts/runTests.sh -b docker -t 12 -p ${{ matrix.php }} -s checkRst
+
       - name: phpstan
         run: Build/Scripts/runTests.sh -b docker -t 12 -p ${{ matrix.php }} -s phpstan -- --error-format=github
 
