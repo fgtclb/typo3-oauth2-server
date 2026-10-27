@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server;
 
+use FGTCLB\OAuth2Server\Exception\InvalidLifetimeException;
+use FGTCLB\OAuth2Server\Exception\MissingConfigurationException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -32,22 +34,23 @@ final class Configuration
     private readonly \DateInterval $authorizationCodeLifetime;
 
     /**
-     * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
+     * @throws MissingConfigurationException
+     * @throws InvalidLifetimeException
      */
     public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
         $configuration = $extensionConfiguration->get('oauth2_server');
 
         if (empty($configuration['privateKeyFile'])) {
-            throw new \InvalidArgumentException('Missing "privateKeyFile" in OAuth2 server extension configuration', 1539686145);
+            throw new MissingConfigurationException('Missing "privateKeyFile" in OAuth2 server extension configuration', 1539686145);
         }
 
         if (empty($configuration['publicKeyFile'])) {
-            throw new \InvalidArgumentException('Missing "publicKeyFile" in OAuth2 server extension configuration', 1539686197);
+            throw new MissingConfigurationException('Missing "publicKeyFile" in OAuth2 server extension configuration', 1539686197);
         }
 
         if ((int)($configuration['loginPage'] ?? 0) < 1) {
-            throw new \InvalidArgumentException('Missing/invalid "loginPage" in OAuth2 server extension configuration', 1539693234);
+            throw new MissingConfigurationException('Missing/invalid "loginPage" in OAuth2 server extension configuration', 1539693234);
         }
 
         $this->privateKeyFile = $configuration['privateKeyFile'];
@@ -61,7 +64,7 @@ final class Configuration
         if (isset($configuration['accessTokenLifetime'])) {
             $accessInterval = \DateInterval::createFromDateString($configuration['accessTokenLifetime']);
             if ($accessInterval === false) {
-                throw new \InvalidArgumentException(
+                throw new InvalidLifetimeException(
                     'Invalid Access Token lifetime. See https://www.php.net/manual/de/datetime.formats.php#datetime.formats.relative for valid formats',
                     1712606345346
                 );
@@ -72,7 +75,7 @@ final class Configuration
         if (isset($configuration['refreshTokenLifetime'])) {
             $refreshInterval = \DateInterval::createFromDateString($configuration['refreshTokenLifetime']);
             if ($refreshInterval === false) {
-                throw new \InvalidArgumentException(
+                throw new InvalidLifetimeException(
                     'Invalid Refresh Token lifetime. See https://www.php.net/manual/de/datetime.formats.php#datetime.formats.relative for valid formats',
                     1712606543156
                 );
@@ -84,7 +87,7 @@ final class Configuration
         if (isset($configuration['authorizationCodeLifetime'])) {
             $authorizationCodeInterval = \DateInterval::createFromDateString($configuration['authorizationCodeLifetime']);
             if ($authorizationCodeInterval === false) {
-                throw new \InvalidArgumentException(
+                throw new InvalidLifetimeException(
                     'Invalid Authorization Code lifetime. See https://www.php.net/manual/de/datetime.formats.php#datetime.formats.relative for valid formats',
                     1712606546362
                 );
