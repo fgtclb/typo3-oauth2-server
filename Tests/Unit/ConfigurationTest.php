@@ -9,17 +9,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[CoversClass(Configuration::class)]
 final class ConfigurationTest extends UnitTestCase
 {
-    protected function tearDown(): void
-    {
-        GeneralUtility::purgeInstances();
-    }
-
     public static function validConfigurationDataProvider(): \Generator
     {
         yield 'Basic configuration' => [
@@ -72,9 +66,7 @@ final class ConfigurationTest extends UnitTestCase
         $extensionConfiguration->method('get')->willReturnMap([
             ['oauth2_server', '', $configurationArrayToTest],
         ]);
-        GeneralUtility::addInstance(ExtensionConfiguration::class, $extensionConfiguration);
-
-        $configuration = new Configuration();
+        $configuration = new Configuration($extensionConfiguration);
 
         $this->assertStringEndsWith($expectedPrivateKeyString, $configuration->getPrivateKeyFile());
         $this->assertStringEndsWith($expectedPublicKeyString, $configuration->getPublicKeyFile());
@@ -105,13 +97,11 @@ final class ConfigurationTest extends UnitTestCase
         $extensionConfiguration->method('get')->willReturnMap([
             ['oauth2_server', '', $invalidExtensionConfiguration],
         ]);
-        GeneralUtility::addInstance(ExtensionConfiguration::class, $extensionConfiguration);
-
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedExceptionCode);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
-        $configuration = new Configuration();
+        $configuration = new Configuration($extensionConfiguration);
     }
 
     /**

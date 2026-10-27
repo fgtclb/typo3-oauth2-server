@@ -34,9 +34,9 @@ final class Configuration
     /**
      * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
      */
-    public function __construct()
+    public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
-        $configuration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('oauth2_server');
+        $configuration = $extensionConfiguration->get('oauth2_server');
 
         if (empty($configuration['privateKeyFile'])) {
             throw new \InvalidArgumentException('Missing "privateKeyFile" in OAuth2 server extension configuration', 1539686145);
