@@ -4,3 +4,4 @@
 /.gitignore export-ignore
 /Build/ export-ignore
 /Tests/ export-ignore
+/FunctionalTestsCore12Baseline.xml export-ignore
