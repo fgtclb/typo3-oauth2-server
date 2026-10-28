@@ -64,6 +64,7 @@ final class OAuth2LoggingTest extends AbstractOauth2ServerTestCase
         $this->assertStringContainsString('[DEBUG]', $logContent);
         $this->assertStringContainsString('FGTCLB.OAuth2Server.Domain.Repository.ClientRepository', $logContent);
         $this->assertStringContainsString('is invalid for client acme_client', $logContent);
+        $this->assertStringNotContainsString('wrong_secret', $logContent);
     }
 
     #[Test]

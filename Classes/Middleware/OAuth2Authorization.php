@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace FGTCLB\OAuth2Server\Middleware;
 
 use FGTCLB\OAuth2Server\Configuration;
+use FGTCLB\OAuth2Server\Domain\Entity\Client;
+use FGTCLB\OAuth2Server\Domain\Entity\Scope;
 use FGTCLB\OAuth2Server\Domain\Entity\User;
 use FGTCLB\OAuth2Server\Exception\IdentifierEmptyException;
 use FGTCLB\OAuth2Server\Server\ServerFactory;
@@ -63,11 +65,11 @@ final class OAuth2Authorization implements MiddlewareInterface
         }
 
         $userSession = new UserSession($frontendUser);
-        $authorizationRequest = $userSession->getData('oauth2.authorizationRequest');
+        $authorizationRequest = $this->restoreAuthorizationRequest($userSession);
 
         $router = $this->siteFinder->getSiteByPageId($this->configuration->getLoginPage())->getRouter($this->context);
 
-        if (!$authorizationRequest) {
+        if ($authorizationRequest === null) {
             try {
                 $authorizationRequest = $server->validateAuthorizationRequest($request);
             } catch (OAuthServerException $e) {
@@ -83,28 +85,6 @@ final class OAuth2Authorization implements MiddlewareInterface
             $userSession->setData('oauth2.authorizationRequest', serialize($authorizationRequest));
 
             $redirectUri = $router->generateUri($this->configuration->getLoginPage(), ['redirect_url' => $request->getUri()->getPath()]);
-
-            return new RedirectResponse($redirectUri);
-        }
-
-        // With TYPO3 11.5.17 it takes 3 loops to unserialize the AuthorizationRequest
-        $count = 0;
-        while (!$authorizationRequest instanceof AuthorizationRequest && $count < 10) {
-            $authorizationRequest = unserialize($authorizationRequest, [
-                'allowed_classes' => [
-                    'League\OAuth2\Server\RequestTypes\AuthorizationRequest',
-                    'FGTCLB\OAuth2Server\Domain\Entity\Client',
-                    'FGTCLB\OAuth2Server\Domain\Entity\Scope',
-                ],
-            ]);
-            $count++;
-        }
-
-        // Handle error when $authorizationRequest is still a string
-        if (!$authorizationRequest instanceof AuthorizationRequest) {
-            $this->logger->error('Unserializing of AuthorizationRequest failed!');
-
-            $redirectUri = $router->generateUri($this->configuration->getLoginPage());
 
             return new RedirectResponse($redirectUri);
         }
@@ -126,5 +106,29 @@ final class OAuth2Authorization implements MiddlewareInterface
         } catch (OAuthServerException $e) {
             return $e->generateHttpResponse(new Response());
         }
+    }
+
+    /**
+     * Returns the authorization request stored while the user logged in, if there is a valid one.
+     */
+    private function restoreAuthorizationRequest(UserSession $userSession): ?AuthorizationRequest
+    {
+        $storedRequest = $userSession->getData('oauth2.authorizationRequest');
+        if (!is_string($storedRequest) || $storedRequest === '') {
+            return null;
+        }
+        $authorizationRequest = unserialize($storedRequest, [
+            'allowed_classes' => [
+                AuthorizationRequest::class,
+                Client::class,
+                Scope::class,
+            ],
+        ]);
+        if (!$authorizationRequest instanceof AuthorizationRequest) {
+            $this->logger->error('Unserializing of AuthorizationRequest failed!');
+            $userSession->removeData('oauth2.authorizationRequest');
+            return null;
+        }
+        return $authorizationRequest;
     }
 }

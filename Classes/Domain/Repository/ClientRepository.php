@@ -76,7 +76,7 @@ final class ClientRepository implements ClientRepositoryInterface
 
         $result = $client->validateSecret($clientSecret, $this->hashFactory);
         if ($result === false) {
-            $this->logger->debug(sprintf('Submitted secret "%s" is invalid for client %s', $clientSecret, $clientIdentifier));
+            $this->logger->debug(sprintf('Submitted secret is invalid for client %s', $clientIdentifier));
         }
         return $result;
     }
