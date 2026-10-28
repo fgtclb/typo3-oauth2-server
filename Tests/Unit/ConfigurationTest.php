@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FGTCLB\OAuth2Server\Tests\Unit;
 
 use FGTCLB\OAuth2Server\Configuration;
+use FGTCLB\OAuth2Server\Exception\MissingConfigurationException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -97,7 +98,7 @@ final class ConfigurationTest extends UnitTestCase
         $extensionConfiguration->method('get')->willReturnMap([
             ['oauth2_server', '', $invalidExtensionConfiguration],
         ]);
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(MissingConfigurationException::class);
         $this->expectExceptionCode($expectedExceptionCode);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
