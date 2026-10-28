@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
-class OAuthServerAuthorizationTest extends AbstractOauth2ServerTestCase
+final class OAuthServerAuthorizationTest extends AbstractOauth2ServerTestCase
 {
     /**
      * @return \Generator<string, array{
@@ -53,10 +55,10 @@ class OAuthServerAuthorizationTest extends AbstractOauth2ServerTestCase
     }
 
     /**
-     * @test
      * @param non-empty-string $expectedRedirectStringStart
-     * @dataProvider oauthServerAuthorizationDataProvider
      */
+    #[Test]
+    #[DataProvider('oauthServerAuthorizationDataProvider')]
     public function oauthServerAuthorizationScenarios(
         string $path,
         string $query,

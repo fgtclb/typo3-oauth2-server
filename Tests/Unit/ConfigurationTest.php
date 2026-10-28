@@ -5,23 +5,15 @@ declare(strict_types=1);
 namespace FGTCLB\OAuth2Server\Tests\Unit;
 
 use FGTCLB\OAuth2Server\Configuration;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \FGTCLB\OAuth2Server\Configuration
- */
-class ConfigurationTest extends UnitTestCase
+#[CoversClass(Configuration::class)]
+final class ConfigurationTest extends UnitTestCase
 {
-    /**
-     * Tear down this testcase
-     */
-    protected function tearDown(): void
-    {
-        GeneralUtility::purgeInstances();
-    }
-
     public static function validConfigurationDataProvider(): \Generator
     {
         yield 'Basic configuration' => [
@@ -49,15 +41,15 @@ class ConfigurationTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @param array<string, string> $configurationArrayToTest
      * @param non-empty-string $expectedPrivateKeyString
      * @param non-empty-string $expectedPublicKeyString
      * @param class-string $expectedAccessTokenLifetimeType
      * @param class-string $expectedRefreshTokenLifetimeType
      * @param class-string $expectedAuthorizationCodeLifetimeType
-     * @dataProvider validConfigurationDataProvider
      */
+    #[Test]
+    #[DataProvider('validConfigurationDataProvider')]
     public function acceptsValidConfiguration(
         array $configurationArrayToTest,
         string $expectedPrivateKeyString,
@@ -74,9 +66,7 @@ class ConfigurationTest extends UnitTestCase
         $extensionConfiguration->method('get')->willReturnMap([
             ['oauth2_server', '', $configurationArrayToTest],
         ]);
-        GeneralUtility::addInstance(ExtensionConfiguration::class, $extensionConfiguration);
-
-        $configuration = new Configuration();
+        $configuration = new Configuration($extensionConfiguration);
 
         $this->assertStringEndsWith($expectedPrivateKeyString, $configuration->getPrivateKeyFile());
         $this->assertStringEndsWith($expectedPublicKeyString, $configuration->getPublicKeyFile());
@@ -90,10 +80,14 @@ class ConfigurationTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider invalidExtensionConfiguration
-     * @param array{privateKeyFile?: string, publicKeyFile?: string, loginPage?: string|int} $invalidExtensionConfiguration
+     * @param array{
+     *     privateKeyFile?: string,
+     *     publicKeyFile?: string,
+     *     loginPage?: string|int
+     * } $invalidExtensionConfiguration
      */
+    #[Test]
+    #[DataProvider('invalidExtensionConfiguration')]
     public function rejectsInvalidConfiguration(
         array $invalidExtensionConfiguration,
         int $expectedExceptionCode,
@@ -103,13 +97,11 @@ class ConfigurationTest extends UnitTestCase
         $extensionConfiguration->method('get')->willReturnMap([
             ['oauth2_server', '', $invalidExtensionConfiguration],
         ]);
-        GeneralUtility::addInstance(ExtensionConfiguration::class, $extensionConfiguration);
-
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedExceptionCode);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
-        $configuration = new Configuration();
+        $configuration = new Configuration($extensionConfiguration);
     }
 
     /**

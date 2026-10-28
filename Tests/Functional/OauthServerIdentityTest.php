@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class OauthServerIdentityTest extends AbstractOauth2ServerTestCase
+final class OauthServerIdentityTest extends AbstractOauth2ServerTestCase
 {
     public static function identityDataProvider(): \Generator
     {
@@ -25,10 +27,14 @@ class OauthServerIdentityTest extends AbstractOauth2ServerTestCase
         ];
     }
     /**
-     * @test
-     * @param array{grant_type: string, client_id: string, client_secret?: string} $authorizationBody
-     * @dataProvider identityDataProvider
+     * @param array{
+     *     grant_type: string,
+     *     client_id: string,
+     *     client_secret?: string
+     * } $authorizationBody
      */
+    #[Test]
+    #[DataProvider('identityDataProvider')]
     public function oauthIdentityScenarios(
         string $path,
         int $feUserId,

@@ -15,8 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
@@ -33,20 +32,15 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  *
  * @see https://oauth2.thephpleague.com/authorization-server/auth-code-grant/#part-one
  */
-final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInterface
+final class OAuth2Authorization implements MiddlewareInterface
 {
-    use LoggerAwareTrait;
-
-    protected SiteFinder $siteFinder;
-    protected Context $context;
-    protected Configuration $configuration;
-
-    public function __construct(Configuration $configuration, Context $context, SiteFinder $siteFinder)
-    {
-        $this->configuration = $configuration;
-        $this->context = $context;
-        $this->siteFinder = $siteFinder;
-    }
+    public function __construct(
+        private readonly Configuration $configuration,
+        private readonly Context $context,
+        private readonly SiteFinder $siteFinder,
+        private readonly ServerFactory $serverFactory,
+        private readonly LoggerInterface $logger
+    ) {}
 
     /**
      * Process an incoming server request and return a response, optionally delegating
@@ -59,8 +53,7 @@ final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInter
             return $handler->handle($request);
         }
 
-        $factory = new ServerFactory();
-        $server = $factory->buildAuthorizationServer();
+        $server = $this->serverFactory->buildAuthorizationServer();
 
         $frontendUser = $request->getAttribute('frontend.user');
 

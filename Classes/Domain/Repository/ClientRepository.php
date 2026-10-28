@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Domain\Repository;
 
-use Doctrine\DBAL\Result;
 use FGTCLB\OAuth2Server\Domain\Entity\Client;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -21,23 +19,19 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
  *
  * @phpstan-type TClientRow array{uid: int, identifier: string, name: string, secret: string, redirect_uris: string, description: string}
  */
-final class ClientRepository implements ClientRepositoryInterface, LoggerAwareInterface
+final class ClientRepository implements ClientRepositoryInterface
 {
-    use LoggerAwareTrait;
-
     private const TABLE_NAME = 'tx_oauth2server_client';
-    private PasswordHashFactory $hashFactory;
-    private Connection $databaseConnection;
+    private readonly Connection $databaseConnection;
 
-    public function __construct(PasswordHashFactory $hashFactory, ConnectionPool $connectionPool)
-    {
-        $this->hashFactory = $hashFactory;
+    public function __construct(
+        private readonly PasswordHashFactory $hashFactory,
+        ConnectionPool $connectionPool,
+        private readonly LoggerInterface $logger
+    ) {
         $this->databaseConnection = $connectionPool->getConnectionForTable(self::TABLE_NAME);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getClientEntity(string $clientIdentifier): ?Client
     {
         $clientData = $this->findRawByIdentifier($clientIdentifier);
@@ -51,11 +45,10 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
     /**
      * @return TClientRow|null
      */
-    protected function findRawByIdentifier(string $clientIdentifier): ?array
+    private function findRawByIdentifier(string $clientIdentifier): ?array
     {
         $queryBuilder = $this->databaseConnection
             ->createQueryBuilder();
-        /** @var Result $result select() always yields a Result instance and not an int */
         $result = $queryBuilder
             ->select('*')
             ->from(self::TABLE_NAME)
@@ -69,9 +62,6 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
         return $row ?: null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function validateClient(string $clientIdentifier, ?string $clientSecret, ?string $grantType): bool
     {
         // we currently only support confidential clients, which must always supply a secret (TODO check if this is actually true).

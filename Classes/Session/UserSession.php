@@ -11,39 +11,28 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  */
 final class UserSession
 {
-    private FrontendUserAuthentication $frontendUser;
-
-    public function __construct(FrontendUserAuthentication $frontendUser)
-    {
-        $this->frontendUser = $frontendUser;
-    }
+    public function __construct(
+        private readonly FrontendUserAuthentication $frontendUser
+    ) {}
 
     /**
      * Retrieve data from the user session
-     *
-     * @param string $key
-     * @return mixed
      */
-    public function getData(string $key)
+    public function getData(string $key): mixed
     {
         return $this->frontendUser->getSessionData($key);
     }
 
     /**
      * Store data in the user session
-     *
-     * @param string $key
-     * @param mixed $data
      */
-    public function setData(string $key, $data): void
+    public function setData(string $key, mixed $data): void
     {
         $this->frontendUser->setAndSaveSessionData($key, $data);
     }
 
     /**
-     * Store data in the user session
-     *
-     * @param string $key
+     * Remove data from the user session
      */
     public function removeData(string $key): void
     {

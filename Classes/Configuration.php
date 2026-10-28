@@ -12,31 +12,31 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class Configuration
 {
-    private string $privateKeyFile;
+    private readonly string $privateKeyFile;
 
-    private string $publicKeyFile;
+    private readonly string $publicKeyFile;
 
     /**
      * UID of the login page
      */
-    private int $loginPage;
+    private readonly int $loginPage;
 
-    private string $authEndpoint = '/oauth/authorize';
-    private string $tokenEndpoint = '/oauth/token';
-    private string $resourceEndpoint = '/oauth/identity';
+    private readonly string $authEndpoint;
+    private readonly string $tokenEndpoint;
+    private readonly string $resourceEndpoint;
 
-    private \DateInterval $accessTokenLifetime;
+    private readonly \DateInterval $accessTokenLifetime;
 
-    private \DateInterval $refreshTokenLifetime;
+    private readonly \DateInterval $refreshTokenLifetime;
 
-    private \DateInterval $authorizationCodeLifetime;
+    private readonly \DateInterval $authorizationCodeLifetime;
 
     /**
      * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
      */
-    public function __construct()
+    public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
-        $configuration = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('oauth2_server');
+        $configuration = $extensionConfiguration->get('oauth2_server');
 
         if (empty($configuration['privateKeyFile'])) {
             throw new \InvalidArgumentException('Missing "privateKeyFile" in OAuth2 server extension configuration', 1539686145);
@@ -53,9 +53,9 @@ final class Configuration
         $this->privateKeyFile = $configuration['privateKeyFile'];
         $this->publicKeyFile = $configuration['publicKeyFile'];
         $this->loginPage = (int)$configuration['loginPage'];
-        $this->authEndpoint = $configuration['authEndpoint'] ?? $this->authEndpoint;
-        $this->tokenEndpoint = $configuration['tokenEndpoint'] ?? $this->tokenEndpoint;
-        $this->resourceEndpoint = $configuration['resourceEndpoint'] ?? $this->resourceEndpoint;
+        $this->authEndpoint = $configuration['authEndpoint'] ?? '/oauth/authorize';
+        $this->tokenEndpoint = $configuration['tokenEndpoint'] ?? '/oauth/token';
+        $this->resourceEndpoint = $configuration['resourceEndpoint'] ?? '/oauth/identity';
 
         $accessInterval = false;
         if (isset($configuration['accessTokenLifetime'])) {
@@ -95,8 +95,6 @@ final class Configuration
 
     /**
      * Get the path to the private RSA key
-     *
-     * @return string
      */
     public function getPrivateKeyFile(): string
     {
@@ -105,8 +103,6 @@ final class Configuration
 
     /**
      * Get the path to the public RSA key
-     *
-     * @return string
      */
     public function getPublicKeyFile(): string
     {
@@ -115,8 +111,6 @@ final class Configuration
 
     /**
      * Get the UID of the login page
-     *
-     * @return int
      */
     public function getLoginPage(): int
     {
@@ -125,8 +119,6 @@ final class Configuration
 
     /**
      * Get the lifetime of access tokens
-     *
-     * @return \DateInterval
      */
     public function getAccessTokenLifetime(): \DateInterval
     {
@@ -135,8 +127,6 @@ final class Configuration
 
     /**
      * Get the lifetime of refresh tokens
-     *
-     * @return \DateInterval
      */
     public function getRefreshTokenLifetime(): \DateInterval
     {
@@ -145,8 +135,6 @@ final class Configuration
 
     /**
      * Get the lifetime of authorization codes
-     *
-     * @return \DateInterval
      */
     public function getAuthorizationCodeLifetime(): \DateInterval
     {
@@ -155,8 +143,6 @@ final class Configuration
 
     /**
      * Get the authorization endpoint
-     *
-     * @return string
      */
     public function getAuthEndpoint(): string
     {
@@ -165,8 +151,6 @@ final class Configuration
 
     /**
      * Get the token endpoint
-     *
-     * @return string
      */
     public function getTokenEndpoint(): string
     {
@@ -175,8 +159,6 @@ final class Configuration
 
     /**
      * Get the resource endpoint
-     *
-     * @return string
      */
     public function getResourceEndpoint(): string
     {

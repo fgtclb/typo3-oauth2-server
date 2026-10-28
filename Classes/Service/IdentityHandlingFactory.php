@@ -13,16 +13,11 @@ final class IdentityHandlingFactory
      */
     private array $handlers = [];
 
-    private Configuration $configuration;
-    private DefaultIdentityHandler $defaultIdentityHandler;
-
     public function __construct(
-        DefaultIdentityHandler $defaultIdentityHandler,
-        Configuration $configuration
+        private readonly DefaultIdentityHandler $defaultIdentityHandler,
+        private readonly Configuration $configuration
     ) {
         $defaultIdentityHandler->setConfiguration($configuration);
-        $this->configuration = $configuration;
-        $this->defaultIdentityHandler = $defaultIdentityHandler;
     }
 
     public function addIdentityHandler(

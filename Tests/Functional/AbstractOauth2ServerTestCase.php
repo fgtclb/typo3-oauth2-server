@@ -54,8 +54,6 @@ abstract class AbstractOauth2ServerTestCase extends AbstractSiteTestCase
 
     /**
      * Prepares authorization and returns the authentication code.
-     *
-     * @return string The authentication code.
      */
     final protected function prepareAuthorizationAndReturnAuthCode(): string
     {

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace FGTCLB\OAuth2Server\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
-class OauthServerRefreshTokenTest extends AbstractOauth2ServerTestCase
+final class OauthServerRefreshTokenTest extends AbstractOauth2ServerTestCase
 {
     public static function accessTokenDataProvider(): \Generator
     {
@@ -84,11 +86,11 @@ class OauthServerRefreshTokenTest extends AbstractOauth2ServerTestCase
     }
 
     /**
-     * @test
      * @param array{grant_type: string, client_id: string, client_secret?: string} $body
      * @param string[] $expectedResponseKeys
-     * @dataProvider accessTokenDataProvider
      */
+    #[Test]
+    #[DataProvider('accessTokenDataProvider')]
     public function oauthServerAccessTokenScenarios(
         string $path,
         array $body,

@@ -15,53 +15,44 @@ use League\OAuth2\Server\AuthorizationValidators\BearerTokenValidator;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use League\OAuth2\Server\ResourceServer;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Factory for OAuth2 authorization servers
  */
 final class ServerFactory
 {
-    private Configuration $configuration;
-
-    /**
-     * @param Configuration|null $configuration
-     */
-    public function __construct(?Configuration $configuration = null)
-    {
-        $this->configuration = $configuration ?: GeneralUtility::makeInstance(Configuration::class);
-    }
+    public function __construct(
+        private readonly Configuration $configuration,
+        private readonly ClientRepository $clientRepository,
+        private readonly AccessTokenRepository $accessTokenRepository,
+        private readonly ScopeRepository $scopeRepository,
+        private readonly AuthorizationCodeRepository $authorizationCodeRepository,
+        private readonly RefreshTokenRepository $refreshTokenRepository
+    ) {}
 
     /**
      * Build an instance of an OAuth2 authorization server
-     *
-     * @return AuthorizationServer
      */
     public function buildAuthorizationServer(): AuthorizationServer
     {
-        $clientRepository = GeneralUtility::makeInstance(ClientRepository::class);
-        $accessTokenRepository = new AccessTokenRepository();
-        $scopeRepository = new ScopeRepository();
         $server = new AuthorizationServer(
-            $clientRepository,
-            $accessTokenRepository,
-            $scopeRepository,
+            $this->clientRepository,
+            $this->accessTokenRepository,
+            $this->scopeRepository,
             $this->configuration->getPrivateKeyFile(),
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
         );
 
-        $authorizationCodeRepository = new AuthorizationCodeRepository();
-        $refreshTokenRepository = new RefreshTokenRepository();
         $authCodeGrant = new AuthCodeGrant(
-            $authorizationCodeRepository,
-            $refreshTokenRepository,
+            $this->authorizationCodeRepository,
+            $this->refreshTokenRepository,
             $this->configuration->getAuthorizationCodeLifetime()
         );
         $authCodeGrant->setRefreshTokenTTL($this->configuration->getRefreshTokenLifetime());
         // Enable the authentication code grant on the server
         $server->enableGrantType($authCodeGrant, $this->configuration->getAccessTokenLifetime());
 
-        $refreshTokenGrant = new RefreshTokenGrant($refreshTokenRepository);
+        $refreshTokenGrant = new RefreshTokenGrant($this->refreshTokenRepository);
         $refreshTokenGrant->setRefreshTokenTTL($this->configuration->getRefreshTokenLifetime());
         // Enable the refresh token grant on the server
         $server->enableGrantType($refreshTokenGrant, $this->configuration->getAccessTokenLifetime());
@@ -71,17 +62,14 @@ final class ServerFactory
 
     /**
      * Build an instance of an OAuth2 resource server
-     *
-     * @return ResourceServer
      */
     public function buildResourceServer(): ResourceServer
     {
-        $accessTokenRepository = new AccessTokenRepository();
         $validator = new BearerTokenValidator(
-            $accessTokenRepository
+            $this->accessTokenRepository
         );
         return new ResourceServer(
-            $accessTokenRepository,
+            $this->accessTokenRepository,
             $this->configuration->getPublicKeyFile(),
             $validator
         );
