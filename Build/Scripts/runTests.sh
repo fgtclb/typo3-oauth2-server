@@ -329,17 +329,19 @@ Options:
             - 15    maintained until 2027-11-11
             - 16    maintained until 2028-11-09
 
-    -t <12>
+    -t <12|13>
         Only with -s composerUpdate|phpstan
         Specifies the TYPO3 CORE Version to be used
             - 12: use TYPO3 v12 (default)
+            - 13: use TYPO3 v13
 
-    -p <8.1|8.2|8.3|8.4>
+    -p <8.1|8.2|8.3|8.4|8.5>
         Specifies the PHP minor version to be used
             - 8.1: use PHP 8.1 (default)
             - 8.2: use PHP 8.2
             - 8.3: use PHP 8.3
             - 8.4: use PHP 8.4
+            - 8.5: use PHP 8.5
 
     -x
         Only with -s functional|unit|unitRandom
@@ -446,13 +448,13 @@ while getopts "a:b:s:d:i:p:t:xy:o:nhu" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(8.1|8.2|8.3|8.4)$ ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(8.1|8.2|8.3|8.4|8.5)$ ]]; then
                 INVALID_OPTIONS+=("p ${OPTARG}")
             fi
             ;;
         t)
             CORE_VERSION=${OPTARG}
-            if ! [[ ${CORE_VERSION} =~ ^(12)$ ]]; then
+            if ! [[ ${CORE_VERSION} =~ ^(12|13)$ ]]; then
                 INVALID_OPTIONS+=("t ${OPTARG}")
             fi
             ;;
