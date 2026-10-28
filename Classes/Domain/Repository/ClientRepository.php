@@ -38,7 +38,7 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
     /**
      * @inheritDoc
      */
-    public function getClientEntity($clientIdentifier): ?Client
+    public function getClientEntity(string $clientIdentifier): ?Client
     {
         $clientData = $this->findRawByIdentifier($clientIdentifier);
         if (!$clientData) {
@@ -63,7 +63,7 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
                 $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($clientIdentifier))
             )
             ->setMaxResults(1)
-            ->execute();
+            ->executeQuery();
         /** @var TClientRow|false $row */
         $row = $result->fetchAssociative();
         return $row ?: null;
@@ -72,7 +72,7 @@ final class ClientRepository implements ClientRepositoryInterface, LoggerAwareIn
     /**
      * @inheritDoc
      */
-    public function validateClient($clientIdentifier, $clientSecret, $grantType)
+    public function validateClient(string $clientIdentifier, ?string $clientSecret, ?string $grantType): bool
     {
         // we currently only support confidential clients, which must always supply a secret (TODO check if this is actually true).
         if ($clientSecret === null) {

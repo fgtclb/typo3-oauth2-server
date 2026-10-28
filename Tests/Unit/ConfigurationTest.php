@@ -5,19 +5,15 @@ declare(strict_types=1);
 namespace FGTCLB\OAuth2Server\Tests\Unit;
 
 use FGTCLB\OAuth2Server\Configuration;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * @covers \FGTCLB\OAuth2Server\Configuration
- * @template TProphecy of ExtensionConfiguration|ObjectProphecy
  */
 class ConfigurationTest extends UnitTestCase
 {
-    use ProphecyTrait;
     /**
      * Tear down this testcase
      */
@@ -74,10 +70,11 @@ class ConfigurationTest extends UnitTestCase
         string $expectedRefreshTokenLifetimeType,
         string $expectedAuthorizationCodeLifetimeType
     ): void {
-        /** @var TProphecy $extensionConfiguration */
-        $extensionConfiguration = $this->prophesize(ExtensionConfiguration::class);
-        $extensionConfiguration->get('oauth2_server')->willReturn($configurationArrayToTest);
-        GeneralUtility::addInstance(ExtensionConfiguration::class, $extensionConfiguration->reveal());
+        $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
+        $extensionConfiguration->method('get')->willReturnMap([
+            ['oauth2_server', '', $configurationArrayToTest],
+        ]);
+        GeneralUtility::addInstance(ExtensionConfiguration::class, $extensionConfiguration);
 
         $configuration = new Configuration();
 
@@ -102,10 +99,11 @@ class ConfigurationTest extends UnitTestCase
         int $expectedExceptionCode,
         string $expectedExceptionMessage
     ): void {
-        /** @var TProphecy $extensionConfiguration */
-        $extensionConfiguration = $this->prophesize(ExtensionConfiguration::class);
-        $extensionConfiguration->get('oauth2_server')->willReturn($invalidExtensionConfiguration);
-        GeneralUtility::addInstance(ExtensionConfiguration::class, $extensionConfiguration->reveal());
+        $extensionConfiguration = $this->createStub(ExtensionConfiguration::class);
+        $extensionConfiguration->method('get')->willReturnMap([
+            ['oauth2_server', '', $invalidExtensionConfiguration],
+        ]);
+        GeneralUtility::addInstance(ExtensionConfiguration::class, $extensionConfiguration);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedExceptionCode);

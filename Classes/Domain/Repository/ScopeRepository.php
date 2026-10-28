@@ -17,11 +17,9 @@ final class ScopeRepository implements ScopeRepositoryInterface
     /**
      * Return information about a scope.
      *
-     * @param string $identifier The scope identifier
-     *
-     * @return ScopeEntityInterface
+     * @param non-empty-string $identifier
      */
-    public function getScopeEntityByIdentifier($identifier)
+    public function getScopeEntityByIdentifier(string $identifier): ?ScopeEntityInterface
     {
         $scope = new Scope();
         $scope->setIdentifier($identifier);
@@ -33,15 +31,21 @@ final class ScopeRepository implements ScopeRepositoryInterface
      * Given a client, grant type and optional user identifier validate the set of scopes requested are valid and optionally
      * append additional scopes or remove requested scopes.
      *
-     * @param ScopeEntityInterface[] $scopes
-     * @param string                 $grantType
-     * @param ClientEntityInterface  $clientEntity
-     * @param string|null            $userIdentifier
      *
+     * @param ScopeEntityInterface[] $scopes
+     * @param string $grantType
+     * @param ClientEntityInterface $clientEntity
+     * @param string|null $userIdentifier
+     * @param string|null $authCodeId
      * @return ScopeEntityInterface[]
      */
-    public function finalizeScopes(array $scopes, $grantType, ClientEntityInterface $clientEntity, $userIdentifier = null)
-    {
+    public function finalizeScopes(
+        array $scopes,
+        string $grantType,
+        ClientEntityInterface $clientEntity,
+        ?string $userIdentifier = null,
+        ?string $authCodeId = null
+    ): array {
         // TODO
         return $scopes;
     }

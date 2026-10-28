@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace FGTCLB\OAuth2Server\Domain\Repository;
 
 use FGTCLB\OAuth2Server\Domain\Entity\AccessToken;
+use FGTCLB\OAuth2Server\Exception\IdentifierEmptyException;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
-use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
 /**
@@ -17,9 +17,16 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
 {
     /**
      * @inheritDoc
+     * @throws IdentifierEmptyException
      */
-    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
+    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, ?string $userIdentifier = null): AccessTokenEntityInterface
     {
+        if (empty($userIdentifier)) {
+            throw new IdentifierEmptyException(
+                'The user identifier was null or empty.',
+                1793110512
+            );
+        }
         $accessToken = new AccessToken();
         $accessToken->setClient($clientEntity);
         $accessToken->setUserIdentifier($userIdentifier);
@@ -33,10 +40,6 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
 
     /**
      * Persists a new access token to permanent storage.
-     *
-     * @param AccessTokenEntityInterface $accessTokenEntity
-     *
-     * @throws UniqueTokenIdentifierConstraintViolationException
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): void
     {
@@ -45,22 +48,16 @@ final class AccessTokenRepository implements AccessTokenRepositoryInterface
 
     /**
      * Revoke an access token.
-     *
-     * @param string $tokenId
      */
-    public function revokeAccessToken($tokenId): void
+    public function revokeAccessToken(string $tokenId): void
     {
         // TODO: Revoke persisted token
     }
 
     /**
      * Check if the access token has been revoked.
-     *
-     * @param string $tokenId
-     *
-     * @return bool Return true if this token has been revoked
      */
-    public function isAccessTokenRevoked($tokenId)
+    public function isAccessTokenRevoked(string $tokenId): bool
     {
         // TODO: Check if persisted token is revoked
         return false;

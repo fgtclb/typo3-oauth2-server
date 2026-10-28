@@ -6,6 +6,7 @@ namespace FGTCLB\OAuth2Server\Middleware;
 
 use FGTCLB\OAuth2Server\Configuration;
 use FGTCLB\OAuth2Server\Domain\Entity\User;
+use FGTCLB\OAuth2Server\Exception\IdentifierEmptyException;
 use FGTCLB\OAuth2Server\Server\ServerFactory;
 use FGTCLB\OAuth2Server\Session\UserSession;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -50,6 +51,7 @@ final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInter
     /**
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.
+     * @throws IdentifierEmptyException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -114,7 +116,14 @@ final class OAuth2Authorization implements MiddlewareInterface, LoggerAwareInter
             return new RedirectResponse($redirectUri);
         }
 
-        $authorizationRequest->setUser(new User((string)$this->context->getPropertyFromAspect('frontend.user', 'id')));
+        $userIdentifier = (int)$this->context->getPropertyFromAspect('frontend.user', 'id');
+        if ($userIdentifier <= 0) {
+            throw new IdentifierEmptyException(
+                'Logged-in frontend user has no uid.',
+                1793110882
+            );
+        }
+        $authorizationRequest->setUser(new User((string)$userIdentifier));
         $authorizationRequest->setAuthorizationApproved(true);
 
         $userSession->removeData('oauth2.authorizationRequest');
