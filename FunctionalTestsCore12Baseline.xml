@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+    PHPUnit baseline of the functional tests (Build/phpunit/FunctionalTests.xml, <source baseline>): ignores
+    the PHP 8.5 deprecations raised by TYPO3 12.4's own database drivers (PDO::sqliteCreateFunction() and
+    PDO::PGSQL_ATTR_DISABLE_PREPARES), which cannot be fixed in this extension.
+
+    This file has to stay in the project root, not in Build/phpunit/: PHPUnit prepends the baseline's own
+    directory to the stored path without resolving "..", so the ignored file must lie below this directory.
+-->
+<files version="1">
+ <file path=".Build/vendor/typo3/cms-core/Classes/Database/Driver/PDOPgSql/Driver.php">
+  <line number="56" hash="eba237ee495c4b4a9f5108c42baf44da2dd0c9cf">
+   <issue><![CDATA[Constant PDO::PGSQL_ATTR_DISABLE_PREPARES is deprecated since 8.5, use Pdo\Pgsql::ATTR_DISABLE_PREPARES instead]]></issue>
+  </line>
+  <line number="60" hash="d7885dc46f62668d13a22cb78172634399fbd98d">
+   <issue><![CDATA[Constant PDO::PGSQL_ATTR_DISABLE_PREPARES is deprecated since 8.5, use Pdo\Pgsql::ATTR_DISABLE_PREPARES instead]]></issue>
+  </line>
+ </file>
+ <file path=".Build/vendor/typo3/cms-core/Classes/Database/Driver/PDOSqlite/Driver.php">
+  <line number="72" hash="de08c227ea217db8b7768b9f990ea5dad83becac">
+   <issue><![CDATA[Method PDO::sqliteCreateFunction() is deprecated since 8.5, use Pdo\Sqlite::createFunction() instead]]></issue>
+  </line>
+ </file>
+</files>
