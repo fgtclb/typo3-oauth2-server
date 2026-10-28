@@ -14,7 +14,7 @@ using frontend users in TYPO3.
 
 | Branch                                                    | Version   | TYPO3      | PHP                                               |
 |-----------------------------------------------------------|-----------|------------|---------------------------------------------------|
-| [main](https://github.com/fgtclb/typo3-oauth2-server)     | 3.0.x-dev | ~v12       | 8.1, 8.2, 8.3, 8.4                                |
+| [main](https://github.com/fgtclb/typo3-oauth2-server)     | 3.0.x-dev | ~v12, ~v13 | 8.1, 8.2, 8.3, 8.4, 8.5 (depending on TYPO3)      |
 | [2](https://github.com/fgtclb/typo3-oauth2-server/tree/2) | 2.0.x-dev | ~v11, ~v12 | 7.4, 8.0, 8.1, 8.2, 8.3, 8.4 (depending on TYPO3) |
 | [1](https://github.com/fgtclb/typo3-oauth2-server/tree/1) | 1.0.x-dev | ~v9        | 7.2, 7.3, 7.4                                     |
 
@@ -39,16 +39,16 @@ openssl rsa -in private.key -pubout -out public.key
 This keypair *must be stored safely* which means outside of the TYPO3 web directory and should be readonly.
 
 > [!IMPORTANT]
-> `2.x.x` is still in development and not all academics extension are fully tested in v12 and v13,
-> but can be installed in composer instances to use/test them. Testing and reporting are welcome.
+> `3.x.x` is still in development and not yet fully tested in v12 and v13,
+> but can be installed in composer instances to use/test it. Testing and reporting are welcome.
 
-**Testing 2.x.x extension version in projects (composer mode)**
+**Testing 3.x.x extension version in projects (composer mode)**
 
-It is already possible to use and test the `2.x` version in composer based instances,
+It is already possible to use and test the `3.x` version in composer based instances,
 which is encouraged and feedback of issues not detected by us (or pull-requests).
 
 Your project should configure `minimum-stabilty: dev` and `prefer-stable` to allow
-requiring each extension but still use stable versions over development versions:
+requiring the extension but still use stable versions over development versions:
 
 ```shell
 composer config minimum-stability "dev" \
@@ -58,7 +58,7 @@ composer config minimum-stability "dev" \
 and installed with:
 
 ```shell
-composer require 'fgtclb/typo3-oauth2-server':'2.*.*@dev'
+composer require 'fgtclb/typo3-oauth2-server':'3.*.*@dev'
 ```
 
 

@@ -1,0 +1,86 @@
+name: tests13
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  schedule:
+    - cron:  '42 5 * * *'
+
+jobs:
+  testsuite:
+    name: all tests
+    runs-on: ubuntu-26.04
+    strategy:
+      # This prevents cancellation of matrix job runs, if one or more already failed
+      # and let the remaining matrix jobs be executed anyway.
+      fail-fast: false
+      matrix:
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install dependencies
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s composerUpdate
+
+      - name: Composer validate
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s composer validate --no-check-lock
+
+      - name: Lint PHP
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s lintPhp
+
+      - name: CGL
+        run: Build/Scripts/runTests.sh -b docker -t 13 -n -p ${{ matrix.php }} -s cgl
+
+      - name: Check UTF-8 files for BOM
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s checkBom
+
+      - name: Check exception codes
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s checkExceptionCodes
+
+      - name: Check test method prefixes
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s checkTestMethodsPrefix
+
+      - name: Check RST files
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s checkRst
+
+      - name: phpstan
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s phpstan -- --error-format=github
+
+      - name: Unit Tests
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s unit
+
+      - name: Functional Tests with mariadb and mysqli
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -d mariadb -a mysqli -s functional
+
+      - name: Functional Tests with mariadb and pdo_mysql
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -d mariadb -a pdo_mysql -s functional
+
+      - name: Functional Tests with mysql and mysqli
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -d mysql -a mysqli -s functional
+
+      - name: Functional Tests with mysql and pdo_mysql
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -d mysql -a pdo_mysql -s functional
+
+      - name: Functional Tests with postgres
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -d postgres -s functional
+
+      - name: Functional Tests with sqlite
+        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -d sqlite -s functional
+
+#      - name: Acceptance Tests mariadb and mysqli
+#        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s acceptance -d mariadb -a mysqli
+#
+#      - name: Acceptance Tests mariadb and pdo_mysql
+#        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s acceptance -d mariadb -a pdo_mysql
+#
+#      - name: Acceptance Tests mysql and mysqli
+#        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s acceptance -d mysql -a mysqli
+#
+#      - name: Acceptance Tests mysql and pdo_mysql
+#        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s acceptance -d mysql -a pdo_mysql
+#
+#      - name: Acceptance Tests postgres
+#        run: Build/Scripts/runTests.sh -b docker -t 13 -p ${{ matrix.php }} -s acceptance -d postgres
