@@ -77,9 +77,9 @@ class OAuthServerAuthorizationTest extends AbstractOauth2ServerTestCase
             (new InternalRequest($uri)),
             $internalRequestContext
         );
-        self::assertSame($expectedReasonPhrase, $response->getReasonPhrase());
-        self::assertSame($expectedStatusCode, $response->getStatusCode());
-        self::assertIsArray($response->getHeader($expectedHeaderArrayKey));
-        self::assertStringStartsWith($expectedRedirectStringStart, $response->getHeader($expectedHeaderArrayKey)[0]);
+        $this->assertSame($expectedReasonPhrase, $response->getReasonPhrase());
+        $this->assertSame($expectedStatusCode, $response->getStatusCode());
+        $this->assertIsArray($response->getHeader($expectedHeaderArrayKey));
+        $this->assertStringStartsWith($expectedRedirectStringStart, $response->getHeader($expectedHeaderArrayKey)[0]);
     }
 }

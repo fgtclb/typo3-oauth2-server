@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Http\Response;
  */
 final class OAuth2AccessToken implements MiddlewareInterface
 {
-    protected Configuration $configuration;
+    private Configuration $configuration;
 
     public function __construct(
         Configuration $configuration

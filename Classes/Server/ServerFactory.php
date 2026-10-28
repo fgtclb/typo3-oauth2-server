@@ -22,12 +22,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class ServerFactory
 {
-    protected Configuration $configuration;
+    private Configuration $configuration;
 
     /**
      * @param Configuration|null $configuration
      */
-    public function __construct(Configuration $configuration = null)
+    public function __construct(?Configuration $configuration = null)
     {
         $this->configuration = $configuration ?: GeneralUtility::makeInstance(Configuration::class);
     }

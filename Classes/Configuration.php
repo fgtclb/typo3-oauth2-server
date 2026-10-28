@@ -12,24 +12,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class Configuration
 {
-    protected string $privateKeyFile;
+    private string $privateKeyFile;
 
-    protected string $publicKeyFile;
+    private string $publicKeyFile;
 
     /**
      * UID of the login page
      */
-    protected int $loginPage;
+    private int $loginPage;
 
-    protected string $authEndpoint = '/oauth/authorize';
-    protected string $tokenEndpoint = '/oauth/token';
-    protected string $resourceEndpoint = '/oauth/identity';
+    private string $authEndpoint = '/oauth/authorize';
+    private string $tokenEndpoint = '/oauth/token';
+    private string $resourceEndpoint = '/oauth/identity';
 
-    protected \DateInterval $accessTokenLifetime;
+    private \DateInterval $accessTokenLifetime;
 
-    protected \DateInterval $refreshTokenLifetime;
+    private \DateInterval $refreshTokenLifetime;
 
-    protected \DateInterval $authorizationCodeLifetime;
+    private \DateInterval $authorizationCodeLifetime;
 
     /**
      * @throws \InvalidArgumentException if the extension configuration is invalid/incomplete
