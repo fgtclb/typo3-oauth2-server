@@ -500,7 +500,7 @@ fi
 
 handleDbmsOptions
 
-COMPOSER_ROOT_VERSION="3.0.0-dev"
+COMPOSER_ROOT_VERSION="3.0.0"
 CONTAINER_INTERACTIVE="-it --init"
 HOST_UID=$(id -u)
 HOST_GID=$(id -g)
