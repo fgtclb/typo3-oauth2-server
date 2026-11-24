@@ -69,7 +69,7 @@
       "app-dir": ".Build",
       "web-dir": ".Build/Web",
       "extension-key": "oauth2_server",
-      "version": "3.0.0"
+      "version": "3.0.1-dev"
     },
     "branch-alias": {
       "dev-main": "3.0.x-dev"
